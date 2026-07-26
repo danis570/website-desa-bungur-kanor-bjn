@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Desa Bungur | Kecamatan Kanor</title>
+
+    <!-- ==========================================================
+        GOOGLE FONT
+    =========================================================== -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- ==========================================================
+       Bootstrap Icons
+    =========================================================== -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <!-- ==========================================================
+        SWIPER
+    =========================================================== -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+    <!-- ==========================================================
+       DATA-AOS
+    =========================================================== -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+
+    <!-- ==========================================================
+       PHOTOSWIPE
+    =========================================================== -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5/dist/photoswipe.css">
+
+    <!-- ==========================================================
+        TAILWIND CSS
+    =========================================================== -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#15803d",
+                        secondary: "#166534",
+                        gold: "#f59e0b"
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- ==========================================================
+        LUCIDE ICON
+    =========================================================== -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- ==========================================================
+        CUSTOM STYLE
+    =========================================================== -->
+
+    <style>
+        /* ==========================================================
+           RESET
+        ========================================================== */
+
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        /* ==========================================================
+           NAVBAR
+        ========================================================== */
+
+        .navbar {
+            transition: .35s ease;
+        }
+
+        .navbar.scrolled {
+            background: #fff;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, .08);
+        }
+
+        /* ==========================================================
+        NAVBAR MENU
+        ========================================================== */
+
+        .nav-link {
+
+            position: relative;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: .75rem 1.25rem;
+
+            border-radius: 9999px;
+
+            font-weight: 500;
+
+            transition: all .35s ease;
+
+        }
+
+        /* Navbar setelah scroll */
+        .navbar.scrolled .nav-link {
+
+            color: #111827;
+            font-weight: 600;
+            /* sedikit lebih tebal */
+
+        }
+
+        /* Hover */
+
+        .nav-link:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 20px rgba(0, 0, 0, .10),
+                inset 0 1px 0 rgba(255, 255, 255, .35);
+
+        }
+
+        /* Hover saat navbar putih */
+        .navbar.scrolled .nav-link:hover {
+
+            color: #111827;
+
+        }
+
+        /* ==========================================================
+           MOBILE MENU
+        ========================================================== */
+
+        .mobile-menu {
+            transition: .35s ease;
+        }
+
+        /* ==========================================================
+           RESPONSIVE
+        ========================================================== */
+
+        .container-web {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding-inline: 1.5rem;
+        }
+
+        @media (min-width:768px) {
+            .container-web {
+                padding-inline: 4rem;
+            }
+        }
+
+        @media (min-width:1024px) {
+            .container-web {
+                padding-inline: 6rem;
+            }
+        }
+
+        @media (min-width:1280px) {
+            .container-web {
+                padding-inline: 8rem;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- ==========================
+        NAVBAR
+    =========================== -->
+
+    <header class="navbar scrolled fixed w-full z-50">
+
+        <div class="container-web">
+
+
+            <div class="flex items-center justify-between py-5">
+
+                <!-- Logo -->
+
+                <a href="../index.php" class="flex items-center gap-3">
+
+                    <img src="../assets/logo-bojonegoro.png" class="w-14 h-14 object-contain">
+
+                    <div>
+
+                        <h1 id="logoTitle" class="font-bold text-xl transition-colors duration-300">
+                            Desa Bungur
+                        </h1>
+
+                        <p id="logoSubtitle" class="text-sm transition-colors duration-300">
+                            Kecamatan Kanor
+                        </p>
+
+                    </div>
+
+                </a>
+
+                <!-- Desktop -->
+
+                <nav class="hidden lg:flex items-center gap-3">
+
+                    <?php $currentPage = basename($_SERVER['PHP_SELF']); ?>
+
+                    <a href="../Profile/profil.php" class="<?= $currentPage == 'profil.php'
+                        ? 'inline-flex items-center gap-3 px-8 py-2 rounded-full border-2 border-primary text-primary font-semibold transition duration-300'
+                        : 'nav-link'
+                        ?>">
+                        Profil
+                    </a>
+
+                    <a href="../Demographics/demografi.php" class="nav-link">
+                        Demografi
+                    </a>
+
+                    <a href="../News/berita.php" class="nav-link">
+                        Berita
+                    </a>
+
+                    <a href="../Photo/foto.php" class="nav-link">
+                        Photo
+                    </a>
+
+
+                    <a href="../MSMEs/umkm.php" class="nav-link">
+                        UMKM
+                    </a>
+
+                </nav>
+
+                <!-- Right -->
+
+                <div class="hidden lg:flex items-center gap-4">
+
+                    <button id="openSearch"
+                        class="w-11 h-11 rounded-full bg-white shadow flex justify-center items-center hover:bg-primary hover:text-white transition">
+
+                        <i data-lucide="search" class="w-5"></i>
+
+                    </button>
+
+                </div>
+
+                <!-- Mobile -->
+
+                <button id="openMenu" class="lg:hidden">
+
+                    <i data-lucide="menu" class="w-8 h-8"></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+    <!-- ==========================
+        MOBILE MENU
+    =========================== -->
+
+    <div id="mobileMenu" class="mobile-menu fixed top-0 right-[-100%] w-80 h-full bg-white shadow-2xl z-[999]">
+
+        <div class="p-6 border-b">
+
+            <div class="flex justify-between">
+
+                <h2 class="font-bold text-xl">
+                    Menu
+                </h2>
+
+                <button id="closeMenu">
+
+                    <i data-lucide="x"></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <nav class="p-6 space-y-5">
+
+            <a href="../Profile/profil.php" class="<?= $currentPage == 'profil.php'
+                ? 'block px-4 py-3 rounded-xl border-2 border-primary text-primary font-semibold'
+                : 'block font-medium'
+                ?>">
+                Profil
+            </a>
+
+            <a href="../Demographics/demografi.php" class="block font-medium">
+                Demografi
+            </a>
+
+            <a href="../News/berita.php" class="block font-medium">
+                Berita
+            </a>
+
+            <a href="../Photo/foto.php" class="block font-medium">
+                Photo
+            </a>
+
+            <a href="../MSMEs/umkm.php" class="block font-medium">
+                UMKM
+            </a>
+
+        </nav>
+
+    </div>
+
+    <div id="overlay" class="fixed inset-0 bg-black/50 hidden z-[998]"></div>
+
+    <!-- Konten -->
+    <main class="relative z-20 bg-white pt-24">
+
+        <div class="container-web">
