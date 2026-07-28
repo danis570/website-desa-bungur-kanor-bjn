@@ -361,6 +361,25 @@ STYLE - Minimal untuk AG Grid
     .ag-theme-quartz .ag-header-cell-resize:hover::after {
         background: #0F172A;
     }
+
+    /* // Modal */
+    @keyframes fadeIn {
+
+        from {
+
+            opacity: 0;
+            transform: scale(.96);
+
+        }
+
+        to {
+
+            opacity: 1;
+            transform: scale(1);
+
+        }
+
+    }
 </style>
 
 <!-- ==========================================================
@@ -371,7 +390,7 @@ JAVASCRIPT
     // DATA (Dummy)
     // ==========================================================
     const allData = [
-        { id: 1, title: "Festival Sedekah Bumi Desa test menggunakan panjang Bungur", owner: "Budi Santoso", status: "Pending" },
+        { id: 1, title: "Festival Sedekah Bumi Desa Bungur", owner: "Budi Santoso", status: "Pending" },
         { id: 2, title: "Posyandu Balita Bulan Juli", owner: "Siti Rahayu", status: "Published" },
         { id: 3, title: "Kerja Bakti Membersihkan Jalan", owner: "Ahmad Fauzi", status: "Rejected" },
         { id: 4, title: "Vaksinasi Anak Sekolah Dasar", owner: "Dewi Lestari", status: "Published" },
@@ -491,78 +510,57 @@ JAVASCRIPT
 
     }
 
-
     // ==========================================================
-    // ACTION
+    // ACTION RENDERER - DENGAN DELETE YANG LEBIH BAIK
     // ==========================================================
     function ActionRenderer(params) {
 
         const wrapper = document.createElement("div");
+        wrapper.className = "flex items-center gap-2";
 
-        wrapper.className =
-            "flex items-center gap-2";
-
-
-
-        // EDIT
+        // ==========================================================
+        // EDIT BUTTON
+        // ==========================================================
         const edit = document.createElement("button");
-
-        edit.className =
-            "p-1.5 rounded-lg hover:bg-slate-100 transition";
-
+        edit.className = "p-1.5 rounded-lg hover:bg-slate-100 transition";
         edit.innerHTML = `
-        <iconify-icon
-            icon="solar:pen-2-linear"
-            width="17">
-        </iconify-icon>
+        <iconify-icon icon="solar:pen-2-linear" width="17"></iconify-icon>
     `;
-
         edit.onclick = e => {
-
             e.stopPropagation();
-
-            alert("Edit : " + params.data.title);
-
+            openPreviewModal({
+                id: params.data.id,
+                image: `https://picsum.photos/seed/${params.data.id}/1200/700`,
+                title: params.data.title,
+                owner: params.data.owner,
+                status: params.data.status,
+                category: "Berita",
+                created_at: "27 Juli 2026",
+                content: `
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            `
+            });
         };
 
-
-
-        // DELETE
+        // ==========================================================
+        // DELETE BUTTON - DENGAN KONFIRMASI MODAL
+        // ==========================================================
         const del = document.createElement("button");
-
-        del.className =
-            "p-1.5 rounded-lg hover:bg-red-50 text-red-500 transition";
-
+        del.className = "p-1.5 rounded-lg hover:bg-red-50 text-red-500 transition";
         del.innerHTML = `
-        <iconify-icon
-            icon="solar:trash-bin-trash-linear"
-            width="17">
-        </iconify-icon>
+        <iconify-icon icon="solar:trash-bin-trash-linear" width="17"></iconify-icon>
     `;
-
         del.onclick = e => {
-
             e.stopPropagation();
 
-            if (confirm("Hapus artikel?")) {
-
-                alert(params.data.title);
-
-            }
-
+            // Buka modal konfirmasi hapus
+            openDeleteModal(params.data);
         };
-
-
 
         wrapper.appendChild(edit);
-
         wrapper.appendChild(del);
-
         return wrapper;
-
     }
-
-
 
     // ==========================================================
     // COLUMN DEFINITIONS
@@ -700,10 +698,6 @@ JAVASCRIPT
             gap-2
             text-slate-400">
 
-            <span class="text-4xl">
-                📝
-            </span>
-
             <span>
                 No Data Found
             </span>
@@ -840,14 +834,8 @@ JAVASCRIPT
 
         updatePagination();
 
+
     }
-
-
-
-    // ==========================================================
-    // SEARCH + FILTER
-    // ==========================================================
-
     function applyFilters() {
 
         const keyword =
@@ -894,9 +882,6 @@ JAVASCRIPT
         refreshGrid();
 
     }
-
-
-
     // ==========================================================
     // INITIALIZE
     // ==========================================================
@@ -913,9 +898,6 @@ JAVASCRIPT
             );
 
         refreshGrid();
-
-
-
         // ============================
         // SEARCH
         // ============================
@@ -1040,5 +1022,496 @@ JAVASCRIPT
 
     });
 </script>
+
+<!-- edit modal -->
+<script>
+    // ==========================================================
+    // MODAL - WITH STATUS UPDATE (HANYA SIMPAN PERUBAHAN)
+    // ==========================================================
+
+    // Variabel untuk menyimpan data artikel yang sedang diedit
+    let currentEditingArticle = null;
+
+    function openPreviewModal(article) {
+
+        const modal = document.getElementById("articlePreviewModal");
+        const content = document.getElementById("previewContent");
+
+        // Simpan data artikel yang sedang diedit
+        currentEditingArticle = article;
+
+        // Buat options untuk status dropdown
+        const statusOptions = ['Pending', 'Published', 'Rejected'];
+        const statusOptionsHTML = statusOptions.map(status =>
+            `<option value="${status}" ${status === article.status ? 'selected' : ''}>
+            ${status}
+        </option>`
+        ).join('');
+
+        content.innerHTML = `
+
+        <img
+            src="${article.image || 'https://picsum.photos/seed/' + article.id + '/1200/700'}"
+            class="w-full aspect-video object-cover"
+            alt="Artikel Image">
+
+        <div class="p-8">
+
+            <!-- ===== STATUS UPDATE SECTION ===== -->
+            <div class="bg-slate-50 rounded-2xl p-6 mb-8 border border-slate-200">
+
+                <h3 class="text-sm font-semibold text-slate-700 mb-4 flex items-center gap-2">
+                    <iconify-icon icon="solar:settings-linear" width="18"></iconify-icon>
+                    Update Status Artikel
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+                    <!-- Status Dropdown -->
+                    <div>
+                        <label class="block text-xs font-medium text-slate-500 mb-1">
+                            Pilih Status
+                        </label>
+                        <select id="modalStatusSelect" 
+                            class="w-full h-10 rounded-xl border border-slate-200 px-3 text-sm 
+                                   focus:outline-none focus:ring-2 focus:ring-slate-900/10 
+                                   focus:border-slate-900 transition bg-white">
+                            ${statusOptionsHTML}
+                        </select>
+                    </div>
+
+                    <!-- Current Status Badge -->
+                    <div>
+                        <label class="block text-xs font-medium text-slate-500 mb-1">
+                            Status Saat Ini
+                        </label>
+                        <div id="currentStatusBadge" class="h-10 flex items-center">
+                            ${getStatusBadgeHTML(article.status)}
+                        </div>
+                    </div>
+
+                    <!-- Last Updated -->
+                    <div>
+                        <label class="block text-xs font-medium text-slate-500 mb-1">
+                            Terakhir Diupdate
+                        </label>
+                        <div class="h-10 flex items-center text-sm text-slate-600">
+                            <span id="lastUpdatedTime">
+                                ${new Date().toLocaleString('id-ID')}
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ===== ARTICLE INFO ===== -->
+            <div class="flex flex-wrap gap-3 mb-5">
+
+                <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-sm">
+                    ${article.category || 'Berita'}
+                </span>
+
+                <span id="previewStatusBadge" class="px-3 py-1 rounded-full text-sm ${getStatusBadgeClass(article.status)}">
+                    ${article.status}
+                </span>
+
+            </div>
+
+            <h1 class="text-3xl font-bold">
+                ${article.title}
+            </h1>
+
+            <div class="flex gap-6 text-slate-500 text-sm mt-4">
+
+                <span>
+                    ${article.owner}
+                </span>
+
+                <span>
+                    ${article.created_at || '27 Juli 2026'}
+                </span>
+
+                <span>
+                    ID: ${article.id}
+                </span>
+
+            </div>
+
+            <hr class="my-7">
+
+            <div class="prose max-w-none">
+
+                ${article.content || `
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                    <p>Ini contoh isi artikel Desa Bungur.</p>
+                    <p>Ganti status pada dropdown di atas, lalu klik "Simpan Perubahan".</p>
+                `}
+
+            </div>
+
+            <!-- ===== ACTION BUTTONS ===== -->
+            <div class="flex flex-wrap justify-end gap-3 mt-10 pt-6 border-t">
+
+                <button id="modalCancelBtn"
+                    class="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 transition text-sm font-medium">
+                    Batal
+                </button>
+
+                <button id="modalSaveBtn"
+                    class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-black text-white transition text-sm font-medium flex items-center gap-2">
+                    <iconify-icon icon="solar:check-circle-linear" width="18"></iconify-icon>
+                    Simpan Perubahan
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+        // Tampilkan modal
+        modal.classList.remove("hidden");
+
+        // ==========================================================
+        // EVENT LISTENERS
+        // ==========================================================
+
+        // 1. Tombol Batal
+        document.getElementById("modalCancelBtn").onclick = function (e) {
+            e.stopPropagation();
+            closeModal(modal);
+        };
+
+        // 2. Tombol Close (X)
+        document.getElementById("closePreviewModal").onclick = function (e) {
+            e.stopPropagation();
+            closeModal(modal);
+        };
+
+        // 3. Backdrop
+        document.getElementById("modalBackdrop").onclick = function (e) {
+            e.stopPropagation();
+            closeModal(modal);
+        };
+
+        // 4. Mencegah klik di dalam modal menutup modal
+        const modalContent = modal.querySelector('.bg-white');
+        modalContent.onclick = function (e) {
+            e.stopPropagation();
+        };
+
+        // 5. PREVIEW PERUBAHAN STATUS - Real-time preview saat dropdown berubah
+        document.getElementById("modalStatusSelect").onchange = function (e) {
+            e.stopPropagation();
+            const newStatus = this.value;
+
+            // Update preview badge
+            const previewBadge = document.getElementById("previewStatusBadge");
+            previewBadge.textContent = newStatus;
+            previewBadge.className = `px-3 py-1 rounded-full text-sm ${getStatusBadgeClass(newStatus)}`;
+
+            // Update current status badge
+            const currentBadge = document.getElementById("currentStatusBadge");
+            currentBadge.innerHTML = getStatusBadgeHTML(newStatus);
+
+            // Update last updated time
+            document.getElementById("lastUpdatedTime").textContent = new Date().toLocaleString('id-ID');
+        };
+
+        // 6. SIMPAN PERUBAHAN - Satu tombol untuk semua perubahan
+        document.getElementById("modalSaveBtn").onclick = function (e) {
+            e.stopPropagation();
+
+            const newStatus = document.getElementById("modalStatusSelect").value;
+            const oldStatus = currentEditingArticle.status;
+
+            // Cek apakah ada perubahan
+            if (newStatus === oldStatus) {
+                showToast(`ℹ️ Tidak ada perubahan status, masih "${oldStatus}"`, 'info');
+                closeModal(modal);
+                return;
+            }
+
+            // Update data di array
+            const articleIndex = allData.findIndex(item => item.id === currentEditingArticle.id);
+            if (articleIndex !== -1) {
+                allData[articleIndex].status = newStatus;
+                currentEditingArticle.status = newStatus;
+
+                // Refresh grid
+                applyFilters();
+
+                // Notifikasi sukses
+                showToast(`✅ Status artikel berhasil diubah dari "${oldStatus}" menjadi "${newStatus}"`, 'success');
+
+                // Tutup modal
+                closeModal(modal);
+            }
+        };
+
+    }
+
+    // ==========================================================
+    // HELPER FUNCTIONS
+    // ==========================================================
+
+    function getStatusBadgeClass(status) {
+        const map = {
+            'Pending': 'bg-amber-100 text-amber-700',
+            'Published': 'bg-green-100 text-green-700',
+            'Rejected': 'bg-red-100 text-red-700'
+        };
+        return map[status] || 'bg-slate-100 text-slate-700';
+    }
+
+    function getStatusBadgeHTML(status) {
+        const colorClass = getStatusBadgeClass(status);
+        return `<span class="px-3 py-1 rounded-full text-sm font-medium ${colorClass}">
+        ${status}
+    </span>`;
+    }
+
+    function closeModal(modal) {
+        if (modal) {
+            modal.classList.add("hidden");
+            currentEditingArticle = null;
+        }
+    }
+
+    function showToast(message, type = 'info') {
+        const oldToast = document.querySelector('.custom-toast');
+        if (oldToast) oldToast.remove();
+
+        const toast = document.createElement('div');
+        toast.className = 'custom-toast fixed bottom-6 right-6 z-[99999] px-6 py-4 rounded-2xl shadow-2xl text-white text-sm font-medium max-w-md transition-all duration-300';
+
+        const colors = {
+            success: 'bg-green-600',
+            error: 'bg-red-600',
+            info: 'bg-blue-600',
+            warning: 'bg-amber-600'
+        };
+
+        toast.className += ` ${colors[type] || colors.info}`;
+        toast.textContent = message;
+
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(10px)';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+</script>
+
+<!-- delete modal -->
+<script>
+    // ==========================================================
+    // DELETE MODAL - KONFIRMASI HAPUS
+    // ==========================================================
+
+    // Variabel untuk menyimpan data yang akan dihapus
+    let deleteTarget = null;
+
+    function openDeleteModal(article) {
+        const modal = document.getElementById("deleteConfirmModal");
+
+        // Simpan data artikel yang akan dihapus
+        deleteTarget = article;
+
+        // Set judul artikel di pesan konfirmasi
+        document.getElementById("deleteArticleTitle").textContent = `"${article.title}"`;
+        document.getElementById("deleteArticleId").value = article.id;
+
+        // Tampilkan modal
+        modal.classList.remove("hidden");
+    }
+
+    function closeDeleteModal() {
+        const modal = document.getElementById("deleteConfirmModal");
+        modal.classList.add("hidden");
+        deleteTarget = null;
+    }
+
+    function confirmDelete() {
+        if (!deleteTarget) return;
+
+        // Cari index artikel di array
+        const index = allData.findIndex(item => item.id === deleteTarget.id);
+
+        if (index !== -1) {
+            // Simpan title untuk notifikasi
+            const title = deleteTarget.title;
+
+            // Hapus dari array
+            allData.splice(index, 1);
+
+            // Refresh grid
+            applyFilters();
+
+            // Tutup modal
+            closeDeleteModal();
+
+            // Notifikasi sukses
+            showToast(`🗑️ Artikel "${title}" berhasil dihapus`, 'warning');
+        } else {
+            showToast('❌ Artikel tidak ditemukan!', 'error');
+            closeDeleteModal();
+        }
+    }
+
+    // ==========================================================
+    // EVENT LISTENERS DELETE MODAL
+    // ==========================================================
+
+    document.addEventListener("DOMContentLoaded", () => {
+
+        // Tombol Batal
+        document.getElementById("deleteCancelBtn").onclick = function (e) {
+            e.stopPropagation();
+            closeDeleteModal();
+        };
+
+        // Tombol Hapus
+        document.getElementById("deleteConfirmBtn").onclick = function (e) {
+            e.stopPropagation();
+            confirmDelete();
+        };
+
+        // Backdrop
+        document.getElementById("deleteBackdrop").onclick = function (e) {
+            e.stopPropagation();
+            closeDeleteModal();
+        };
+
+        // Mencegah klik di dalam modal menutup modal
+        const modalContent = document.querySelector('#deleteConfirmModal .bg-white');
+        if (modalContent) {
+            modalContent.onclick = function (e) {
+                e.stopPropagation();
+            };
+        }
+
+        // Shortcut: Enter untuk konfirmasi, Escape untuk batal
+        document.addEventListener("keydown", function (e) {
+            const modal = document.getElementById("deleteConfirmModal");
+            if (!modal.classList.contains("hidden")) {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    confirmDelete();
+                } else if (e.key === "Escape") {
+                    e.preventDefault();
+                    closeDeleteModal();
+                }
+            }
+        });
+
+    });
+</script>
+
+<!-- ==========================================================
+ARTICLE PREVIEW MODAL - WITH STATUS UPDATE
+========================================================== -->
+<div id="articlePreviewModal" class="fixed inset-0 z-[9999] hidden">
+
+    <!-- Backdrop -->
+    <div id="modalBackdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm">
+    </div>
+
+    <!-- Modal Container -->
+    <div class="relative z-10 flex items-center justify-center min-h-screen p-6">
+
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-5xl overflow-hidden animate-[fadeIn_.2s_ease]">
+
+            <!-- Header -->
+            <div class="flex items-center justify-between px-8 py-5 border-b">
+
+                <h2 class="text-xl font-bold">
+                    Detail & Update Artikel
+                </h2>
+
+                <button id="closePreviewModal" class="w-10 h-10 rounded-xl hover:bg-slate-100 transition">
+                    <iconify-icon icon="solar:close-circle-linear" width="24"></iconify-icon>
+                </button>
+
+            </div>
+
+            <!-- Content -->
+            <div id="previewContent" class="max-h-[75vh] overflow-y-auto">
+
+                <!-- Akan diisi oleh JavaScript -->
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ==========================================================
+DELETE CONFIRMATION MODAL
+========================================================== -->
+<div id="deleteConfirmModal" class="fixed inset-0 z-[99999] hidden">
+
+    <!-- Backdrop -->
+    <div id="deleteBackdrop" class="fixed inset-0 bg-black/50 backdrop-blur-sm">
+    </div>
+
+    <!-- Modal Container -->
+    <div class="relative z-10 flex items-center justify-center min-h-screen p-6">
+
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden animate-[fadeIn_.2s_ease]">
+
+            <!-- Icon -->
+            <div class="flex justify-center pt-8">
+                <div class="w-20 h-20 rounded-full bg-red-100 flex items-center justify-center">
+                    <iconify-icon icon="solar:trash-bin-trash-linear" width="40" class="text-red-500"></iconify-icon>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="p-8 text-center">
+
+                <h3 class="text-2xl font-bold text-slate-900 mb-2">
+                    Hapus Artikel?
+                </h3>
+
+                <p class="text-slate-500 text-sm leading-relaxed" id="deleteMessage">
+                    Apakah Anda yakin ingin menghapus artikel
+                    <strong class="text-slate-900" id="deleteArticleTitle"></strong>?
+                    <br>
+                    <span class="text-red-500">Tindakan ini tidak dapat dibatalkan!</span>
+                </p>
+
+                <!-- Hidden ID -->
+                <input type="hidden" id="deleteArticleId" value="">
+
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex gap-3 p-6 pt-0">
+
+                <button id="deleteCancelBtn"
+                    class="flex-1 px-4 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 transition text-sm font-medium">
+                    Batal
+                </button>
+
+                <button id="deleteConfirmBtn"
+                    class="flex-1 px-4 py-3 rounded-xl bg-red-500 hover:bg-red-600 text-white transition text-sm font-medium flex items-center justify-center gap-2">
+                    <iconify-icon icon="solar:trash-bin-trash-linear" width="18"></iconify-icon>
+                    Hapus
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 <?php include '../Layouts/footer.php' ?>

@@ -145,7 +145,7 @@
 
                 <!-- Dashboard -->
 
-                <a href="#"
+                <a href="/"
                     class="group flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary font-semibold">
 
                     <iconify-icon icon="solar:widget-5-linear" width="20"></iconify-icon>
@@ -163,7 +163,7 @@
 
                 <!-- Artikel -->
 
-                <a href="#"
+                <a href="../News/berita.php"
                     class="group flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 hover:text-primary transition">
 
                     <iconify-icon icon="solar:document-text-linear" width="20"></iconify-icon>
@@ -174,7 +174,7 @@
 
                 <!-- Galeri -->
 
-                <a href="#"
+                <a href="../Photo/foto.php"
                     class="group flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 hover:text-primary transition">
 
                     <iconify-icon icon="solar:gallery-linear" width="20"></iconify-icon>
@@ -185,7 +185,7 @@
 
                 <!-- UMKM -->
 
-                <a href="#"
+                <a href="../MSMEs/umkm.php"
                     class="group flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 hover:text-primary transition">
 
                     <iconify-icon icon="solar:shop-linear" width="20"></iconify-icon>
@@ -196,7 +196,7 @@
 
                 <!-- Demografi -->
 
-                <a href="#"
+                <a href="../Demographics/demografi.php"
                     class="group flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 hover:text-primary transition">
 
                     <iconify-icon icon="solar:users-group-rounded-linear" width="20"></iconify-icon>
@@ -236,15 +236,15 @@
 
                     <div class="mt-2 ml-8 flex flex-col">
 
-                        <a href="#" class="py-2 text-slate-500 hover:text-primary">
+                        <a href="../Profile/sejarah.php" class="py-2 text-slate-500 hover:text-primary">
                             Sejarah Desa
                         </a>
 
-                        <a href="#" class="py-2 text-slate-500 hover:text-primary">
+                        <a href="../Profile/visi-misi.php" class="py-2 text-slate-500 hover:text-primary">
                             Visi & Misi
                         </a>
 
-                        <a href="#" class="py-2 text-slate-500 hover:text-primary">
+                        <a href="../Profile/aparatur.php" class="py-2 text-slate-500 hover:text-primary">
                             Aparatur Desa
                         </a>
 
@@ -252,6 +252,47 @@
 
                 </details>
 
+                <!-- ===================================================== -->
+
+                <p class="px-4 mt-8 mb-4 text-xs font-semibold uppercase tracking-wider text-slate-400">
+
+                    Landing page
+
+                </p>
+
+                <!-- Dropdown -->
+
+                <details class="group">
+
+                    <summary
+                        class="flex items-center justify-between px-4 py-3 rounded-xl cursor-pointer hover:bg-slate-50 list-none">
+
+                        <div class="flex items-center gap-3">
+
+                            <iconify-icon icon="solar:window-frame-linear" width="20"></iconify-icon>
+
+                            <span>Landing Page</span>
+
+                        </div>
+
+                        <iconify-icon class="transition group-open:rotate-180"
+                            icon="solar:alt-arrow-down-linear"></iconify-icon>
+
+                    </summary>
+
+                    <div class="mt-2 ml-8 flex flex-col">
+
+                        <a href="../LandingPage/hero-banner.php" class="py-2 text-slate-500 hover:text-primary">
+                            Hero banner
+                        </a>
+
+                        <a href="../LandingPage/sambutan.php" class="py-2 text-slate-500 hover:text-primary">
+                            Sambutan Kepala Desa
+                        </a>
+
+                    </div>
+
+                </details>
 
                 <!-- ===================================================== -->
 
@@ -259,7 +300,7 @@
                     Pengguna
                 </p>
 
-                <a href="#"
+                <a href="../Users/pengguna.php"
                     class="group flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 hover:text-primary transition">
 
                     <iconify-icon icon="solar:user-rounded-linear" width="20"></iconify-icon>
@@ -277,13 +318,14 @@
 
             <div class="p-4 border-t border-slate-100">
 
-                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 transition">
+                <button disabled
+                    class="flex items-center gap-3 w-full px-4 py-3 rounded-xl opacity-50 cursor-not-allowed select-none text-left">
 
                     <iconify-icon icon="solar:settings-linear" width="20"></iconify-icon>
 
-                    Pengaturan
+                    <span>Pengaturan</span>
 
-                </a>
+                </button>
 
                 <a href="#"
                     class="mt-2 flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-50 hover:text-red-500 transition">

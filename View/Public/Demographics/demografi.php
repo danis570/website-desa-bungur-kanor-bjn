@@ -15,11 +15,6 @@ CONTENT
         Data Kependudukan Desa Bungur
     </h2>
 
-    <!-- <p class="mt-5 text-gray-600 leading-8">
-        Menyajikan informasi kependudukan secara transparan
-        sebagai dasar pembangunan desa yang berkelanjutan.
-    </p> -->
-
 </div>
 
 <section class="py-20">
