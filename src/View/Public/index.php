@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Desa Bungur | Kecamatan Kanor</title>
+
+    <!-- ==========================================================
+        GOOGLE FONT
+    =========================================================== -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- ==========================================================
+        TAILWIND CSS
+    =========================================================== -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#15803d",
+                        secondary: "#166534",
+                        gold: "#f59e0b"
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- ==========================================================
+        SWIPER
+    =========================================================== -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+    <!-- ==========================================================
+        AOS
+    =========================================================== -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+
+    <!-- ==========================================================
+        LUCIDE ICON
+    =========================================================== -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- ==========================================================
+        CUSTOM STYLE
+    =========================================================== -->
+
+    <style>
+        /* ==========================================================
+           RESET
+        ========================================================== */
+
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        /* ==========================================================
+           NAVBAR
+        ========================================================== */
+
+        .navbar {
+            transition: .35s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, .95);
+            backdrop-filter: blur(18px);
+            box-shadow: 0 10px 35px rgba(0, 0, 0, .08);
+        }
+
+        /* Hamburger saat navbar transparan */
+        .navbar:not(.scrolled) #openMenu {
+            color: #ffffff;
+        }
+
+        /* Hamburger saat navbar putih */
+        .navbar.scrolled #openMenu {
+            color: #111827;
+        }
+
+        /* Logo */
+
+        .navbar:not(.scrolled) #logoTitle {
+            color: #fff;
+        }
+
+        .navbar:not(.scrolled) #logoSubtitle {
+            color: #e5e7eb;
+        }
+
+        .navbar.scrolled #logoTitle {
+            color: #111827;
+        }
+
+        .navbar.scrolled #logoSubtitle {
+            color: #4b5563;
+        }
+
+        /* ==========================================================
+        NAVBAR MENU
+        ========================================================== */
+
+        .nav-link {
+
+            position: relative;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: .75rem 1.25rem;
+
+            border-radius: 9999px;
+
+            font-weight: 500;
+
+            transition: all .35s ease;
+
+        }
+
+        /* Navbar transparan (di atas hero) */
+        .navbar:not(.scrolled) .nav-link {
+
+            color: #ffffff;
+            font-weight: 600;
+
+        }
+
+        /* Navbar setelah scroll */
+        .navbar.scrolled .nav-link {
+
+            color: #111827;
+            font-weight: 600;
+            /* sedikit lebih tebal */
+
+        }
+
+        /* Hover */
+
+        .nav-link:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 20px rgba(0, 0, 0, .10),
+                inset 0 1px 0 rgba(255, 255, 255, .35);
+
+        }
+
+        /* Hover saat navbar masih transparan */
+        .navbar:not(.scrolled) .nav-link:hover {
+
+            color: #ffffff;
+
+        }
+
+        /* Hover saat navbar putih */
+        .navbar.scrolled .nav-link:hover {
+
+            color: #111827;
+
+        }
+
+        /* ==========================================================
+           MOBILE MENU
+        ========================================================== */
+
+        .mobile-menu {
+            transition: .35s ease;
+        }
+
+        /* ==========================================================
+           HERO
+        ========================================================== */
+
+        .hero-image {
+            animation: zoomHero 12s linear infinite alternate;
+        }
+
+        @keyframes zoomHero {
+
+            from {
+                transform: scale(1);
+            }
+
+            to {
+                transform: scale(1.12);
+            }
+
+        }
+
+        /* ==========================================================
+           SWIPER
+        ========================================================== */
+
+        .swiper-pagination {
+            bottom: 80px !important;
+        }
+
+        .swiper-pagination-bullet {
+            background: #fff;
+            opacity: .7;
+        }
+
+        .swiper-pagination-bullet-active {
+            background: #22c55e;
+            opacity: 1;
+        }
+
+        .swiper-button-next,
+        .swiper-button-prev {
+            color: #fff;
+        }
+
+        .swiper-button-next::after,
+        .swiper-button-prev::after {
+            display: none;
+        }
+
+        .swiper-button-prev,
+        .swiper-button-next {
+            top: 50%;
+            transform: translateY(-50%);
+            color: #fff;
+            z-index: 20;
+        }
+
+        .swiper-button-prev {
+            left: max(24px, calc((100vw - 1440px) / 2 + 13.5rem));
+        }
+
+        .swiper-button-next {
+            right: max(24px, calc((100vw - 1440px) / 2 + 13.5rem));
+        }
+
+        .swiper-button-next::after,
+        .swiper-button-prev::after {
+            display: none;
+        }
+
+        /* ==========================================================
+           RESPONSIVE
+        ========================================================== */
+
+        .container-web {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding-inline: 1.5rem;
+        }
+
+        @media (min-width:768px) {
+            .container-web {
+                padding-inline: 4rem;
+            }
+        }
+
+        @media (min-width:1024px) {
+            .container-web {
+                padding-inline: 6rem;
+            }
+        }
+
+        @media (min-width:1280px) {
+            .container-web {
+                padding-inline: 8rem;
+            }
+        }
+
+        @media (max-width:768px) {
+
+            .swiper-button-next,
+            .swiper-button-prev {
+                display: none;
+            }
+
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- ==========================
+        NAVBAR
+    =========================== -->
+
+    <header id="navbar" class="navbar fixed w-full z-50">
+
+        <div class="container-web">
+
+            <div class="flex items-center justify-between py-5">
+
+                <!-- Logo -->
+
+                <a href="#" class="flex items-center gap-3">
+
+                    <img src="assets/logo-bojonegoro.png" class="w-14 h-14 object-contain">
+
+                    <div>
+
+                        <h1 id="logoTitle" class="font-bold text-xl transition-colors duration-300">
+                            Desa Bungur
+                        </h1>
+
+                        <p id="logoSubtitle" class="text-sm transition-colors duration-300">
+                            Kecamatan Kanor
+                        </p>
+
+                    </div>
+
+                </a>
+
+                <!-- Desktop -->
+
+                <nav class="hidden lg:flex items-center gap-3">
+
+                    <a href="profil" class="nav-link">
+                        Profil
+                    </a>
+
+                    <a href="/demografi" class="nav-link">
+                        Demografi
+                    </a>
+
+                    <a href="/kabar-desa" class="nav-link">
+                        kabar Desa
+                    </a>
+
+                    <a href="/photo" class="nav-link">
+                        Photo
+                    </a>
+
+                    <a href="/umkm" class="nav-link">
+                        UMKM
+                    </a>
+
+                </nav>
+
+                <!-- Right -->
+
+                <div class="hidden lg:flex items-center gap-4">
+
+                    <button id="openSearch"
+                        class="w-11 h-11 rounded-full bg-white shadow flex justify-center items-center hover:bg-primary hover:text-white transition">
+
+                        <i data-lucide="search" class="w-5"></i>
+
+                    </button>
+
+                </div>
+
+                <!-- Mobile -->
+
+                <button id="openMenu" class="lg:hidden">
+
+                    <i data-lucide="menu" class="w-8 h-8"></i>
+
+                </button>
+
+            </div>
+
+
+        </div>
+
+    </header>
+
+    <!-- ==========================
+        MOBILE MENU
+    =========================== -->
+
+    <div id="mobileMenu" class="mobile-menu fixed top-0 right-[-100%] w-80 h-full bg-white shadow-2xl z-[999]">
+
+        <div class="p-6 border-b">
+
+            <div class="flex justify-between">
+
+                <h2 class="font-bold text-xl">
+                    Menu
+                </h2>
+
+                <button id="closeMenu">
+
+                    <i data-lucide="x"></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <nav class="p-6 space-y-5">
+
+
+            <a href="/profil" class="block font-medium">
+                Profil
+            </a>
+
+            <a href="/demografi" class="block font-medium">
+                Demografi
+            </a>
+
+            <a href="/kabar-desa" class="block font-medium">
+                Kabar Desa
+            </a>
+
+            <a href="/photo" class="block font-medium">
+                Photo
+            </a>
+
+            <a href="/umkm" class="block font-medium">
+                UMKM
+            </a>
+        </nav>
+
+    </div>
+
+    <div id="overlay" class="fixed inset-0 bg-black/50 hidden z-[998]"></div>
+
+    <!-- ==========================
+    HERO
+    ========================== -->
+
+    <section class="sticky top-0 h-screen overflow-hidden z-0">
+
+        <div class="swiper heroSwiper h-full">
+
+            <div class="swiper-wrapper">
+
+                <!-- Slide 1 -->
+                <div class="swiper-slide relative">
+
+                    <img src="assets/hero1.png" class="hero-image absolute inset-0 w-full h-full object-cover">
+
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-black/20"></div>
+
+                    <div class="relative z-10 h-full flex items-center">
+
+
+
+                        <div class="max-w-7xl mx-auto px-6">
+
+                            <div class="container-web">
+
+                                <div class="max-w-3xl">
+
+                                    <h2 class="text-5xl lg:text-6xl font-bold text-white mb-6">
+                                        Desa Bungur
+                                    </h2>
+
+                                    <p class="text-xl text-gray-200 mb-8">
+                                        Kecamatan Kanor - Kabupaten Bojonegoro
+                                        <br>
+                                        Selamat datang di website resmi desa bungur
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+
+                <!-- Slide 2 -->
+
+                <div class="swiper-slide relative">
+
+                    <img src="assets/hero2.png" class="hero-image absolute inset-0 w-full h-full object-cover">
+
+                    <div class="absolute inset-0 bg-black/55"></div>
+
+                    <div class="relative h-full flex items-center">
+
+                        <div class="max-w-7xl mx-auto px-6">
+
+                            <div class="container-web">
+
+                                <div class="max-w-3xl">
+
+                                    <h2 class="text-5xl lg:text-6xl font-bold text-white mb-6">
+                                        Potensi Pertanian
+                                    </h2>
+
+                                    <p class="text-xl text-gray-200 mb-8">
+                                        Desa Bungur memiliki potensi pertanian yang menjadi
+                                        penopang utama ekonomi masyarakat.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Slide 3 -->
+
+                <div class="swiper-slide relative">
+
+                    <img src="assets/hero3.png" class="hero-image absolute inset-0 w-full h-full object-cover">
+
+                    <div class="absolute inset-0 bg-black/55"></div>
+
+                    <div class="relative h-full flex items-center">
+
+                        <div class="max-w-7xl mx-auto px-6">
+
+                            <div class="container-web">
+
+                                <div class="max-w-3xl">
+
+                                    <h2 class="text-5xl lg:text-6xl font-bold text-white mb-6">
+                                        Masyarakat Gotong Royong
+                                    </h2>
+
+                                    <p class="text-xl text-gray-200">
+                                        Menjaga budaya kebersamaan dan membangun desa
+                                        menuju masa depan yang lebih baik.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="swiper-pagination"></div>
+
+
+            <div class="swiper-button-prev">
+                <i data-lucide="chevron-left"></i>
+            </div>
+
+            <div class="swiper-button-next">
+                <i data-lucide="chevron-right"></i>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Konten -->
+    <main class="relative z-20 bg-white rounded-t-[48px] -mt-12">
+
+        <!-- ==========================================================
+            SAMBUTAN KEPALA DESA
+        ========================================================== -->
+
+        <section class="py-20 bg-white">
+
+            <div class="container-web">
+
+
+                <!-- Heading -->
+                <div class="mb-12" data-aos="fade-up">
+
+                    <span class="text-sm tracking-[0.25em] uppercase font-semibold text-primary">
+                        Sambutan Kepala Desa
+                    </span>
+
+                    <h2 class="text-3xl lg:text-4xl font-bold mt-4 text-gray-900">
+                        Membangun Desa Bersama Masyarakat
+                    </h2>
+
+                </div>
+
+
+
+                <div class="grid lg:grid-cols-[1.5fr_380px] gap-14 items-start">
+
+
+                    <!-- Text -->
+
+                    <div class="text-gray-600 text-lg leading-9" data-aos="fade-right">
+
+
+                        <p class="font-semibold text-gray-900 mb-6">
+                            Assalamu'alaikum Warahmatullahi Wabarakatuh.
+                        </p>
+
+
+                        <p class="mb-6 text-justify">
+                            Puji syukur kehadirat Allah SWT atas limpahan rahmat dan
+                            karunia-Nya sehingga Website Resmi Desa Bungur hadir sebagai
+                            media informasi dan pelayanan publik digital.
+                        </p>
+
+
+                        <p class="mb-6 text-justify">
+                            Website ini menjadi sarana keterbukaan informasi mengenai
+                            pemerintahan desa, pembangunan, pelayanan masyarakat,
+                            serta potensi Desa Bungur.
+                        </p>
+
+
+                        <p class="text-justify">
+                            Mari bersama-sama menjaga semangat gotong royong untuk
+                            mewujudkan desa yang maju, mandiri, dan sejahtera.
+                        </p>
+
+
+                        <p class="mt-8 font-semibold text-gray-900">
+                            Wassalamu'alaikum Warahmatullahi Wabarakatuh.
+                        </p>
+
+
+                    </div>
+
+
+
+                    <!-- Profile -->
+
+                    <div class="lg:sticky lg:top-28">
+
+
+                        <div class="p-6 text-center">
+
+
+                            <img src="assets/foto-kades.png" class="w-full aspect-[4/5] object-cover rounded-3xl"
+                                alt="Kepala Desa">
+
+
+                            <div class="mt-6">
+
+
+                                <p class="text-gray-500">
+                                    Hormat Kami,
+                                </p>
+
+
+                                <img src="assets/ttd-kades.png" class="h-16 mx-auto my-4 object-contain">
+
+
+                                <h3 class="text-xl font-bold">
+                                    Nama Kepala Desa
+                                </h3>
+
+
+                                <p class="text-gray-500">
+                                    Kepala Desa Bungur
+                                </p>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <!-- ==========================================================
+            LIVE WEBCAM & BERITA TERBARU
+        ========================================================== -->
+
+
+        <section class="py-20">
+
+            <div class="container-web">
+
+
+                <div class="mb-12">
+
+                    <span class="text-sm tracking-[0.25em] uppercase text-primary font-semibold">
+                        Informasi Terbaru
+                    </span>
+
+                    <h2 class="text-3xl font-bold mt-4">
+                        Berita & Aktivitas Desa
+                    </h2>
+
+                </div>
+
+
+
+                <div class="grid lg:grid-cols-[1.2fr_1fr] gap-10">
+
+
+
+                    <!-- Webcam -->
+
+                    <div class="overflow-hidden">
+
+
+                        <div class="p-6 flex justify-between items-center">
+
+
+                            <div>
+
+                                <h3 class="text-xl font-bold">
+                                    Galeri
+                                </h3>
+
+                                <p class="text-gray-500 text-sm">
+                                    Descripsi
+                                </p>
+
+                            </div>
+
+
+                            <span class="flex items-center gap-2 text-red-500 font-semibold text-sm">
+
+
+                                <a href="Photo/foto.php">Lihat semua foto</a>
+
+                            </span>
+
+
+                        </div>
+
+
+
+                        <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop"
+                            class="w-full aspect-video object-cover">
+
+
+
+                        <div class="px-6 py-4 text-sm text-gray-500 flex justify-between">
+
+                            <span>
+                                Update terakhir
+                            </span>
+
+                            <span>
+                                23 Juli 2026 • 20:15 WIB
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+                    <!-- Berita -->
+
+                    <div>
+
+                        <div class="flex justify-between mb-8">
+
+                            <h3 class="text-xl font-bold">
+                                Berita Terbaru
+                            </h3>
+
+
+                            <a href="#" class="text-primary font-semibold text-sm">
+                                Lihat Semua →
+                            </a>
+
+                        </div>
+
+
+                        <div class="space-y-8">
+
+
+                            <a href="#" class="flex gap-5 group" data-aos="fade-up" data-aos-delay="100">
+
+                                <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop"
+                                    class="w-28 h-20 rounded-2xl object-cover">
+
+                                <div>
+
+                                    <p class="text-sm text-primary font-semibold">
+                                        23 Juli 2026
+                                    </p>
+
+                                    <h4 class="font-bold group-hover:text-primary transition">
+                                        Pembangunan Jalan Dusun Dimulai
+                                    </h4>
+
+                                    <p class="text-sm text-gray-500">
+                                        Pemerintah desa mulai melakukan pembangunan...
+                                    </p>
+
+                                </div>
+
+                            </a>
+
+                            <a href="#" class="flex gap-5 group" data-aos="fade-up" data-aos-delay="100">
+
+                                <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop"
+                                    class="w-28 h-20 rounded-2xl object-cover">
+
+                                <div>
+
+                                    <p class="text-sm text-primary font-semibold">
+                                        23 Juli 2026
+                                    </p>
+
+                                    <h4 class="font-bold group-hover:text-primary transition">
+                                        Pembangunan Jalan Dusun Dimulai
+                                    </h4>
+
+                                    <p class="text-sm text-gray-500">
+                                        Pemerintah desa mulai melakukan pembangunan...
+                                    </p>
+
+                                </div>
+
+                            </a>
+
+                            <a href="#" class="flex gap-5 group" data-aos="fade-up" data-aos-delay="200">
+
+                                <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop"
+                                    class="w-28 h-20 rounded-2xl object-cover">
+
+                                <div>
+
+                                    <p class="text-sm text-primary font-semibold">
+                                        21 Juli 2026
+                                    </p>
+
+                                    <h4 class="font-bold group-hover:text-primary transition">
+                                        Musyawarah Desa Bersama Warga
+                                    </h4>
+
+                                    <p class="text-sm text-gray-500">
+                                        Pembahasan program pembangunan desa...
+                                    </p>
+
+                                </div>
+
+                            </a>
+
+
+                            <a href="#" class="flex gap-5 group" data-aos="fade-up" data-aos-delay="300">
+
+                                <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop"
+                                    class="w-28 h-20 rounded-2xl object-cover">
+
+                                <div>
+
+                                    <p class="text-sm text-primary font-semibold">
+                                        21 Juli 2026
+                                    </p>
+
+                                    <h4 class="font-bold group-hover:text-primary transition">
+                                        Musyawarah Desa Bersama Warga
+                                    </h4>
+
+                                    <p class="text-sm text-gray-500">
+                                        Pembahasan program pembangunan desa...
+                                    </p>
+
+                                </div>
+
+                            </a>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <!-- ==========================================================
+            FOOTER
+        ========================================================== -->
+
+        <footer class="mt-12 shadow-[0_-10px_30px_rgba(0,0,0,0.08)] pt-12">
+            <div class="container-web">
+
+                <div class="flex flex-col md:flex-row justify-between w-full gap-10 border-b border-gray-500/30 pb-6">
+                    <div class="md:max-w-96">
+                        <div class="flex items-center gap-4 mb-6">
+
+                            <img src="assets/logo-bojonegoro.png" class="w-14 h-14 object-contain" alt="Logo Desa">
+
+                            <div>
+
+                                <h3 class="text-2xl font-bold text-black-600">
+
+                                    Desa Bungur
+
+                                </h3>
+
+                                <p class="text-sm text-black-400">
+
+                                    Kecamatan Kanor • Kabupaten Bojonegoro
+
+                                </p>
+
+                            </div>
+
+                        </div>
+                        <p class="mt-6 text-sm">
+                            Website resmi Pemerintah Desa Bungur sebagai media
+                            informasi, pelayanan publik, transparansi pemerintahan,
+                            serta sarana komunikasi digital bagi seluruh masyarakat.
+                        </p>
+                    </div>
+                    <div class="flex-1 flex flex-col md:flex-row items-start md:justify-end gap-10 md:gap-20">
+                        <div>
+                            <h2 class="font-semibold mb-5 text-gray-800">Kontak</h2>
+                            <ul class="text-sm space-y-2">
+                                <li class="flex items-start gap-3">
+                                    <i data-lucide="map-pin" class="w-5 h-5 text-primary mt-1 shrink-0"></i>
+
+                                    <p class="text-sm leading-6">
+                                        Desa Bungur,<br>
+                                        Kecamatan Kanor,<br>
+                                        Kabupaten Bojonegoro
+                                    </p>
+                                </li>
+                                <li class="flex items-start gap-3">
+
+                                    <i data-lucide="mail" class="w-5 h-5 text-primary"></i>
+
+                                    <a href="#" class="text-sm leading-6">
+                                        desabungur@example.id
+                                    </a>
+                                </li>
+
+                                <li class="flex items-start gap-3">
+                                    <i data-lucide="phone" class="w-5 h-5 text-primary"></i>
+
+                                    <a href="#" class="text-sm leading-6">
+                                        085xxxxxxx
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h2 class="font-semibold mb-5 text-gray-800">Menu</h2>
+
+                            <ul class="flex flex-col gap-3 text-sm">
+                                <li><a href="#">Profil</a></li>
+                                <li><a href="#">Demografi</a></li>
+                                <li><a href="#">Berita</a></li>
+                                <li><a href="#">UMKM</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="container-web">
+
+                <div
+                    class="flex flex-col items-center text-center gap-3 lg:flex-row lg:justify-between lg:text-left py-6">
+
+                    <!-- Copyright -->
+                    <p class="text-sm text-gray-500">
+                        © 2026 Pemerintah Desa Bungur. Seluruh hak cipta dilindungi.
+                    </p>
+
+                    <!-- Developer -->
+                    <p class="text-sm">
+                        <span class="text-gray-500">
+                            Designed & Developed by
+                        </span>
+
+                        <span class="font-semibold text-blue-700">
+                            KKN-27 Universitas PGRI Ronggolawe Tuban 2026
+                        </span>
+                    </p>
+
+                </div>
+
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- ==========================================================
+     SEARCH MODAL
+    ========================================================== -->
+
+    <div id="searchModal"
+        class="fixed inset-0 z-[9999] bg-black/60 backdrop-blur-sm opacity-0 invisible transition-all duration-300">
+
+        <div class="max-w-3xl mx-auto mt-24 bg-white rounded-3xl shadow-2xl overflow-hidden">
+
+            <div class="flex justify-between items-center p-6 border-b">
+
+                <h2 class="text-2xl font-bold">
+                    Pencarian
+                </h2>
+
+                <button id="closeSearch" class="w-10 h-10 rounded-full hover:bg-gray-100">
+
+                    <i data-lucide="x"></i>
+
+                </button>
+
+            </div>
+
+            <div class="p-6">
+
+                <div class="relative">
+
+                    <i data-lucide="search" class="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+
+                    <input id="searchInput" type="text" placeholder="Cari berita, layanan, perangkat desa..."
+                        class="w-full pl-14 pr-5 py-5 rounded-2xl border border-gray-300 focus:ring-2 focus:ring-primary outline-none text-lg">
+
+                </div>
+
+                <div class="mt-8">
+
+                    <h3 class="font-semibold mb-4">
+                        Pencarian Populer
+                    </h3>
+
+                    <div class="flex flex-wrap gap-3">
+
+                        <button class="px-5 py-2 rounded-full bg-gray-100 hover:bg-primary hover:text-white transition">
+                            Profil Desa
+                        </button>
+
+                        <button class="px-5 py-2 rounded-full bg-gray-100 hover:bg-primary hover:text-white transition">
+                            Berita
+                        </button>
+
+                        <button class="px-5 py-2 rounded-full bg-gray-100 hover:bg-primary hover:text-white transition">
+                            APBDes
+                        </button>
+
+                        <button class="px-5 py-2 rounded-full bg-gray-100 hover:bg-primary hover:text-white transition">
+                            Layanan
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ==========================================================
+     LIBRARY
+    ========================================================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+    <!-- ==========================================================
+     MAIN SCRIPT
+    ========================================================== -->
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+            /* ==========================================================
+               INITIALIZE
+            ========================================================== */
+
+            lucide.createIcons();
+
+            AOS.init({
+                duration: 900,
+                once: true
+            });
+
+            /* ==========================================================
+               NAVBAR
+            ========================================================== */
+
+            const navbar = document.getElementById("navbar");
+
+            window.addEventListener("scroll", () => {
+
+                navbar.classList.toggle("scrolled", window.scrollY > 40);
+
+            });
+
+            /* ==========================================================
+               MOBILE MENU
+            ========================================================== */
+
+            const menu = document.getElementById("mobileMenu");
+            const overlay = document.getElementById("overlay");
+
+            function openMenu() {
+
+                menu.style.right = "0";
+                overlay.classList.remove("hidden");
+
+            }
+
+            function closeMenu() {
+
+                menu.style.right = "-100%";
+                overlay.classList.add("hidden");
+
+            }
+
+            document.getElementById("openMenu").onclick = openMenu;
+            document.getElementById("closeMenu").onclick = closeMenu;
+            overlay.onclick = closeMenu;
+
+            /* ==========================================================
+               SEARCH MODAL
+            ========================================================== */
+
+            const searchModal = document.getElementById("searchModal");
+            const searchInput = document.getElementById("searchInput");
+
+            function openSearch() {
+
+                searchModal.classList.remove("opacity-0", "invisible");
+
+                setTimeout(() => {
+                    searchInput.focus();
+                }, 200);
+
+            }
+
+            function closeSearch() {
+
+                searchModal.classList.add("opacity-0", "invisible");
+
+            }
+
+            document.getElementById("openSearch").onclick = openSearch;
+            document.getElementById("closeSearch").onclick = closeSearch;
+
+            searchModal.addEventListener("click", (e) => {
+
+                if (e.target === searchModal) {
+
+                    closeSearch();
+
+                }
+
+            });
+
+            document.addEventListener("keydown", (e) => {
+
+                if (e.key === "Escape") {
+
+                    closeSearch();
+
+                }
+
+            });
+
+            /* ==========================================================
+               HERO SWIPER
+            ========================================================== */
+
+            new Swiper(".heroSwiper", {
+
+                loop: true,
+
+                effect: "fade",
+
+                speed: 1200,
+
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: false,
+                },
+
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                },
+
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                }
+
+            });
+
+        });
+
+    </script>
+
+</body>
+
+</html>
