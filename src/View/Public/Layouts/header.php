@@ -198,7 +198,7 @@
 
                 <a href="./" class="flex items-center gap-3">
 
-                    <img src="../assets/logo-bojonegoro.png" class="w-14 h-14 object-contain">
+                    <img src="/assets/logo-bojonegoro.png" class="w-14 h-14 object-contain">
 
                     <div>
 

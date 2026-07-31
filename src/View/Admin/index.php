@@ -1,4 +1,3 @@
-<?php include 'Layouts/header.php' ?>
 
 <!-- Welcome Section -->
 <div class="flex flex-col md:flex-row md:items-end gap-4 gap-x-4 gap-y-4 justify-between">
@@ -147,4 +146,3 @@
 
     </div>
 </div>
-<?php include 'Layouts/footer.php' ?>
