@@ -9,6 +9,7 @@ class View
     {
         require __DIR__ . '/../View/Public/index.php';
     }
+
     public static function renderPublic(string $view, $model)
     {
         require __DIR__ . '/../View/Public/Layouts/header.php';
@@ -19,7 +20,7 @@ class View
     public static function redirect(string $url)
     {
         header("Location: $url");
-        if (getenv("mode") != "test") {
+        if (getenv("mode") != "dev") {
             exit();
         }
     }

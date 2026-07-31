@@ -11,15 +11,6 @@ class PublicController
         View::renderPublicHome();
     }
 
-    // Auth
-    function login()
-    {
-        View::renderPublic('Auth/login', [
-            'title' => 'Login',
-            'current' => ''
-        ]);
-    }
-
     // Profile
     function profile()
     {

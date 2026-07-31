@@ -1,14 +1,22 @@
 <?php
 
+require_once __DIR__ . '/../vendor/autoload.php';
+
 use Kkn27Unirow\WebsiteDesaBungur\App\Router;
+use Kkn27Unirow\WebsiteDesaBungur\Config\Database;
+use Kkn27Unirow\WebsiteDesaBungur\Controller\Auth\AuthController;
 use Kkn27Unirow\WebsiteDesaBungur\Controller\PublicController;
 
-require_once __DIR__ . '/../vendor/autoload.php';
+Database::getConnection('prod');
+
+// Admin-User Controller
+
+// Auth Controller
+Router::add('GET', '/login', AuthController::class, 'login', []);
+Router::add('POST', '/login', AuthController::class, 'postLogin', []);
 
 // Public Controller
 Router::add('GET', '/', PublicController::class, 'index', []);
-// Auth
-Router::add('GET', '/login', PublicController::class, 'login', []);
 // Profile
 Router::add('GET', '/profil', PublicController::class, 'profile', []);
 // Village Apparatus

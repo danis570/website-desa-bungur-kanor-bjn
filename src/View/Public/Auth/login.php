@@ -1,8 +1,11 @@
 
+<?php if(isset($model['error'])) { ?>
 <div class="rounded-xl mt-16 border border-red-200 bg-red-50 px-4 py-3 text-red-700">
     <strong>Login gagal.</strong><br>
-    Email atau password yang Anda masukkan tidak sesuai.
+    <?= $model['error'] ?>
 </div>
+<?php } ?>
+
 
 <div class="min-h-screen flex items-center justify-center py-10 px-6">
 
@@ -30,8 +33,7 @@
             </div>
 
             <div class="mt-10">
-
-                <form>
+                <form action="/login" method="POST">
 
                     <!-- Email -->
                     <div class="mb-5">
@@ -40,7 +42,7 @@
                             Email
                         </label>
 
-                        <input type="email" placeholder="admin@desabungur.id"
+                        <input type="email" name="email" placeholder="example@email.com" value="<?= $_POST['email'] ?? '' ?>"
                             class="w-full rounded-xl border border-gray-300 px-5 py-3 focus:ring-2 focus:ring-primary focus:border-primary outline-none">
 
                     </div>
@@ -52,12 +54,12 @@
                             Password
                         </label>
 
-                        <input type="password" placeholder="Masukkan password"
+                        <input type="password" name="password" placeholder="Masukkan password"  value="<?= $_POST['password'] ?? '' ?>"
                             class="w-full rounded-xl border border-gray-300 px-5 py-3 focus:ring-2 focus:ring-primary focus:border-primary outline-none">
 
                     </div>
 
-                    <button
+                    <button type="submit"
                         class="w-full bg-primary hover:opacity-90 text-white py-3 rounded-xl font-semibold transition">
 
                         Masuk
