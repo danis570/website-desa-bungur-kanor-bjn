@@ -9,6 +9,7 @@ use Kkn27Unirow\WebsiteDesaBungur\Controller\Auth\AuthController;
 use Kkn27Unirow\WebsiteDesaBungur\Controller\PublicController;
 use Kkn27Unirow\WebsiteDesaBungur\Controller\Admin\UserController as AdminUserController;
 use Kkn27Unirow\WebsiteDesaBungur\Controller\User\NewsController as UserNewsController;
+use Kkn27Unirow\WebsiteDesaBungur\Controller\User\PhotoController as UserPhotoController;
 use Kkn27Unirow\WebsiteDesaBungur\Controller\User\UserController as UsersController;
 use Kkn27Unirow\WebsiteDesaBungur\Middleware\AdminMiddleware;
 use Kkn27Unirow\WebsiteDesaBungur\Middleware\MustLoginMiddleware;
@@ -50,6 +51,17 @@ Router::add('POST', '/user/news/add', UserNewsController::class, 'postCreate', [
 Router::add('GET', '/user/news/edit/([0-9]+)', UserNewsController::class, 'edit', [MustLoginMiddleware::class]);
 Router::add('POST', '/user/news/edit/([0-9]+)', UserNewsController::class, 'postEdit', [MustLoginMiddleware::class]);
 Router::add('POST', '/user/news/delete/([0-9]+)', UserNewsController::class, 'delete', [MustLoginMiddleware::class]);
+
+// ==========================================================
+// USER PHOTO
+// ==========================================================
+// User Photo Routes
+Router::add('GET', '/user/photo', UserPhotoController::class, 'index', [MustLoginMiddleware::class]);
+Router::add('GET', '/user/photo/add', UserPhotoController::class, 'create', [MustLoginMiddleware::class]);
+Router::add('POST', '/user/photo/add', UserPhotoController::class, 'postCreate', [MustLoginMiddleware::class]);
+Router::add('GET', '/user/photo/edit/([0-9]+)', UserPhotoController::class, 'edit', [MustLoginMiddleware::class]);
+Router::add('POST', '/user/photo/edit/([0-9]+)', UserPhotoController::class, 'postEdit', [MustLoginMiddleware::class]);
+Router::add('POST', '/user/photo/delete/([0-9]+)', UserPhotoController::class, 'delete', [MustLoginMiddleware::class]);
 // ==========================================================
 // USER LOGOUT
 // ==========================================================

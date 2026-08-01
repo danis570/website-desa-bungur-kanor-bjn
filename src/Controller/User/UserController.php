@@ -47,8 +47,6 @@ class UserController
     {
         $this->sessionService->destroy();
 
-        $_SESSION['success'] = "Berhasil logout";
-
         View::redirect('/login');
     }
 }
