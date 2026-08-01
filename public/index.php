@@ -5,6 +5,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use Kkn27Unirow\WebsiteDesaBungur\App\Router;
 use Kkn27Unirow\WebsiteDesaBungur\Config\Database;
+use Kkn27Unirow\WebsiteDesaBungur\Controller\Admin\UmkmController;
 use Kkn27Unirow\WebsiteDesaBungur\Controller\Auth\AuthController;
 use Kkn27Unirow\WebsiteDesaBungur\Controller\PublicController;
 use Kkn27Unirow\WebsiteDesaBungur\Controller\Admin\UserController as AdminUserController;
@@ -32,19 +33,20 @@ Router::add('POST', '/admin/users/add', AdminUserController::class, 'postUserAdd
 Router::add('GET', '/admin/users/edit/([0-9]+)', AdminUserController::class, 'edit', [MustLoginMiddleware::class, AdminMiddleware::class]);
 Router::add('POST', '/admin/users/update', AdminUserController::class, 'update', [MustLoginMiddleware::class, AdminMiddleware::class]);
 Router::add('POST', '/admin/users/delete', AdminUserController::class, 'delete', [MustLoginMiddleware::class, AdminMiddleware::class]);
+// Admin UMKM Routes
+Router::add('GET', '/admin/umkm', UmkmController::class, 'index', [MustLoginMiddleware::class, AdminMiddleware::class]);
+Router::add('GET', '/admin/umkm/add', UmkmController::class, 'add', [MustLoginMiddleware::class, AdminMiddleware::class]);
+Router::add('POST', '/admin/umkm/add', UmkmController::class, 'postAdd', [MustLoginMiddleware::class, AdminMiddleware::class]);
+Router::add('GET', '/admin/umkm/edit/([0-9]+)', UmkmController::class, 'edit', [MustLoginMiddleware::class, AdminMiddleware::class]);
+Router::add('POST', '/admin/umkm/edit/([0-9]+)', UmkmController::class, 'postEdit', [MustLoginMiddleware::class, AdminMiddleware::class]);
+Router::add('POST', '/admin/umkm/delete', UmkmController::class, 'delete', [MustLoginMiddleware::class, AdminMiddleware::class]);
 // Admin - Logout
 Router::add('GET', '/admin/logout', AdminUserController::class, 'logout', [MustLoginMiddleware::class, AdminMiddleware::class]);
 
 
-// ==========================================================
 // USER DASHBOARD
-// ==========================================================
 Router::add('GET', '/user/dashboard', UsersController::class, 'userDashboard', [MustLoginMiddleware::class]);
-
-// ==========================================================
 // USER NEWS
-// ==========================================================
-// User News Routes
 Router::add('GET', '/user/news', UserNewsController::class, 'index', [MustLoginMiddleware::class]);
 Router::add('GET', '/user/news/add', UserNewsController::class, 'create', [MustLoginMiddleware::class]);
 Router::add('POST', '/user/news/add', UserNewsController::class, 'postCreate', [MustLoginMiddleware::class]);

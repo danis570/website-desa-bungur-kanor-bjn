@@ -188,8 +188,11 @@
 
                 <!-- UMKM -->
 
-                <a href="../MSMEs/umkm.php"
-                    class="group flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 hover:text-primary transition">
+                <a href="/admin/umkm"
+                   class="group flex items-center gap-3 px-4 py-3 rounded-xl
+                    <?= $model['current'] === 'umkm'
+                        ? 'bg-primary/10 text-primary font-semibold'
+                        : 'text-gray-600 hover:bg-gray-100 hover:text-primary' ?>">
 
                     <iconify-icon icon="solar:shop-linear" width="20"></iconify-icon>
 
