@@ -39,12 +39,12 @@ HEADER
         </div>
 
         <!-- Add -->
-        <a href="create.php"
+        <a href="/user/news/add"
             class="h-12 px-6 rounded-2xl bg-primary text-white font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition">
 
             <iconify-icon icon="solar:add-circle-linear"></iconify-icon>
 
-            Tambah Artikel
+            Tambah
 
         </a>
 

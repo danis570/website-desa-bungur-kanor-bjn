@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luxe Dashboard</title>
+    <title><?= $model['title'] ?? '' ?></title>
 
     <!-- Fonts: Montserrat (Sans) & Playfair Display (Serif) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,6 +21,8 @@
 
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-grid.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-theme-quartz.css">
@@ -121,8 +123,7 @@
 
                     <div class="w-10 h-10 flex items-center justify-center">
 
-                        <img src="/assets/logo-bojonegoro.png" alt="Logo Desa Bungur"
-                            class="w-10 h-10 object-contain">
+                        <img src="/assets/logo-bojonegoro.png" alt="Logo Desa Bungur" class="w-10 h-10 object-contain">
 
                     </div>
                     <div>
@@ -154,8 +155,10 @@
 
                 <!-- Dashboard -->
 
-                <a href="/"
-                    class="group flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary font-semibold">
+                <a href="/user/dashboard" class="group flex items-center gap-3 px-4 py-3 rounded-xl
+                    <?= $model['current'] === 'dashboard'
+                        ? 'bg-primary/10 text-primary font-semibold'
+                        : 'text-gray-600 hover:bg-gray-100 hover:text-primary' ?>">
 
                     <iconify-icon icon="solar:widget-5-linear" width="20"></iconify-icon>
 
@@ -170,14 +173,15 @@
                     Konten Website
                 </p>
 
-                <!-- Artikel -->
+                <!-- News -->
 
-                <a href="../News/berita.php"
-                    class="group flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 hover:text-primary transition">
-
+                <a href="/user/news" class="group flex items-center gap-3 px-4 py-3 rounded-xl
+                    <?= $model['current'] === 'news'
+                        ? 'bg-primary/10 text-primary font-semibold'
+                        : 'text-gray-600 hover:bg-gray-100 hover:text-primary' ?>">
                     <iconify-icon icon="solar:document-text-linear" width="20"></iconify-icon>
 
-                    Artikel
+                    Berita
 
                 </a>
 
@@ -210,7 +214,7 @@
 
                 </button>
 
-                <a href="#"
+                <a href="#" onclick="confirmLogout(event)"
                     class="mt-2 flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-50 hover:text-red-500 transition">
 
                     <iconify-icon icon="solar:logout-2-linear" width="20"></iconify-icon>
@@ -239,9 +243,33 @@
                     </button>
                     <!-- Breadcrumbs -->
                     <nav class="hidden sm:flex items-center text-sm font-medium text-slate-400">
-                        <span class="hover:text-primary cursor-pointer transition-colors">Profil</span>
-                        <iconify-icon icon="solar:alt-arrow-right-linear" class="mx-2 text-xs"></iconify-icon>
-                        <span class="text-primary">Sejarah</span>
+
+                        <?php foreach ($model['breadcrumbs'] as $index => $breadcrumb): ?>
+
+                            <?php if ($index > 0): ?>
+                                <iconify-icon icon="solar:alt-arrow-right-linear" class="mx-2 text-xs">
+                                </iconify-icon>
+                            <?php endif; ?>
+
+                            <?php if ($breadcrumb['url']): ?>
+
+                                <a href="<?= $breadcrumb['url'] ?>" class="hover:text-primary transition-colors">
+
+                                    <?= htmlspecialchars($breadcrumb['title']) ?>
+
+                                </a>
+
+                            <?php else: ?>
+
+                                <span class="text-primary">
+
+                                    <?= htmlspecialchars($breadcrumb['title']) ?>
+
+                                </span>
+
+                            <?php endif; ?>
+
+                        <?php endforeach; ?>
                     </nav>
                 </div>
 
@@ -258,12 +286,16 @@
                     <!-- Profile Dropdown -->
                     <div class="flex items-center gap-3 pl-4 border-l border-slate-200 cursor-pointer group">
                         <div class="text-right hidden md:block">
-                            <p class="text-sm font-semibold text-dark group-hover:text-primary transition-colors">Alex
-                                Morgan</p>
-                            <p class="text-xs text-slate-400">Administrator</p>
+                            <p class="text-sm font-semibold text-dark group-hover:text-primary transition-colors">
+                                <?= $model['user']->name ?>
+                            </p>
+                            <p class="text-xs text-slate-400">
+                                <?= $model['user']->position ?>
+                            </p>
                         </div>
                         <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-indigo-400 p-[2px]">
-                            <img src="https://avatars.githubusercontent.com/u/152723454?w=800&q=80" alt="Profile"
+                            <img src="/uploads/avatar/<?= htmlspecialchars(!empty($model['user']->avatar) ? $model['user']->avatar : 'default.png') ?>"
+                                alt="<?= htmlspecialchars($model['user']->name) ?>"
                                 class="w-full h-full object-cover border-white border-2 rounded-full">
                         </div>
                     </div>

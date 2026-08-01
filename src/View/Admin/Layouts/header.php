@@ -114,8 +114,7 @@
 
                     <div class="w-10 h-10 flex items-center justify-center">
 
-                        <img src="/assets/logo-bojonegoro.png" alt="Logo Desa Bungur"
-                            class="w-10 h-10 object-contain">
+                        <img src="/assets/logo-bojonegoro.png" alt="Logo Desa Bungur" class="w-10 h-10 object-contain">
 
                     </div>
                     <div>
@@ -333,15 +332,14 @@
 
                 </button>
 
-               <a href="#"
-   onclick="confirmLogout(event)"
-   class="mt-2 flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-50 hover:text-red-500 transition">
+                <a href="#" onclick="confirmLogout(event)"
+                    class="mt-2 flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-50 hover:text-red-500 transition">
 
-    <iconify-icon icon="solar:logout-2-linear" width="20"></iconify-icon>
+                    <iconify-icon icon="solar:logout-2-linear" width="20"></iconify-icon>
 
-    Keluar
+                    Keluar
 
-</a>
+                </a>
 
             </div>
 
@@ -413,7 +411,8 @@
                             <p class="text-xs text-slate-400"><?= $model['user']->position ?></p>
                         </div>
                         <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-indigo-400 p-[2px]">
-                            <img src="https://avatars.githubusercontent.com/u/152723454?w=800&q=80" alt="Profile"
+                           <img src="/uploads/avatar/<?= htmlspecialchars(!empty($model['user']->avatar) ? $model['user']->avatar : 'default.png') ?>"
+                                alt="<?= htmlspecialchars($model['user']->name) ?>"
                                 class="w-full h-full object-cover border-white border-2 rounded-full">
                         </div>
                     </div>

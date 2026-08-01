@@ -144,6 +144,45 @@
     });
 </script>
 
+<!-- // Confirm logout -->
+<script>
+    function confirmLogout(event) {
+
+        event.preventDefault();
+
+        Swal.fire({
+            title: 'Keluar dari sistem?',
+            text: 'Anda harus login kembali untuk mengakses dashboard.',
+            icon: 'warning',
+
+            showCancelButton: true,
+
+            confirmButtonText: 'Ya, Keluar',
+            cancelButtonText: 'Batal',
+
+            confirmButtonColor: '#dc2626',
+            cancelButtonColor: '#64748b',
+
+            reverseButtons: true,
+
+            customClass: {
+                popup: 'rounded-2xl',
+                confirmButton: 'rounded-xl',
+                cancelButton: 'rounded-xl'
+            }
+
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+
+                window.location.href = "/user/logout";
+
+            }
+
+        });
+
+    }
+</script>
 </body>
 
 </html>

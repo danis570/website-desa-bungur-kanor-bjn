@@ -8,7 +8,8 @@ use Kkn27Unirow\WebsiteDesaBungur\Config\Database;
 use Kkn27Unirow\WebsiteDesaBungur\Controller\Auth\AuthController;
 use Kkn27Unirow\WebsiteDesaBungur\Controller\PublicController;
 use Kkn27Unirow\WebsiteDesaBungur\Controller\Admin\UserController as AdminUserController;
-use Kkn27Unirow\WebsiteDesaBungur\Controller\User\UserController as PublicUserController;
+use Kkn27Unirow\WebsiteDesaBungur\Controller\User\NewsController as UserNewsController;
+use Kkn27Unirow\WebsiteDesaBungur\Controller\User\UserController as UsersController;
 use Kkn27Unirow\WebsiteDesaBungur\Middleware\AdminMiddleware;
 use Kkn27Unirow\WebsiteDesaBungur\Middleware\MustLoginMiddleware;
 use Kkn27Unirow\WebsiteDesaBungur\Middleware\MustNotLoginMiddleware;
@@ -29,9 +30,30 @@ Router::add('GET', '/admin/users/add', AdminUserController::class, 'userAdd', [M
 Router::add('POST', '/admin/users/add', AdminUserController::class, 'postUserAdd', [MustLoginMiddleware::class, AdminMiddleware::class]);
 Router::add('GET', '/admin/users/edit/([0-9]+)', AdminUserController::class, 'edit', [MustLoginMiddleware::class, AdminMiddleware::class]);
 Router::add('POST', '/admin/users/update', AdminUserController::class, 'update', [MustLoginMiddleware::class, AdminMiddleware::class]);
+Router::add('POST', '/admin/users/delete', AdminUserController::class, 'delete', [MustLoginMiddleware::class, AdminMiddleware::class]);
+// Admin - Logout
 Router::add('GET', '/admin/logout', AdminUserController::class, 'logout', [MustLoginMiddleware::class, AdminMiddleware::class]);
 
-Router::add('POST', '/admin/users/delete', AdminUserController::class, 'delete', [MustLoginMiddleware::class, AdminMiddleware::class]);
+
+// ==========================================================
+// USER DASHBOARD
+// ==========================================================
+Router::add('GET', '/user/dashboard', UsersController::class, 'userDashboard', [MustLoginMiddleware::class]);
+
+// ==========================================================
+// USER NEWS
+// ==========================================================
+// User News Routes
+Router::add('GET', '/user/news', UserNewsController::class, 'index', [MustLoginMiddleware::class]);
+Router::add('GET', '/user/news/add', UserNewsController::class, 'create', [MustLoginMiddleware::class]);
+Router::add('POST', '/user/news/add', UserNewsController::class, 'postCreate', [MustLoginMiddleware::class]);
+Router::add('GET', '/user/news/edit/([0-9]+)', UserNewsController::class, 'edit', [MustLoginMiddleware::class]);
+Router::add('POST', '/user/news/edit/([0-9]+)', UserNewsController::class, 'postEdit', [MustLoginMiddleware::class]);
+Router::add('POST', '/user/news/delete/([0-9]+)', UserNewsController::class, 'delete', [MustLoginMiddleware::class]);
+// ==========================================================
+// USER LOGOUT
+// ==========================================================
+Router::add('GET', '/user/logout', UsersController::class, 'logout', [MustLoginMiddleware::class]);
 
 
 // Public Controller

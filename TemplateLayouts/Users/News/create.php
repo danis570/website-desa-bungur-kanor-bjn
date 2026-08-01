@@ -1,5 +1,3 @@
-<?php include '../Layouts/header.php' ?>
-
 <style>
     .ck-editor__editable_inline {
         min-height: 600px;
@@ -1328,5 +1326,3 @@
 
     })();
 </script>
-
-<?php include '../Layouts/footer.php' ?>

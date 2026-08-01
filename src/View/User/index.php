@@ -1,14 +1,13 @@
-<?php include 'Layouts/header.php' ?>
 
 <!-- Welcome Section -->
 <div class="flex flex-col md:flex-row md:items-end gap-4 gap-x-4 gap-y-4 justify-between">
     <div class="">
         <h1 class="md:text-4xl text-dark text-3xl font-semibold tracking-tight font-poppins mb-2">
-            Selamat Datang di Users panel</h1>
+            Selamat Datang di User panel</h1>
         <p class="text-slate-500 font-poppins"> Kelola seluruh informasi Website Desa Bungur mulai dari
             artikel,
             galeri foto,
-            melalui dashboard Users.</p>
+            melalui dashboard User.</p>
     </div>
 </div>
 
@@ -88,4 +87,3 @@
     </div>
     
 </div>
-<?php include 'Layouts/footer.php' ?>

@@ -138,6 +138,8 @@
         });
     });
 </script>
+
+<!-- // Confirm logout -->
 <script>
     function confirmLogout(event) {
 

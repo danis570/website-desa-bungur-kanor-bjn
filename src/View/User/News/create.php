@@ -1,4 +1,14 @@
-<?php include '../Layouts/header.php' ?>
+<?php
+/**
+ * @var string $title
+ * @var string $current
+ * @var object $user
+ * @var array $categories
+ * @var array $breadcrumbs
+ * @var array|null $errors
+ * @var array|null $old
+ */
+?>
 
 <style>
     .ck-editor__editable_inline {
@@ -27,7 +37,7 @@
     }
 </style>
 
-<form action="" method="POST" enctype="multipart/form-data">
+<form action="/user/news/add" method="POST" enctype="multipart/form-data">
 
     <!-- ==========================================================
     PAGE HEADER
@@ -37,17 +47,17 @@
 
         <div>
 
-            <a href="berita.php" class="inline-flex items-center gap-2 text-gray-500 hover:text-primary transition">
+            <a href="/user/news" class="inline-flex items-center gap-2 text-gray-500 hover:text-primary transition">
 
                 <iconify-icon icon="solar:arrow-left-linear"></iconify-icon>
 
-                <span>Kembali ke Artikel</span>
+                <span>Kembali ke berita</span>
 
             </a>
 
             <h1 class="text-4xl font-bold mt-3">
 
-                Tulis Artikel Baru
+                Tulis Berita Baru
 
             </h1>
 
@@ -60,28 +70,11 @@
         </div>
 
         <div class="flex flex-wrap gap-3">
-
-            <button type="button" id="draftButton"
-                class="h-12 px-6 rounded-2xl border border-gray-200 bg-white hover:bg-gray-50 transition">
-
-                Simpan Draft
-
-            </button>
-
-            <button type="button"
-                class="h-12 px-6 rounded-2xl border border-gray-200 bg-white hover:bg-gray-50 transition">
-
-                Preview
-
-            </button>
-
-            <button type="submit" id="publishButton"
+            <button type="submit" id="uploadButton"
                 class="h-12 px-7 rounded-2xl bg-primary text-white font-medium hover:opacity-90 transition">
-
-                Publish
-
+                <iconify-icon icon="solar:upload-linear" class="text-xl"></iconify-icon>
+                Upload Berita
             </button>
-
         </div>
 
     </div>
@@ -99,22 +92,25 @@
         <div class="lg:col-span-2 space-y-6">
 
             <!-- Judul -->
-
             <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
 
                 <label class="block text-sm font-semibold text-gray-700">
 
-                    Judul Artikel
+                    Judul Berita <span class="text-red-500">*</span>
 
                 </label>
 
-                <input id="title" name="title" type="text" placeholder="Masukkan judul artikel..."
-                    class="mt-3 w-full h-14 rounded-2xl border border-gray-200 px-5 focus:outline-none focus:border-primary">
+                <input id="title" name="title" type="text" placeholder="Masukkan judul berita..."
+                    value="<?= htmlspecialchars($old['title'] ?? '') ?>"
+                    class="mt-3 w-full h-14 rounded-2xl border border-gray-200 px-5 focus:outline-none focus:border-primary <?= isset($errors['title']) ? 'border-red-500' : '' ?>">
+
+                <?php if (isset($errors['title'])): ?>
+                    <p class="text-red-500 text-sm mt-2"><?= htmlspecialchars($errors['title']) ?></p>
+                <?php endif; ?>
 
             </div>
 
             <!-- Slug -->
-
             <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
 
                 <label class="block text-sm font-semibold text-gray-700">
@@ -123,28 +119,31 @@
 
                 </label>
 
-                <input id="slug" name="slug" readonly placeholder="slug-artikel"
+                <input id="slug" name="slug" readonly placeholder="slug-berita"
+                    value="<?= htmlspecialchars($old['slug'] ?? '') ?>"
                     class="mt-3 w-full h-14 rounded-2xl bg-gray-50 border border-gray-200 px-5">
 
             </div>
 
             <!-- Ringkasan -->
-
             <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
 
                 <label class="block text-sm font-semibold text-gray-700">
 
-                    Ringkasan Artikel
+                    Ringkasan Berita
 
                 </label>
 
-                <textarea id="summary" name="summary" rows="5" placeholder="Tulis ringkasan singkat artikel..."
-                    class="mt-3 w-full rounded-2xl border border-gray-200 p-5 resize-none focus:outline-none focus:border-primary"></textarea>
+                <textarea id="summary" name="excerpt" rows="5"
+                    placeholder="Tulis ringkasan singkat berita... (kosongkan untuk generate otomatis)"
+                    class="mt-3 w-full rounded-2xl border border-gray-200 p-5 resize-none focus:outline-none focus:border-primary <?= isset($errors['excerpt']) ? 'border-red-500' : '' ?>"><?= htmlspecialchars($old['excerpt'] ?? '') ?></textarea>
+
+                <p class="text-gray-400 text-sm mt-2">Kosongkan untuk generate otomatis dari konten (maksimal 200
+                    karakter)</p>
 
             </div>
 
             <!-- Editor -->
-
             <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
 
                 <div class="flex items-center justify-between mb-5">
@@ -153,13 +152,13 @@
 
                         <h3 class="font-semibold">
 
-                            Isi Artikel
+                            Isi Berita <span class="text-red-500">*</span>
 
                         </h3>
 
                         <p class="text-sm text-gray-500 mt-1">
 
-                            Tulis isi artikel di editor.
+                            Tulis isi berita di editor.
 
                         </p>
 
@@ -167,9 +166,11 @@
 
                 </div>
 
-                <!-- CKEditor dipasang pada Part 2 -->
+                <textarea id="editor" name="content"><?= htmlspecialchars($old['content'] ?? '') ?></textarea>
 
-                <textarea id="editor" name="content"></textarea>
+                <?php if (isset($errors['content'])): ?>
+                    <p class="text-red-500 text-sm mt-2"><?= htmlspecialchars($errors['content']) ?></p>
+                <?php endif; ?>
 
                 <div class="counter-box">
 
@@ -188,48 +189,6 @@
                 </div>
             </div>
 
-            <!-- SEO -->
-
-            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
-
-                <h3 class="text-xl font-bold mb-6">
-
-                    SEO
-
-                </h3>
-
-                <div class="space-y-5">
-
-                    <div>
-
-                        <label class="block text-sm font-semibold">
-
-                            Meta Title
-
-                        </label>
-
-                        <input id="metaTitle" name="meta_title" type="text"
-                            class="mt-2 w-full h-12 rounded-xl border border-gray-200 px-4">
-
-                    </div>
-
-                    <div>
-
-                        <label class="block text-sm font-semibold">
-
-                            Meta Description
-
-                        </label>
-
-                        <textarea id="metaDescription" name="meta_description" rows="4"
-                            class="mt-2 w-full rounded-xl border border-gray-200 p-4 resize-none"></textarea>
-
-                    </div>
-
-                </div>
-
-            </div>
-
         </div>
 
         <!-- ==========================================================
@@ -238,41 +197,7 @@
 
         <aside class="space-y-6 lg:sticky lg:top-28">
 
-            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
-
-                <div class="flex justify-between items-center">
-
-                    <h3 class="font-semibold">
-
-                        Kelengkapan Artikel
-
-                    </h3>
-
-                    <span id="progressText" class="font-bold text-primary">
-
-                        0%
-
-                    </span>
-
-                </div>
-
-                <div class="h-3 rounded-full bg-gray-200 mt-4 overflow-hidden">
-
-                    <div id="progressBar" class="h-full bg-primary rounded-full transition-all" style="width:0%">
-                    </div>
-
-                </div>
-
-                <p class="text-gray-500 text-sm mt-4">
-
-                    Lengkapi artikel sebelum dipublikasikan.
-
-                </p>
-
-            </div>
-
             <!-- Thumbnail -->
-
             <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
 
                 <h3 class="font-semibold mb-5">
@@ -296,16 +221,17 @@
 
                         </p>
 
+                        <p class="text-gray-400 text-sm mt-1">JPG, PNG, WEBP, GIF (Max 2MB)</p>
+
                     </div>
 
-                    <input id="thumbnail" type="file" name="thumbnail" hidden accept="image/*">
+                    <input id="thumbnail" type="file" name="image" hidden accept="image/*">
 
                 </label>
 
             </div>
 
-            <!-- Publish -->
-
+            <!-- Publikasi -->
             <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
 
                 <h3 class="font-semibold mb-5">
@@ -320,20 +246,25 @@
 
                         <label class="text-sm font-medium">
 
-                            Kategori
+                            Kategori <span class="text-red-500">*</span>
 
                         </label>
 
-                        <select id="category" name="category"
-                            class="mt-2 w-full h-12 rounded-xl border border-gray-200 px-4">
 
-                            <option>Berita</option>
-                            <option>Agenda</option>
-                            <option>UMKM</option>
-                            <option>Wisata</option>
-                            <option>Pemerintahan</option>
+                        <select id="category" name="category_id"
+                            class="mt-2 w-full h-12 rounded-xl border border-gray-200 px-4 focus:outline-none focus:border-primary <?= isset($errors['categoryId']) ? 'border-red-500' : '' ?>">
+
+                            <?php foreach ($model['categories'] as $category): ?>
+                                <option value="<?= $category->id ?>">
+                                    <?= htmlspecialchars($category->name) ?>
+                                </option>
+                            <?php endforeach; ?>
 
                         </select>
+
+                        <?php if (isset($errors['categoryId'])): ?>
+                            <p class="text-red-500 text-sm mt-2"><?= htmlspecialchars($errors['categoryId']) ?></p>
+                        <?php endif; ?>
 
                     </div>
 
@@ -346,25 +277,17 @@
                         </label>
 
                         <select id="status" name="status"
-                            class="mt-2 w-full h-12 rounded-xl border border-gray-200 px-4">
+                            class="mt-2 w-full h-12 rounded-xl border border-gray-200 px-4 focus:outline-none focus:border-primary <?= isset($errors['status']) ? 'border-red-500' : '' ?>">
 
-                            <option>Draft</option>
-                            <option>Pending Review</option>
-                            <option>Publish</option>
+                            <option value="draft" <?= (isset($old['status']) && $old['status'] === 'draft') ? 'selected' : '' ?>>Draft</option>
+                            <option value="published" <?= (isset($old['status']) && $old['status'] === 'published') ? 'selected' : '' ?>>Published</option>
 
                         </select>
 
-                    </div>
+                        <?php if (isset($errors['status'])): ?>
+                            <p class="text-red-500 text-sm mt-2"><?= htmlspecialchars($errors['status']) ?></p>
+                        <?php endif; ?>
 
-                    <div>
-
-                        <label class="text-sm font-medium">
-
-                            Tag
-
-                        </label>
-
-                        <input id="tags" type="text" name="tags">
                     </div>
 
                 </div>
@@ -383,7 +306,7 @@
         'use strict';
 
         // ============================================================
-        // 1. DOM REFERENCES - Semua referensi elemen diinisialisasi di sini
+        // 1. DOM REFERENCES
         // ============================================================
 
         const DOM = {
@@ -396,27 +319,19 @@
             thumbnail: document.getElementById('thumbnail'),
             category: document.getElementById('category'),
             status: document.getElementById('status'),
-            tags: document.getElementById('tags'),
 
             // UI elements
             previewImage: document.getElementById('previewImage'),
             uploadPlaceholder: document.getElementById('uploadPlaceholder'),
             wordCount: document.getElementById('wordCount'),
             readingTime: document.getElementById('readingTime'),
-            progressBar: document.getElementById('progressBar'),
-            progressText: document.getElementById('progressText'),
 
             // Buttons
-            draftButton: document.getElementById('draftButton'),
-            publishButton: document.getElementById('publishButton'),
-
-            // SEO
-            metaTitle: document.getElementById('metaTitle'),
-            metaDescription: document.getElementById('metaDescription')
+            uploadButton: document.getElementById('uploadButton')
         };
 
         // Validasi elemen penting
-        const requiredElements = ['form', 'title', 'slug', 'summary', 'editor', 'thumbnail', 'category'];
+        const requiredElements = ['form', 'title', 'slug', 'summary', 'editor', 'thumbnail', 'category', 'status'];
         for (const key of requiredElements) {
             if (!DOM[key]) {
                 console.error(`Elemen #${key} tidak ditemukan di DOM`);
@@ -425,27 +340,22 @@
         }
 
         // ============================================================
-        // 2. STATE MANAGEMENT - State aplikasi terpusat
+        // 2. STATE MANAGEMENT
         // ============================================================
 
         const state = {
-            editor: null,           // CKEditor instance
-            tagify: null,           // Tagify instance
-            isEditorReady: false,   // Flag untuk mengecek kesiapan editor
-            isChanged: false,       // Flag untuk beforeunload
-            autosaveInterval: null, // Reference untuk interval
-            draftKey: 'draft_article',
-            isRestoring: false      // Flag untuk mencegah race condition
+            editor: null,
+            isEditorReady: false,
+            isChanged: false,
+            autosaveInterval: null,
+            draftKey: 'draft_article'
         };
 
         // ============================================================
-        // 3. UTILITY FUNCTIONS - Fungsi-fungsi pembantu
+        // 3. UTILITY FUNCTIONS
         // ============================================================
 
         const Utils = {
-            /**
-             * Generate slug dari string
-             */
             generateSlug: function (text) {
                 return text
                     .toLowerCase()
@@ -455,9 +365,6 @@
                     .replace(/^-+|-+$/g, '');
             },
 
-            /**
-             * Hitung jumlah kata dari HTML content
-             */
             countWords: function (html) {
                 if (!html) return 0;
                 const text = html
@@ -467,23 +374,14 @@
                 return text === '' ? 0 : text.split(/\s+/).length;
             },
 
-            /**
-             * Hitung reading time
-             */
             calculateReadingTime: function (words) {
                 return Math.max(1, Math.ceil(words / 200));
             },
 
-            /**
-             * Format angka dengan satuan
-             */
             formatWithUnit: function (number, unit) {
                 return `${number} ${unit}`;
             },
 
-            /**
-             * Throttle function
-             */
             throttle: function (fn, delay = 300) {
                 let timeout = null;
                 return function (...args) {
@@ -495,9 +393,6 @@
                 };
             },
 
-            /**
-             * Debounce function
-             */
             debounce: function (fn, delay = 500) {
                 let timeout = null;
                 return function (...args) {
@@ -508,24 +403,6 @@
                 };
             },
 
-            /**
-             * Safe check if plugin exists in CKEditor
-             */
-            pluginExists: function (pluginName) {
-                try {
-                    if (!window.CKEDITOR || !window.CKEDITOR.ClassicEditor) {
-                        return false;
-                    }
-                    // Cek apakah plugin tersedia di CKEDITOR
-                    return typeof window.CKEDITOR[pluginName] !== 'undefined';
-                } catch (e) {
-                    return false;
-                }
-            },
-
-            /**
-             * Get available plugins from CKEDITOR
-             */
             getAvailablePlugins: function (pluginNames) {
                 const available = [];
                 for (const name of pluginNames) {
@@ -542,23 +419,16 @@
         };
 
         // ============================================================
-        // 4. CKEDITOR INITIALIZATION - Inisialisasi CKEditor 5 Self-Hosted
+        // 4. CKEDITOR INITIALIZATION
         // ============================================================
 
-        /**
-         * Cek apakah CKEditor sudah tersedia (loaded via UMD)
-         */
         function isCKEditorAvailable() {
             return typeof window.CKEDITOR !== 'undefined' &&
                 typeof window.CKEDITOR.ClassicEditor !== 'undefined';
         }
 
-        /**
-         * Inisialisasi CKEditor 5 dari UMD (self-hosted)
-         */
         async function initEditor() {
             try {
-                // Cek apakah CKEditor sudah tersedia
                 if (!isCKEditorAvailable()) {
                     throw new Error('CKEditor tidak ditemukan. Pastikan file ckeditor5.umd.js sudah di-load.');
                 }
@@ -566,138 +436,63 @@
                 const CKEDITOR = window.CKEDITOR;
                 const { ClassicEditor } = CKEDITOR;
 
-                // Daftar plugin yang diinginkan (coba load semua yang tersedia)
                 const pluginNames = [
-                    'Essentials',
-                    'Paragraph',
-                    'Heading',
-                    'Bold',
-                    'Italic',
-                    'Underline',
-                    'Strikethrough',
-                    'Link',
-                    'List',
-                    'Indent',
-                    'BlockQuote',
-                    'Table',
-                    'TableToolbar',
-                    'Image',
-                    'ImageToolbar',
-                    'ImageCaption',
-                    'ImageStyle',
-                    'ImageResize',
-                    'ImageUpload',
-                    'Base64UploadAdapter',
-                    'MediaEmbed',
-                    'Undo',
-                    'Redo'
+                    'Essentials', 'Paragraph', 'Heading', 'Bold', 'Italic',
+                    'Underline', 'Strikethrough', 'Link', 'List', 'Indent',
+                    'BlockQuote', 'Table', 'TableToolbar', 'Image', 'ImageToolbar',
+                    'ImageCaption', 'ImageStyle', 'ImageResize', 'ImageUpload',
+                    'Base64UploadAdapter', 'MediaEmbed', 'Undo', 'Redo'
                 ];
 
-                // Ambil plugin yang tersedia
                 const availablePlugins = Utils.getAvailablePlugins(pluginNames);
 
-                if (availablePlugins.length === 0) {
-                    console.warn('Tidak ada plugin yang ditemukan, menggunakan konfigurasi minimal');
-                } else {
-                    console.log(`✅ ${availablePlugins.length} plugin ditemukan dan akan digunakan`);
-                }
-
-                // Pastikan editor element ada
                 if (!DOM.editor) {
                     throw new Error('Editor element tidak ditemukan');
                 }
 
-                // Toolbar items yang tersedia (hanya yang didukung)
                 const toolbarItems = [
-                    'undo', 'redo',
-                    '|',
-                    'heading',
-                    '|',
-                    'bold', 'italic', 'underline', 'strikethrough',
-                    '|',
-                    'link',
-                    '|',
-                    'bulletedList', 'numberedList',
-                    '|',
-                    'outdent', 'indent',
-                    '|',
-                    'insertTable',
-                    'uploadImage',
-                    'mediaEmbed',
-                    'blockQuote'
+                    'undo', 'redo', '|',
+                    'heading', '|',
+                    'bold', 'italic', 'underline', 'strikethrough', '|',
+                    'link', '|',
+                    'bulletedList', 'numberedList', '|',
+                    'outdent', 'indent', '|',
+                    'insertTable', 'uploadImage', 'mediaEmbed', 'blockQuote'
                 ];
 
-                // Filter toolbar items yang tersedia
-                const availableToolbarItems = [];
-                for (const item of toolbarItems) {
-                    if (item === '|') {
-                        availableToolbarItems.push(item);
-                    } else {
-                        // Cek apakah item toolbar tersedia di editor
-                        try {
-                            // Untuk heading, bold, italic, dll biasanya selalu tersedia
-                            availableToolbarItems.push(item);
-                        } catch (e) {
-                            console.warn(`Toolbar item "${item}" tidak tersedia`);
-                        }
-                    }
-                }
-
-                // Build konfigurasi
                 const config = {
                     licenseKey: 'GPL',
                     plugins: availablePlugins,
-                    toolbar: {
-                        items: availableToolbarItems
-                    },
+                    toolbar: { items: toolbarItems },
                     language: 'id'
                 };
 
-                // Tambahkan konfigurasi image jika plugin Image tersedia
                 const hasImage = pluginNames.some(name =>
                     name === 'Image' || name === 'ImageToolbar' || name === 'ImageUpload'
                 );
 
                 if (hasImage) {
                     config.image = {
-                        toolbar: [
-                            'imageStyle:inline',
-                            'imageStyle:block',
-                            'imageStyle:side',
-                            '|',
-                            'imageTextAlternative'
-                        ]
+                        toolbar: ['imageStyle:inline', 'imageStyle:block', 'imageStyle:side', '|', 'imageTextAlternative']
                     };
                 }
 
-                // Tambahkan konfigurasi table jika plugin Table tersedia
                 const hasTable = pluginNames.some(name =>
                     name === 'Table' || name === 'TableToolbar'
                 );
 
                 if (hasTable) {
                     config.table = {
-                        contentToolbar: [
-                            'tableColumn',
-                            'tableRow',
-                            'mergeTableCells'
-                        ]
+                        contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
                     };
                 }
 
-                // Buat editor
                 const editor = await ClassicEditor.create(DOM.editor, config);
 
                 state.editor = editor;
                 state.isEditorReady = true;
 
-                // Setup event listener untuk word counter & reading time
                 setupEditorEvents(editor);
-
-                // Update progress setelah editor siap
-                updateProgress();
-
-                // Update word counter
                 updateWordCounter(editor);
 
                 console.log('✅ CKEditor berhasil diinisialisasi');
@@ -707,7 +502,6 @@
             } catch (error) {
                 console.error('❌ Error inisialisasi CKEditor:', error);
 
-                // Fallback: tampilkan textarea biasa
                 if (DOM.editor) {
                     DOM.editor.style.display = 'block';
                     DOM.editor.style.minHeight = '600px';
@@ -721,25 +515,18 @@
             }
         }
 
-        /**
-         * Setup event listener untuk CKEditor
-         */
         function setupEditorEvents(editor) {
             if (!editor) return;
 
             const throttledUpdate = Utils.throttle(function () {
                 if (!state.isEditorReady) return;
                 updateWordCounter(editor);
-                updateProgress();
                 markAsChanged(true);
             }, 200);
 
             editor.model.document.on('change:data', throttledUpdate);
         }
 
-        /**
-         * Update word counter dan reading time
-         */
         function updateWordCounter(editor) {
             if (!editor || !state.isEditorReady) return;
 
@@ -760,12 +547,10 @@
         }
 
         // ============================================================
-        // 5. OTHER INIT FUNCTIONS
+        // 5. FEATURE FUNCTIONS
         // ============================================================
 
-        /**
-         * Inisialisasi auto slug dari title
-         */
+        // SLUG
         function initSlug() {
             if (!DOM.title || !DOM.slug) return;
 
@@ -773,7 +558,6 @@
                 const titleValue = DOM.title.value.trim();
                 if (titleValue) {
                     DOM.slug.value = Utils.generateSlug(titleValue);
-                    updateProgress();
                     markAsChanged(true);
                 }
             }, 300);
@@ -781,9 +565,7 @@
             DOM.title.addEventListener('input', generateSlugFromTitle);
         }
 
-        /**
-         * Inisialisasi thumbnail preview
-         */
+        // THUMBNAIL
         function initThumbnail() {
             if (!DOM.thumbnail) return;
 
@@ -792,13 +574,31 @@
                 if (!file) return;
 
                 if (!file.type.startsWith('image/')) {
-                    alert('Mohon upload file gambar');
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Format Tidak Didukung',
+                            text: 'Mohon upload file gambar',
+                            confirmButtonColor: '#3085d6'
+                        });
+                    } else {
+                        alert('Mohon upload file gambar');
+                    }
                     this.value = '';
                     return;
                 }
 
-                if (file.size > 5 * 1024 * 1024) {
-                    alert('Ukuran file terlalu besar (max 5MB)');
+                if (file.size > 2 * 1024 * 1024) {
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Ukuran Terlalu Besar',
+                            text: 'Ukuran file maksimal 2MB',
+                            confirmButtonColor: '#3085d6'
+                        });
+                    } else {
+                        alert('Ukuran file maksimal 2MB');
+                    }
                     this.value = '';
                     return;
                 }
@@ -812,60 +612,33 @@
                     if (DOM.uploadPlaceholder) {
                         DOM.uploadPlaceholder.classList.add('hidden');
                     }
-                    updateProgress();
                     markAsChanged(true);
                 };
                 reader.onerror = function () {
-                    alert('Gagal membaca file');
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal Membaca File',
+                            text: 'Terjadi kesalahan saat membaca file',
+                            confirmButtonColor: '#3085d6'
+                        });
+                    } else {
+                        alert('Gagal membaca file');
+                    }
                 };
                 reader.readAsDataURL(file);
             });
         }
 
-        /**
-         * Inisialisasi Tagify
-         */
-        function initTagify() {
-            if (typeof Tagify === 'undefined') {
-                console.warn('Tagify tidak ditemukan');
-                return;
-            }
-
-            if (!DOM.tags) {
-                console.warn('Tag element tidak ditemukan');
-                return;
-            }
-
-            try {
-                state.tagify = new Tagify(DOM.tags, {
-                    dropdown: {
-                        enabled: 0
-                    },
-                    maxTags: 10,
-                    editTags: false,
-                    placeholder: 'Tambahkan tag...'
-                });
-
-                if (state.tagify) {
-                    state.tagify.on('change', function () {
-                        markAsChanged(true);
-                    });
-                }
-            } catch (error) {
-                console.error('Error inisialisasi Tagify:', error);
-            }
-        }
-
-        /**
-         * Inisialisasi progress bar
-         */
+        // PROGRESS
         function initProgress() {
             const progressElements = [
                 DOM.title,
                 DOM.slug,
                 DOM.summary,
                 DOM.thumbnail,
-                DOM.category
+                DOM.category,
+                DOM.status
             ];
 
             const update = Utils.debounce(updateProgress, 200);
@@ -877,57 +650,37 @@
                 }
             });
 
-            const progressInterval = setInterval(() => {
+            state.progressInterval = setInterval(() => {
                 if (state.isEditorReady) {
-                    updateProgress();
                 }
             }, 1000);
-
-            state.progressInterval = progressInterval;
         }
 
-        /**
-         * Update progress artikel
-         */
-        function updateProgress() {
+        // DRAFT
+        function saveDraft() {
             try {
-                let score = 0;
+                const draft = {
+                    title: DOM.title ? DOM.title.value || '' : '',
+                    slug: DOM.slug ? DOM.slug.value || '' : '',
+                    summary: DOM.summary ? DOM.summary.value || '' : '',
+                    content: (state.isEditorReady && state.editor) ? state.editor.getData() || '' : '',
+                    category: DOM.category ? DOM.category.value || '' : '',
+                    status: DOM.status ? DOM.status.value || '' : '',
+                    timestamp: Date.now()
+                };
 
-                if (DOM.title && DOM.title.value.trim()) score += 20;
-                if (DOM.slug && DOM.slug.value.trim()) score += 10;
-                if (DOM.summary && DOM.summary.value.trim()) score += 20;
-
-                if (state.isEditorReady && state.editor) {
-                    try {
-                        const content = state.editor.getData();
-                        if (Utils.countWords(content) > 0) score += 30;
-                    } catch (e) {
-                        // Ignore error
-                    }
-                }
-
-                if (DOM.thumbnail && DOM.thumbnail.files && DOM.thumbnail.files.length > 0) score += 10;
-                if (DOM.category && DOM.category.value && DOM.category.value !== '') score += 10;
-
-                score = Math.min(100, score);
-
-                if (DOM.progressBar) {
-                    DOM.progressBar.style.width = score + '%';
-                }
-                if (DOM.progressText) {
-                    DOM.progressText.textContent = score + '%';
-                }
+                localStorage.setItem(state.draftKey, JSON.stringify(draft));
             } catch (error) {
-                console.warn('Error updating progress:', error);
+                console.warn('Error saving draft:', error);
             }
         }
 
-        /**
-         * Inisialisasi autosave ke localStorage
-         */
+
         function initAutosave() {
             state.autosaveInterval = setInterval(function () {
-                saveDraft();
+                if (state.isChanged) {
+                    saveDraft();
+                }
             }, 30000);
 
             const saveOnChange = Utils.debounce(function () {
@@ -941,313 +694,151 @@
             }
         }
 
-        /**
-         * Simpan draft ke localStorage
-         */
-        function saveDraft() {
-            try {
-                const draft = {
-                    title: DOM.title ? DOM.title.value || '' : '',
-                    slug: DOM.slug ? DOM.slug.value || '' : '',
-                    summary: DOM.summary ? DOM.summary.value || '' : '',
-                    content: (state.isEditorReady && state.editor) ? state.editor.getData() || '' : '',
-                    metaTitle: DOM.metaTitle ? DOM.metaTitle.value : '',
-                    metaDescription: DOM.metaDescription ? DOM.metaDescription.value : '',
-                    category: DOM.category ? DOM.category.value || '' : '',
-                    status: DOM.status ? DOM.status.value || '' : '',
-                    tags: state.tagify ? state.tagify.value : '',
-                    timestamp: Date.now()
-                };
-
-                localStorage.setItem(state.draftKey, JSON.stringify(draft));
-            } catch (error) {
-                console.warn('Error saving draft:', error);
-            }
-        }
-
-        /**
-         * Restore draft dari localStorage
-         */
         function initRestoreDraft() {
             const draftData = localStorage.getItem(state.draftKey);
             if (!draftData) return;
 
-            const maxAttempts = 50;
-            let attempts = 0;
-
-            const checkEditor = setInterval(function () {
-                attempts++;
-
+            setTimeout(function () {
                 if (state.isEditorReady && state.editor) {
-                    clearInterval(checkEditor);
                     restoreDraft();
-                } else if (attempts >= maxAttempts) {
-                    clearInterval(checkEditor);
-                    console.warn('Timeout restoring draft - editor not ready');
-                    restoreDraftPartial();
-                }
-            }, 100);
-        }
+                } else {
+                    const maxAttempts = 50;
+                    let attempts = 0;
 
-        /**
-         * Restore draft lengkap
-         */
-        function restoreDraft() {
-            if (state.isRestoring) return;
-            state.isRestoring = true;
+                    const checkEditor = setInterval(function () {
+                        attempts++;
 
-            try {
-                const draftData = localStorage.getItem(state.draftKey);
-                if (!draftData) {
-                    state.isRestoring = false;
-                    return;
-                }
-
-                const draft = JSON.parse(draftData);
-                if (!draft || typeof draft !== 'object') {
-                    state.isRestoring = false;
-                    return;
-                }
-
-                if (draft.title && DOM.title) DOM.title.value = draft.title;
-                if (draft.slug && DOM.slug) DOM.slug.value = draft.slug;
-                if (draft.summary && DOM.summary) DOM.summary.value = draft.summary;
-                if (draft.metaTitle && DOM.metaTitle) DOM.metaTitle.value = draft.metaTitle;
-                if (draft.metaDescription && DOM.metaDescription) DOM.metaDescription.value = draft.metaDescription;
-                if (draft.category && DOM.category) DOM.category.value = draft.category;
-                if (draft.status && DOM.status) DOM.status.value = draft.status;
-
-                if (draft.tags && state.tagify) {
-                    try {
-                        state.tagify.loadOriginalValues(JSON.parse(draft.tags));
-                    } catch (e) {
-                        // Ignore
-                    }
-                }
-
-                if (draft.content && state.isEditorReady && state.editor) {
-                    try {
-                        state.editor.setData(draft.content);
-                        setTimeout(() => {
-                            updateWordCounter(state.editor);
-                            updateProgress();
-                        }, 100);
-                    } catch (error) {
-                        console.warn('Error restoring content:', error);
-                    }
-                }
-
-                updateProgress();
-                markAsChanged(false);
-
-                console.log('✅ Draft berhasil direstore');
-
-            } catch (error) {
-                console.warn('Error restoring draft:', error);
-            } finally {
-                state.isRestoring = false;
-            }
-        }
-
-        /**
-         * Restore draft partial (tanpa content)
-         */
-        function restoreDraftPartial() {
-            try {
-                const draftData = localStorage.getItem(state.draftKey);
-                if (!draftData) return;
-
-                const draft = JSON.parse(draftData);
-                if (!draft || typeof draft !== 'object') return;
-
-                if (draft.title && DOM.title) DOM.title.value = draft.title;
-                if (draft.slug && DOM.slug) DOM.slug.value = draft.slug;
-                if (draft.summary && DOM.summary) DOM.summary.value = draft.summary;
-                if (draft.category && DOM.category) DOM.category.value = draft.category;
-
-                if (draft.content) {
-                    const contentWatcher = setInterval(function () {
-                        if (state.isEditorReady && state.editor && !state.isRestoring) {
-                            clearInterval(contentWatcher);
-                            try {
-                                state.editor.setData(draft.content);
-                                setTimeout(() => {
-                                    updateWordCounter(state.editor);
-                                    updateProgress();
-                                }, 100);
-                            } catch (error) {
-                                console.warn('Error restoring content:', error);
-                            }
+                        if (state.isEditorReady && state.editor) {
+                            clearInterval(checkEditor);
+                            restoreDraft();
+                        } else if (attempts >= maxAttempts) {
+                            clearInterval(checkEditor);
+                            console.warn('Timeout restoring draft - editor not ready');
+                            restoreDraftPartial();
                         }
-                    }, 200);
-
-                    setTimeout(() => {
-                        clearInterval(contentWatcher);
-                    }, 5000);
+                    }, 100);
                 }
-
-                updateProgress();
-
-            } catch (error) {
-                console.warn('Error restoring draft partial:', error);
-            }
+            }, 500);
         }
 
-        /**
-         * Inisialisasi publish button dengan SweetAlert2
-         */
-        function initPublish() {
-            if (!DOM.publishButton || !DOM.form) return;
+        // ============================================================
+        // 6. UPLOAD BUTTON
+        // ============================================================
 
-            DOM.publishButton.addEventListener('click', function (e) {
+        function initUpload() {
+            if (!DOM.uploadButton || !DOM.form) return;
+
+            DOM.uploadButton.addEventListener('click', function (e) {
                 e.preventDefault();
 
-                if (typeof Swal === 'undefined') {
-                    console.warn('SweetAlert2 tidak ditemukan');
-                    DOM.form.submit();
+                // 🔥 VALIDASI KATEGORI (WAJIB UNTUK SEMUA STATUS)
+                if (!DOM.category || !DOM.category.value) {
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Kategori Wajib Diisi',
+                            text: 'Silakan pilih kategori untuk berita ini',
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#3085d6'
+                        });
+                    } else {
+                        alert('Kategori wajib dipilih');
+                    }
                     return;
                 }
 
-                if (state.isEditorReady && state.editor) {
-                    try {
-                        const content = state.editor.getData();
-                        if (Utils.countWords(content) < 10) {
+                const selectedStatus = DOM.status ? DOM.status.value : 'draft';
+                const isPublish = selectedStatus === 'published';
+
+                // Validasi untuk publish
+                if (isPublish) {
+                    // Cek konten minimal
+                    if (state.isEditorReady && state.editor) {
+                        try {
+                            const content = state.editor.getData();
+                            if (Utils.countWords(content) < 10) {
+                                if (typeof Swal !== 'undefined') {
+                                    Swal.fire({
+                                        icon: 'warning',
+                                        title: 'Konten Terlalu Pendek',
+                                        text: 'Minimal 10 kata untuk publikasi',
+                                        confirmButtonText: 'OK',
+                                        confirmButtonColor: '#3085d6'
+                                    });
+                                } else {
+                                    alert('Konten minimal 10 kata untuk publikasi');
+                                }
+                                return;
+                            }
+                        } catch (error) {
+                            console.warn('Error checking content:', error);
+                        }
+                    }
+
+                    // Cek thumbnail untuk publish
+                    if (!DOM.thumbnail || !DOM.thumbnail.files || DOM.thumbnail.files.length === 0) {
+                        if (typeof Swal !== 'undefined') {
                             Swal.fire({
                                 icon: 'warning',
-                                title: 'Konten Terlalu Pendek',
-                                text: 'Minimal 10 kata untuk publikasi',
+                                title: 'Thumbnail Wajib',
+                                text: 'Silakan upload thumbnail untuk publikasi',
                                 confirmButtonText: 'OK',
                                 confirmButtonColor: '#3085d6'
                             });
-                            return;
+                        } else {
+                            alert('Thumbnail wajib diupload untuk publikasi');
                         }
-                    } catch (error) {
-                        console.warn('Error checking content:', error);
+                        return;
                     }
                 }
 
-                Swal.fire({
-                    title: 'Publish Artikel?',
-                    text: 'Artikel akan dipublikasikan dan dapat dilihat oleh publik.',
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya, Publish!',
-                    cancelButtonText: 'Batal'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        localStorage.removeItem(state.draftKey);
+                // Konfirmasi
+                const titleText = isPublish ? 'Publish Berita?' : 'Simpan sebagai Draft?';
+                const textMessage = isPublish
+                    ? 'Berita akan dipublikasikan dan dapat dilihat oleh publik.'
+                    : 'Berita akan disimpan sebagai draft.';
+
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        title: titleText,
+                        text: textMessage,
+                        icon: isPublish ? 'question' : 'info',
+                        showCancelButton: true,
+                        confirmButtonColor: isPublish ? '#3085d6' : '#6B7280',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: isPublish ? 'Ya, Publish!' : 'Ya, Simpan Draft',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            if (isPublish) {
+                                localStorage.removeItem(state.draftKey);
+                            }
+                            DOM.form.submit();
+                        }
+                    });
+                } else {
+                    if (confirm(`Yakin ingin ${isPublish ? 'mempublikasikan' : 'menyimpan draft'} berita ini?`)) {
+                        if (isPublish) {
+                            localStorage.removeItem(state.draftKey);
+                        }
                         DOM.form.submit();
                     }
-                });
-            });
-        }
-
-        /**
-         * Inisialisasi draft button dengan SweetAlert2
-         */
-        function initDraft() {
-            if (!DOM.draftButton) return;
-
-            DOM.draftButton.addEventListener('click', function () {
-                saveDraft();
-
-                if (typeof Swal === 'undefined') {
-                    alert('Draft berhasil disimpan');
-                    return;
                 }
-
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Draft Disimpan',
-                    text: 'Artikel berhasil disimpan sebagai draft',
-                    timer: 1500,
-                    showConfirmButton: false
-                });
             });
         }
 
-        /**
-         * Mark as changed untuk beforeunload
-         */
+        // ============================================================
+        // 7. NAVIGATION
+        // ============================================================
+
         function markAsChanged(value = true) {
             state.isChanged = value;
         }
 
-        /**
-         * Inisialisasi beforeunload handler
-         */
-        function initBeforeUnload() {
-            const unloadHandler = function (e) {
-                if (!state.isChanged) return;
-                saveDraft();
-                const message = 'Anda memiliki perubahan yang belum disimpan. Yakin ingin keluar?';
-                e.preventDefault();
-                e.returnValue = message;
-                return message;
-            };
+        // ============================================================
+        // 8. CLEANUP
+        // ============================================================
 
-            window.addEventListener('beforeunload', unloadHandler);
-            window.addEventListener('pagehide', function (e) {
-                if (state.isChanged) {
-                    saveDraft();
-                }
-            });
-        }
-
-        /**
-         * Inisialisasi Chart.js dengan pengecekan null yang ketat
-         */
-        function initChartJS() {
-
-            if (typeof Chart === 'undefined') {
-                console.warn('Chart.js tidak ditemukan');
-                return;
-            }
-
-            const canvas = document.getElementById('myChart');
-
-            if (!canvas) {
-                console.warn('Canvas dengan ID "myChart" tidak ditemukan');
-                return;
-            }
-
-            try {
-
-                const ctx = canvas.getContext('2d');
-
-                new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
-                        datasets: [{
-                            label: 'Artikel',
-                            data: [12, 19, 3, 5, 2, 3],
-                            backgroundColor: 'rgba(54,162,235,.2)',
-                            borderColor: 'rgba(54,162,235,1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false
-                    }
-                });
-
-                console.log('✅ Chart.js berhasil diinisialisasi');
-
-            } catch (error) {
-
-                console.warn('Error inisialisasi Chart.js:', error);
-
-            }
-
-        }
-
-        /**
-         * Cleanup semua resources
-         */
         function cleanup() {
             if (state.autosaveInterval) {
                 clearInterval(state.autosaveInterval);
@@ -1257,15 +848,6 @@
             if (state.progressInterval) {
                 clearInterval(state.progressInterval);
                 state.progressInterval = null;
-            }
-
-            if (state.tagify) {
-                try {
-                    state.tagify.destroy();
-                } catch (error) {
-                    // Ignore
-                }
-                state.tagify = null;
             }
 
             if (state.editor) {
@@ -1280,42 +862,27 @@
         }
 
         // ============================================================
-        // 6. APPLICATION INITIALIZATION
+        // 9. APP INITIALIZATION
         // ============================================================
 
-        /**
-         * Main initialization function
-         */
         async function initApp() {
             try {
-                // 1. Inisialisasi komponen yang tidak memerlukan editor
                 initSlug();
                 initThumbnail();
-                initTagify();
-                initProgress();
-                initBeforeUnload();
-                initPublish();
-                initDraft();
+                initUpload();
 
-                // 2. Inisialisasi editor (async)
                 await initEditor();
-
-                // 3. Setup autosave dan restore setelah editor siap
                 initAutosave();
-                initRestoreDraft();
-
-                // 4. Set initial state
                 markAsChanged(false);
 
                 console.log('✅ Aplikasi berhasil diinisialisasi');
-
             } catch (error) {
                 console.error('❌ Error inisialisasi aplikasi:', error);
             }
         }
 
         // ============================================================
-        // 7. START APPLICATION
+        // 10. START APPLICATION
         // ============================================================
 
         if (document.readyState === 'loading') {
@@ -1328,5 +895,3 @@
 
     })();
 </script>
-
-<?php include '../Layouts/footer.php' ?>

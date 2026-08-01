@@ -159,19 +159,24 @@ class UserRepository
 
     public function softDelete(int $id): void
     {
-        $statement = $this->pdo->prepare("
-            UPDATE users
-            SET deleted_at = CURRENT_TIMESTAMP
-            WHERE id = ?
-        ");
+        $user = $this->findById($id);
 
-        try {
-
-            $statement->execute([$id]);
-
-        } finally {
-            $statement->closeCursor();
+        if ($user == null) {
+            return;
         }
+
+        $statement = $this->pdo->prepare("
+        UPDATE users
+        SET
+            email = ?,
+            deleted_at = CURRENT_TIMESTAMP
+        WHERE id = ?
+    ");
+
+        $statement->execute([
+            "deleted_" . $id . "_" . $user->email,
+            $id
+        ]);
     }
 
     public function deleteAll(): void
