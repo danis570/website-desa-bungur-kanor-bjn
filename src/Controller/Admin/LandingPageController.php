@@ -38,7 +38,7 @@ class LandingPageController
             $userRepository
         );
     }
-    
+
     // ==========================================================
     // HERO BANNERS
     // ==========================================================
@@ -54,7 +54,7 @@ class LandingPageController
             'banners' => $banners,
             'breadcrumbs' => [
                 ['title' => 'Dashboard', 'url' => '/admin/dashboard'],
-                ['title' => 'Landing Page', 'url' => '/admin/landing'],
+
                 ['title' => 'Hero Banners', 'url' => null]
             ]
         ]);
@@ -68,7 +68,7 @@ class LandingPageController
             'user' => $this->sessionService->current(),
             'breadcrumbs' => [
                 ['title' => 'Dashboard', 'url' => '/admin/dashboard'],
-                ['title' => 'Landing Page', 'url' => '/admin/landing'],
+
                 ['title' => 'Hero Banners', 'url' => '/admin/landing/banners'],
                 ['title' => 'Tambah', 'url' => null]
             ]
@@ -114,7 +114,7 @@ class LandingPageController
                 'banner' => $banner,
                 'breadcrumbs' => [
                     ['title' => 'Dashboard', 'url' => '/admin/dashboard'],
-                    ['title' => 'Landing Page', 'url' => '/admin/landing'],
+
                     ['title' => 'Hero Banners', 'url' => '/admin/landing/banners'],
                     ['title' => 'Edit', 'url' => null]
                 ]
@@ -185,7 +185,7 @@ class LandingPageController
             'greetings' => $greetings,
             'breadcrumbs' => [
                 ['title' => 'Dashboard', 'url' => '/admin/dashboard'],
-                ['title' => 'Landing Page', 'url' => '/admin/landing'],
+
                 ['title' => 'Sambutan', 'url' => null]
             ]
         ]);
@@ -199,7 +199,7 @@ class LandingPageController
             'user' => $this->sessionService->current(),
             'breadcrumbs' => [
                 ['title' => 'Dashboard', 'url' => '/admin/dashboard'],
-                ['title' => 'Landing Page', 'url' => '/admin/landing'],
+
                 ['title' => 'Sambutan', 'url' => '/admin/landing/greetings'],
                 ['title' => 'Tambah', 'url' => null]
             ]
@@ -249,7 +249,7 @@ class LandingPageController
                 'greeting' => $greeting,
                 'breadcrumbs' => [
                     ['title' => 'Dashboard', 'url' => '/admin/dashboard'],
-                    ['title' => 'Landing Page', 'url' => '/admin/landing'],
+
                     ['title' => 'Sambutan', 'url' => '/admin/landing/greetings'],
                     ['title' => 'Edit', 'url' => null]
                 ]

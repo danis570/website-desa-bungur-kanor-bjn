@@ -1,5 +1,8 @@
 
-<!-- Heading -->
+<!-- ==========================================================
+HEADING
+========================================================== -->
+
 <div class="max-w-2xl my-16">
 
     <span class="uppercase tracking-[0.25em] text-primary font-semibold text-sm">
@@ -12,49 +15,79 @@
 
 </div>
 
+<!-- ==========================================================
+CHARTS
+========================================================== -->
+
 <section class="py-20">
 
     <div class="grid lg:grid-cols-2 gap-8">
 
-        <!-- Card -->
-
+        <!-- Jenis Kelamin -->
         <div class="bg-white rounded-3xl shadow-xl p-8">
 
             <h3 class="text-xl font-bold mb-8">
                 Jenis Kelamin
             </h3>
 
-            <canvas id="genderChart"></canvas>
+            <?php if (!empty($model['genderData']['values'])): ?>
+                <canvas id="genderChart"></canvas>
+            <?php else: ?>
+                <div class="text-center text-gray-400 py-12">
+                    <p>Belum ada data</p>
+                </div>
+            <?php endif; ?>
 
         </div>
 
+        <!-- Pendidikan -->
         <div class="bg-white rounded-3xl shadow-xl p-8">
 
             <h3 class="text-xl font-bold mb-8">
                 Pendidikan
             </h3>
 
-            <canvas id="educationChart"></canvas>
+            <?php if (!empty($model['educationData']['values'])): ?>
+                <canvas id="educationChart"></canvas>
+            <?php else: ?>
+                <div class="text-center text-gray-400 py-12">
+                    <p>Belum ada data</p>
+                </div>
+            <?php endif; ?>
 
         </div>
 
+        <!-- Agama -->
         <div class="bg-white rounded-3xl shadow-xl p-8">
 
             <h3 class="text-xl font-bold mb-8">
                 Agama
             </h3>
 
-            <canvas id="religionChart"></canvas>
+            <?php if (!empty($model['religionData']['values'])): ?>
+                <canvas id="religionChart"></canvas>
+            <?php else: ?>
+                <div class="text-center text-gray-400 py-12">
+                    <p>Belum ada data</p>
+                </div>
+            <?php endif; ?>
 
         </div>
 
+        <!-- Kelompok Umur -->
         <div class="bg-white rounded-3xl shadow-xl p-8">
 
             <h3 class="text-xl font-bold mb-8">
                 Kelompok Umur
             </h3>
 
-            <canvas id="ageChart"></canvas>
+            <?php if (!empty($model['ageData']['values'])): ?>
+                <canvas id="ageChart"></canvas>
+            <?php else: ?>
+                <div class="text-center text-gray-400 py-12">
+                    <p>Belum ada data</p>
+                </div>
+            <?php endif; ?>
 
         </div>
 
@@ -62,272 +95,232 @@
 
 </section>
 
+<!-- ==========================================================
+SCRIPT
+========================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+</script>
+
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
 
         Chart.defaults.font.family = "'Poppins', sans-serif";
         Chart.defaults.color = "#64748b";
         Chart.defaults.plugins.legend.labels.usePointStyle = true;
 
-        /* ============================================
-            JENIS KELAMIN
-        ============================================ */
+        <?php if (!empty($model['genderData']['values'])): ?>
+            /* ============================================
+                JENIS KELAMIN
+            ============================================ */
 
-        new Chart(document.getElementById("genderChart"), {
+            new Chart(document.getElementById("genderChart"), {
 
-            type: "doughnut",
+                type: "doughnut",
 
-            data: {
+                data: {
 
-                labels: ["Laki-laki", "Perempuan"],
+                    labels: <?= json_encode($model['genderData']['labels']) ?>,
 
-                datasets: [{
-                    data: [2150, 2100],
-                    backgroundColor: [
-                        "#15803d",
-                        "#22c55e"
-                    ],
-                    borderWidth: 0,
-                    hoverOffset: 8
-                }]
-
-            },
-
-            options: {
-
-                responsive: true,
-
-                plugins: {
-
-                    legend: {
-                        position: "bottom"
-                    }
+                    datasets: [{
+                        data: <?= json_encode($model['genderData']['values']) ?>,
+                        backgroundColor: <?= json_encode($model['genderData']['colors']) ?>,
+                        borderWidth: 0,
+                        hoverOffset: 8
+                    }]
 
                 },
 
-                cutout: "70%"
+                options: {
 
-            }
+                    responsive: true,
 
-        });
+                    plugins: {
 
-        /* ============================================
-            PENDIDIKAN
-        ============================================ */
-
-        new Chart(document.getElementById("educationChart"), {
-
-            type: "bar",
-
-            data: {
-
-                labels: [
-                    "SD",
-                    "SMP",
-                    "SMA",
-                    "Diploma",
-                    "Sarjana"
-                ],
-
-                datasets: [{
-
-                    data: [
-                        900,
-                        760,
-                        1320,
-                        280,
-                        480
-                    ],
-
-                    backgroundColor: [
-                        "#15803d",
-                        "#22c55e",
-                        "#16a34a",
-                        "#84cc16",
-                        "#f59e0b"
-                    ],
-
-                    borderRadius: 10
-
-                }]
-
-            },
-
-            options: {
-
-                plugins: {
-
-                    legend: {
-                        display: false
-                    }
-
-                },
-
-                scales: {
-
-                    y: {
-
-                        beginAtZero: true,
-
-                        grid: {
-                            color: "#e5e7eb"
+                        legend: {
+                            position: "bottom"
                         }
 
                     },
 
-                    x: {
+                    cutout: "70%"
 
-                        grid: {
+                }
+
+            });
+        <?php endif; ?>
+
+        <?php if (!empty($model['educationData']['values'])): ?>
+            /* ============================================
+                PENDIDIKAN
+            ============================================ */
+
+            new Chart(document.getElementById("educationChart"), {
+
+                type: "bar",
+
+                data: {
+
+                    labels: <?= json_encode($model['educationData']['labels']) ?>,
+
+                    datasets: [{
+
+                        data: <?= json_encode($model['educationData']['values']) ?>,
+
+                        backgroundColor: <?= json_encode($model['educationData']['colors']) ?>,
+
+                        borderRadius: 10
+
+                    }]
+
+                },
+
+                options: {
+
+                    plugins: {
+
+                        legend: {
                             display: false
                         }
 
-                    }
+                    },
 
-                }
+                    scales: {
 
-            }
+                        y: {
 
-        });
+                            beginAtZero: true,
 
-        /* ============================================
-            AGAMA
-        ============================================ */
+                            grid: {
+                                color: "#e5e7eb"
+                            }
 
-        new Chart(document.getElementById("religionChart"), {
+                        },
 
-            type: "pie",
+                        x: {
 
-            data: {
-
-                labels: [
-                    "Islam",
-                    "Kristen",
-                    "Katolik",
-                    "Hindu",
-                    "Lainnya"
-                ],
-
-                datasets: [{
-
-                    data: [
-                        4050,
-                        35,
-                        10,
-                        3,
-                        2
-                    ],
-
-                    backgroundColor: [
-                        "#15803d",
-                        "#0ea5e9",
-                        "#f59e0b",
-                        "#ef4444",
-                        "#8b5cf6"
-                    ],
-
-                    borderWidth: 0
-
-                }]
-
-            },
-
-            options: {
-
-                plugins: {
-
-                    legend: {
-
-                        position: "bottom"
-
-                    }
-
-                }
-
-            }
-
-        });
-
-        /* ============================================
-            UMUR
-        ============================================ */
-
-        new Chart(document.getElementById("ageChart"), {
-
-            type: "bar",
-
-            data: {
-
-                labels: [
-                    "0-5",
-                    "6-12",
-                    "13-17",
-                    "18-30",
-                    "31-45",
-                    "46-60",
-                    ">60"
-                ],
-
-                datasets: [{
-
-                    data: [
-                        340,
-                        480,
-                        420,
-                        980,
-                        760,
-                        610,
-                        510
-                    ],
-
-                    backgroundColor: "#15803d",
-
-                    borderRadius: 10
-
-                }]
-
-            },
-
-            options: {
-
-                plugins: {
-
-                    legend: {
-
-                        display: false
-
-                    }
-
-                },
-
-                scales: {
-
-                    y: {
-
-                        beginAtZero: true,
-
-                        grid: {
-
-                            color: "#e5e7eb"
+                            grid: {
+                                display: false
+                            }
 
                         }
 
-                    },
+                    }
 
-                    x: {
+                }
 
-                        grid: {
+            });
+        <?php endif; ?>
+
+        <?php if (!empty($model['religionData']['values'])): ?>
+            /* ============================================
+                AGAMA
+            ============================================ */
+
+            new Chart(document.getElementById("religionChart"), {
+
+                type: "pie",
+
+                data: {
+
+                    labels: <?= json_encode($model['religionData']['labels']) ?>,
+
+                    datasets: [{
+
+                        data: <?= json_encode($model['religionData']['values']) ?>,
+
+                        backgroundColor: <?= json_encode($model['religionData']['colors']) ?>,
+
+                        borderWidth: 0
+
+                    }]
+
+                },
+
+                options: {
+
+                    plugins: {
+
+                        legend: {
+
+                            position: "bottom"
+
+                        }
+
+                    }
+
+                }
+
+            });
+        <?php endif; ?>
+
+        <?php if (!empty($model['ageData']['values'])): ?>
+            /* ============================================
+                KELOMPOK UMUR
+            ============================================ */
+
+            new Chart(document.getElementById("ageChart"), {
+
+                type: "bar",
+
+                data: {
+
+                    labels: <?= json_encode($model['ageData']['labels']) ?>,
+
+                    datasets: [{
+
+                        data: <?= json_encode($model['ageData']['values']) ?>,
+
+                        backgroundColor: <?= json_encode($model['ageData']['colors']) ?>,
+
+                        borderRadius: 10
+
+                    }]
+
+                },
+
+                options: {
+
+                    plugins: {
+
+                        legend: {
 
                             display: false
 
                         }
 
+                    },
+
+                    scales: {
+
+                        y: {
+
+                            beginAtZero: true,
+
+                            grid: {
+
+                                color: "#e5e7eb"
+
+                            }
+
+                        },
+
+                        x: {
+
+                            grid: {
+
+                                display: false
+
+                            }
+
+                        }
+
                     }
 
                 }
 
-            }
-
-        });
+            });
+        <?php endif; ?>
 
     });
 </script>

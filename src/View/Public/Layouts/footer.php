@@ -11,7 +11,7 @@
             <div class="md:max-w-96">
                 <div class="flex items-center gap-4 mb-6">
 
-                    <img src="../assets/logo-bojonegoro.png" class="w-14 h-14 object-contain" alt="Logo Desa">
+                    <img src="/assets/logo-bojonegoro.png" class="w-14 h-14 object-contain" alt="Logo Desa">
 
                     <div>
 

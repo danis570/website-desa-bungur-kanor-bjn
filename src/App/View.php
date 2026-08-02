@@ -5,7 +5,7 @@ namespace Kkn27Unirow\WebsiteDesaBungur\App;
 class View
 {
 
-    public static function renderPublicHome()
+    public static function renderPublicHome($model)
     {
         require __DIR__ . '/../View/Public/index.php';
     }

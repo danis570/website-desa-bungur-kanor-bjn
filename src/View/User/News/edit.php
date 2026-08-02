@@ -247,6 +247,25 @@
 
             </div>
 
+            <!-- Alt Text -->
+            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
+
+                <h3 class="font-semibold mb-5">
+                    Alt Text Gambar
+                </h3>
+
+                <div>
+                    <label for="image_alt" class="text-sm font-medium">
+                        Deskripsi Gambar
+                    </label>
+                    <input type="text" id="image_alt" name="image_alt"
+                        value="<?= htmlspecialchars($model['old']['image_alt'] ?? $model['article']->imageAlt ?? '') ?>"
+                        placeholder="Deskripsi gambar..."
+                        class="mt-2 w-full h-12 rounded-xl border border-gray-200 px-4 focus:outline-none focus:border-primary transition">
+                </div>
+
+            </div>
+
             <!-- Publikasi -->
             <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
 
@@ -274,7 +293,7 @@
                                       (!isset($model['old']['category_id']) && $model['article']->categoryId == $category->id)
                                       ? 'selected'
                                       : '' ?>>
-                          <?= htmlspecialchars($category->name) ?>
+                                    <?= htmlspecialchars($category->name) ?>
                                 </option>
                             <?php endforeach; ?>
 

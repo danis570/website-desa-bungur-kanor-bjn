@@ -17,22 +17,22 @@ class ArticleRepository
     public function save(Article $article): Article
     {
         $statement = $this->pdo->prepare("
-            INSERT INTO articles (
-                title,
-                slug,
-                user_id,
-                category_id,
-                excerpt,
-                status,
-                published_at,
-                image,
-                content
-            )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ");
+        INSERT INTO articles (
+            title,
+            slug,
+            user_id,
+            category_id,
+            excerpt,
+            status,
+            published_at,
+            image,
+            image_alt,
+            content
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ");
 
         try {
-
             $statement->execute([
                 $article->title,
                 $article->slug,
@@ -42,13 +42,13 @@ class ArticleRepository
                 $article->status,
                 $article->publishedAt,
                 $article->image,
+                $article->imageAlt, // <-- TAMBAHKAN INI
                 $article->content
             ]);
 
             $article->id = (int) $this->pdo->lastInsertId();
 
             return $article;
-
         } finally {
             $statement->closeCursor();
         }
@@ -57,20 +57,21 @@ class ArticleRepository
     public function update(Article $article): Article
     {
         $statement = $this->pdo->prepare("
-            UPDATE articles
-            SET
-                title = ?,
-                slug = ?,
-                category_id = ?,
-                excerpt = ?,
-                status = ?,
-                published_at = ?,
-                image = ?,
-                content = ?,
-                updated_at = CURRENT_TIMESTAMP
-            WHERE id = ?
-            AND deleted_at IS NULL
-        ");
+        UPDATE articles
+        SET
+            title = ?,
+            slug = ?,
+            category_id = ?,
+            excerpt = ?,
+            status = ?,
+            published_at = ?,
+            image = ?,
+            image_alt = ?,
+            content = ?,
+            updated_at = CURRENT_TIMESTAMP
+        WHERE id = ?
+        AND deleted_at IS NULL
+    ");
 
         $statement->execute([
             $article->title,
@@ -80,6 +81,7 @@ class ArticleRepository
             $article->status,
             $article->publishedAt,
             $article->image,
+            $article->imageAlt, // <-- TAMBAHKAN INI
             $article->content,
             $article->id
         ]);
@@ -124,24 +126,22 @@ class ArticleRepository
     public function findBySlug(string $slug): ?Article
     {
         $statement = $this->pdo->prepare("
-            SELECT
-                a.*,
-                u.name AS author_name,
-                c.name AS category_name
-            FROM articles a
-            JOIN users u
-                ON u.id = a.user_id
-            JOIN article_categories c
-                ON c.id = a.category_id
-            WHERE a.slug = ?
-            AND a.deleted_at IS NULL
-            LIMIT 1
-        ");
+        SELECT
+            a.*,
+            u.name AS author_name,
+            u.position AS author_position,
+            u.avatar AS author_avatar, 
+            c.name AS category_name
+        FROM articles a
+        JOIN users u ON u.id = a.user_id
+        LEFT JOIN article_categories c ON c.id = a.category_id
+        WHERE a.slug = ?
+        AND a.deleted_at IS NULL
+        LIMIT 1
+    ");
 
         try {
-
             $statement->execute([$slug]);
-
             $row = $statement->fetch(PDO::FETCH_ASSOC);
 
             if (!$row) {
@@ -149,7 +149,6 @@ class ArticleRepository
             }
 
             return $this->mapToArticle($row);
-
         } finally {
             $statement->closeCursor();
         }
@@ -274,26 +273,29 @@ class ArticleRepository
         $this->pdo->exec("DELETE FROM articles");
     }
 
-    private function mapToArticle(array $row): Article
-    {
-        $article = new Article();
+   private function mapToArticle(array $row): Article
+{
+    $article = new Article();
 
-        $article->id = (int) $row['id'];
-        $article->title = $row['title'];
-        $article->slug = $row['slug'];
-        $article->userId = (int) $row['user_id'];
-        $article->categoryId = (int) $row['category_id'];
-        $article->authorName = $row['author_name'];
-        $article->categoryName = $row['category_name'];
-        $article->excerpt = $row['excerpt'];
-        $article->status = $row['status'];
-        $article->publishedAt = $row['published_at'];
-        $article->image = $row['image'];
-        $article->content = $row['content'];
-        $article->createdAt = $row['created_at'];
-        $article->updatedAt = $row['updated_at'];
-        $article->deletedAt = $row['deleted_at'];
+    $article->id = (int) $row['id'];
+    $article->title = $row['title'];
+    $article->slug = $row['slug'];
+    $article->userId = (int) $row['user_id'];
+    $article->categoryId = (int) $row['category_id'];
+    $article->authorName = $row['author_name'];
+    $article->authorPosition = $row['author_position'] ?? null;
+    $article->authorAvatar = $row['author_avatar'] ?? null; // <-- TAMBAHKAN INI
+    $article->categoryName = $row['category_name'];
+    $article->excerpt = $row['excerpt'];
+    $article->status = $row['status'];
+    $article->publishedAt = $row['published_at'];
+    $article->image = $row['image'];
+    $article->imageAlt = $row['image_alt'] ?? null;
+    $article->content = $row['content'];
+    $article->createdAt = $row['created_at'];
+    $article->updatedAt = $row['updated_at'];
+    $article->deletedAt = $row['deleted_at'];
 
-        return $article;
-    }
+    return $article;
+}
 }

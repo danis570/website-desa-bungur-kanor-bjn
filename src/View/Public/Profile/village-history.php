@@ -1,3 +1,46 @@
+<!-- ==========================================================
+    BREADCRUMB
+========================================================== -->
+
+
+<nav class="flex mt-16" aria-label="Breadcrumb">
+    <ol class="inline-flex items-center space-x-1 md:space-x-3">
+        <li class="inline-flex items-center">
+            <a href="/"
+                class="ml-1 inline-flex text-sm font-medium text-gray-500 hover:text-primary hover:underline md:ml-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="mr-4 h-4 w-4">
+                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                Home
+            </a>
+        </li>
+        <li>
+            <div class="flex items-center">
+                <span class="mx-2.5 text-gray-400">/</span>
+                <a href="/profil"
+                    class="ml-1 text-sm font-medium text-gray-500 hover:text-primary hover:underline md:ml-2">
+                    Profile
+                </a>
+            </div>
+        </li>
+        <li aria-current="page">
+            <div class="flex items-center">
+                <span class="mx-2.5 text-gray-400">/</span>
+                <span class="ml-1 text-sm font-medium text-gray-800 md:ml-2">
+                   Sejarah
+                </span>
+            </div>
+        </li>
+    </ol>
+</nav>
+
+
+<!-- ==========================================================
+    SEJARAH LENGKAP DESA
+========================================================== -->
 
 <section id="sejarah" class="py-16">
 
@@ -25,193 +68,68 @@
         <!-- Garis Timeline -->
         <div class="absolute left-6 lg:left-1/2 top-0 bottom-0 w-[3px] bg-primary/20 -translate-x-1/2"></div>
 
-        <!-- ITEM 1 -->
-        <div class="relative flex flex-col lg:flex-row items-center mb-20">
+        <?php if (!empty($model['histories'])): ?>
+            <?php $count = count($model['histories']); ?>
+            <?php foreach ($model['histories'] as $index => $history): ?>
+                <?php $isEven = $index % 2 == 0; ?>
 
-            <div class="hidden lg:block lg:w-1/2 pr-16 text-right" data-aos="fade-right">
+                <div
+                    class="relative flex flex-col <?= $isEven ? 'lg:flex-row' : 'lg:flex-row-reverse' ?> items-center <?= $index < $count - 1 ? 'mb-20' : '' ?>">
 
-                <img src="https://desasulangai.badungkab.go.id/storage/desasulangai/image/WhatsApp%20Image%202025-10-22%20at%2019.12.28_899f1a44.jpg"
-                    class="rounded-3xl shadow-xl h-72 w-full object-cover">
+                    <!-- Gambar (Desktop) -->
+                    <div class="hidden lg:block lg:w-1/2 <?= $isEven ? 'pr-16 text-right' : 'pl-16' ?>"
+                        data-aos="<?= $isEven ? 'fade-right' : 'fade-left' ?>">
 
-            </div>
+                        <?php if (!empty($history->image)): ?>
+                            <img src="/uploads/history/<?= htmlspecialchars($history->image) ?>"
+                                class="rounded-3xl shadow-xl h-72 w-full object-cover"
+                                alt="<?= htmlspecialchars($history->title) ?>"
+                                onerror="this.src='https://picsum.photos/seed/history<?= $history->id ?>/800/500'">
+                        <?php else: ?>
+                            <img src="https://picsum.photos/seed/history<?= $history->id ?>/800/500"
+                                class="rounded-3xl shadow-xl h-72 w-full object-cover"
+                                alt="<?= htmlspecialchars($history->title) ?>">
+                        <?php endif; ?>
 
-            <div
-                class="absolute left-6 lg:left-1/2 -translate-x-1/2 w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center shadow-xl z-10">
+                    </div>
 
-                <i data-lucide="flag"></i>
+                    <!-- Icon Timeline -->
+                    <div
+                        class="absolute left-6 lg:left-1/2 -translate-x-1/2 w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center shadow-xl z-10">
+                        <i data-lucide="flag"></i>
+                    </div>
 
-            </div>
+                    <!-- Konten -->
+                    <div class="lg:w-1/2 <?= $isEven ? 'lg:pl-16' : 'lg:pr-16' ?> mt-8 lg:mt-0"
+                        data-aos="<?= $isEven ? 'fade-left' : 'fade-right' ?>">
 
-            <div class="lg:w-1/2 lg:pl-16 mt-8 lg:mt-0" data-aos="fade-left">
+                        <div class="bg-white rounded-3xl shadow-lg p-8">
 
-                <div class="bg-white rounded-3xl shadow-lg p-8">
+                            <span class="text-primary font-bold text-lg">
+                                <?= htmlspecialchars($history->year) ?>
+                            </span>
 
-                    <span class="text-primary font-bold text-lg">
+                            <h3 class="text-2xl font-bold mt-3">
+                                <?= htmlspecialchars($history->title) ?>
+                            </h3>
 
-                        1923
+                            <p class="mt-5 text-gray-600 leading-8">
+                                <?= htmlspecialchars($history->description) ?>
+                            </p>
 
-                    </span>
+                        </div>
 
-                    <h3 class="text-2xl font-bold mt-3">
-
-                        Awal Berdirinya Desa
-
-                    </h3>
-
-                    <p class="mt-5 text-gray-600 leading-8">
-
-                        Desa Bungur mulai terbentuk sebagai kawasan permukiman
-                        masyarakat agraris yang mengandalkan pertanian sebagai
-                        sumber kehidupan utama.
-
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- ITEM 2 -->
-        <div class="relative flex flex-col lg:flex-row-reverse items-center mb-20">
-
-            <div class="hidden lg:block lg:w-1/2 pl-16" data-aos="fade-left">
-
-                <img src="https://desasulangai.badungkab.go.id/storage/desasulangai/image/WhatsApp%20Image%202025-10-22%20at%2019.12.28_899f1a44.jpg"
-                    class="rounded-3xl shadow-xl h-72 w-full object-cover">
-
-            </div>
-
-            <div
-                class="absolute left-6 lg:left-1/2 -translate-x-1/2 w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center shadow-xl z-10">
-
-                <i data-lucide="building-2"></i>
-
-            </div>
-
-            <div class="lg:w-1/2 lg:pr-16 mt-8 lg:mt-0" data-aos="fade-right">
-
-                <div class="bg-white rounded-3xl shadow-lg p-8">
-
-                    <span class="text-primary font-bold text-lg">
-
-                        1985
-
-                    </span>
-
-                    <h3 class="text-2xl font-bold mt-3">
-
-                        Pembangunan Kantor Desa
-
-                    </h3>
-
-                    <p class="mt-5 text-gray-600 leading-8">
-
-                        Pemerintah desa mulai membangun kantor desa sebagai
-                        pusat pelayanan masyarakat dan administrasi pemerintahan.
-
-                    </p>
+                    </div>
 
                 </div>
-
+            <?php endforeach; ?>
+        <?php else: ?>
+            <div class="text-center text-gray-400 py-16">
+                <iconify-icon icon="solar:book-bookmark-linear" class="text-6xl mx-auto"></iconify-icon>
+                <p class="mt-4">Belum ada data sejarah</p>
             </div>
-
-        </div>
-
-        <!-- ITEM 3 -->
-        <div class="relative flex flex-col lg:flex-row items-center mb-20">
-
-            <div class="hidden lg:block lg:w-1/2 pr-16 text-right" data-aos="fade-right">
-
-                <img src="https://desasulangai.badungkab.go.id/storage/desasulangai/image/WhatsApp%20Image%202025-10-22%20at%2019.12.28_899f1a44.jpg"
-                    class="rounded-3xl shadow-xl h-72 w-full object-cover">
-
-            </div>
-
-            <div
-                class="absolute left-6 lg:left-1/2 -translate-x-1/2 w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center shadow-xl z-10">
-
-                <i data-lucide="tractor"></i>
-
-            </div>
-
-            <div class="lg:w-1/2 lg:pl-16 mt-8 lg:mt-0" data-aos="fade-left">
-
-                <div class="bg-white rounded-3xl shadow-lg p-8">
-
-                    <span class="text-primary font-bold text-lg">
-
-                        2010
-
-                    </span>
-
-                    <h3 class="text-2xl font-bold mt-3">
-
-                        Modernisasi Pertanian
-
-                    </h3>
-
-                    <p class="mt-5 text-gray-600 leading-8">
-
-                        Penerapan teknologi pertanian mulai meningkatkan hasil
-                        panen dan kesejahteraan masyarakat Desa Bungur.
-
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- ITEM 4 -->
-        <div class="relative flex flex-col lg:flex-row-reverse items-center">
-
-            <div class="hidden lg:block lg:w-1/2 pl-16" data-aos="fade-left">
-
-                <img src="https://desasulangai.badungkab.go.id/storage/desasulangai/image/WhatsApp%20Image%202025-10-22%20at%2019.12.28_899f1a44.jpg"
-                    class="rounded-3xl shadow-xl h-72 w-full object-cover">
-
-            </div>
-
-            <div
-                class="absolute left-6 lg:left-1/2 -translate-x-1/2 w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center shadow-xl z-10">
-
-                <i data-lucide="laptop"></i>
-
-            </div>
-
-            <div class="lg:w-1/2 lg:pr-16 mt-8 lg:mt-0" data-aos="fade-right">
-
-                <div class="bg-white rounded-3xl shadow-lg p-8">
-
-                    <span class="text-primary font-bold text-lg">
-
-                        2026
-
-                    </span>
-
-                    <h3 class="text-2xl font-bold mt-3">
-
-                        Transformasi Desa Digital
-
-                    </h3>
-
-                    <p class="mt-5 text-gray-600 leading-8">
-
-                        Desa Bungur terus bertransformasi melalui digitalisasi
-                        pelayanan publik, transparansi informasi, dan pengembangan
-                        website resmi desa.
-
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
+        <?php endif; ?>
 
     </div>
-
 
 </section>

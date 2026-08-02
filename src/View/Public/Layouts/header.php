@@ -196,7 +196,7 @@
 
                 <!-- Logo -->
 
-                <a href="./" class="flex items-center gap-3">
+                <a href="/" class="flex items-center gap-3">
 
                     <img src="/assets/logo-bojonegoro.png" class="w-14 h-14 object-contain">
 
@@ -232,7 +232,7 @@
                         Demografi
                     </a>
 
-                    <a href="/kabar-desa" class="<?= $model['current'] == 'village-news'
+                    <a href="/kabar" class="<?= $model['current'] == 'village-news'
                         ? 'inline-flex items-center gap-3 px-8 py-2 rounded-full border-2 border-primary text-primary font-semibold transition duration-300'
                         : 'nav-link'
                         ?>">
@@ -323,7 +323,7 @@
                 Demografi
             </a>
 
-            <a href="/kabar-desa" class="<?= $model['current'] == 'village-news'
+            <a href="/kabar" class="<?= $model['current'] == 'village-news'
                 ? 'block px-4 py-3 rounded-xl border-2 border-primary text-primary font-semibold'
                 : 'block font-medium'
                 ?>">

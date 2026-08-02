@@ -10,6 +10,7 @@ class Photo
     public ?string $image = null;
     public ?int $userId = null;
      public ?string $userName = null;
+     public ?string $userAvatar = null;
     public ?string $createdAt = null;
     public ?string $updatedAt = null;
     public ?string $deletedAt = null;

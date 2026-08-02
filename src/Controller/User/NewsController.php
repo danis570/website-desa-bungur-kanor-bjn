@@ -115,6 +115,7 @@ class NewsController
         $content = trim($_POST['content'] ?? '');
         $status = $_POST['status'] ?? 'draft';
         $excerpt = !empty($_POST['excerpt']) ? trim($_POST['excerpt']) : null;
+        $imageAlt = !empty($_POST['image_alt']) ? trim($_POST['image_alt']) : null; // <-- TAMBAHKAN INI
 
         if ($categoryId <= 0) {
             $_SESSION['error'] = 'Kategori wajib dipilih';
@@ -134,6 +135,7 @@ class NewsController
         $request->status = $status;
         $request->excerpt = $excerpt;
         $request->image = $image;
+        $request->imageAlt = $imageAlt; // <-- TAMBAHKAN INI
 
         try {
             $this->articleService->create($request);
@@ -154,7 +156,8 @@ class NewsController
                     'category_id' => $categoryId,
                     'content' => $content,
                     'status' => $status,
-                    'excerpt' => $excerpt
+                    'excerpt' => $excerpt,
+                    'image_alt' => $imageAlt // <-- TAMBAHKAN INI
                 ],
                 'breadcrumbs' => [
                     [
@@ -227,6 +230,7 @@ class NewsController
         $content = trim($_POST['content'] ?? '');
         $status = $_POST['status'] ?? 'draft';
         $excerpt = !empty($_POST['excerpt']) ? trim($_POST['excerpt']) : null;
+        $imageAlt = !empty($_POST['image_alt']) ? trim($_POST['image_alt']) : null; // <-- TAMBAHKAN INI
 
         // Handle image upload
         $oldImage = $article->image;
@@ -259,6 +263,7 @@ class NewsController
         $request->status = $status;
         $request->excerpt = $excerpt;
         $request->image = $image;
+        $request->imageAlt = $imageAlt ?? $article->imageAlt; // <-- TAMBAHKAN INI
 
         try {
             $this->articleService->update($request);
@@ -280,7 +285,8 @@ class NewsController
                     'category_id' => $categoryId,
                     'content' => $content,
                     'status' => $status,
-                    'excerpt' => $excerpt
+                    'excerpt' => $excerpt,
+                    'image_alt' => $imageAlt // <-- TAMBAHKAN INI
                 ],
                 'breadcrumbs' => [
                     [

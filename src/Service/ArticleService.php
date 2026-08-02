@@ -40,6 +40,7 @@ class ArticleService
         $article->status = $request->status;
         $article->publishedAt = $request->status === 'published' ? date('Y-m-d H:i:s') : null;
         $article->image = $request->image ?? null;
+        $article->imageAlt = $request->imageAlt ?? null; // <-- TAMBAHKAN INI
         $article->content = trim($request->content);
 
         return $this->articleRepository->save($article);
@@ -67,18 +68,19 @@ class ArticleService
         $article->categoryId = $request->categoryId;
         $article->excerpt = $excerpt;
         $article->status = $request->status;
+        
         if ($request->status === 'published') {
-
             // Jika belum pernah dipublish, isi waktu publish
             if ($article->publishedAt === null) {
                 $article->publishedAt = date('Y-m-d H:i:s');
             }
-
         } else {
             // Jika status draft
             $article->publishedAt = null;
         }
+        
         $article->image = $request->image ?? $article->image;
+        $article->imageAlt = $request->imageAlt ?? $article->imageAlt; // <-- TAMBAHKAN INI
         $article->content = trim($request->content);
 
         return $this->articleRepository->update($article);

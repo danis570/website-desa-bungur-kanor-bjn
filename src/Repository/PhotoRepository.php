@@ -17,14 +17,14 @@ class PhotoRepository
     public function save(Photo $photo): Photo
     {
         $statement = $this->pdo->prepare("
-        INSERT INTO photos (
-            caption,
-            location,
-            user_id,
-            image  -- <-- Tambahkan kolom image
-        )
-        VALUES (?, ?, ?, ?)
-    ");
+            INSERT INTO photos (
+                caption,
+                location,
+                user_id,
+                image
+            )
+            VALUES (?, ?, ?, ?)
+        ");
 
         try {
             $statement->execute([
@@ -45,15 +45,15 @@ class PhotoRepository
     public function update(Photo $photo): Photo
     {
         $statement = $this->pdo->prepare("
-        UPDATE photos
-        SET
-            caption = ?,
-            location = ?,
-            image = ?,  -- <-- Tambahkan image
-            updated_at = CURRENT_TIMESTAMP
-        WHERE id = ?
-        AND deleted_at IS NULL
-    ");
+            UPDATE photos
+            SET
+                caption = ?,
+                location = ?,
+                image = ?,
+                updated_at = CURRENT_TIMESTAMP
+            WHERE id = ?
+            AND deleted_at IS NULL
+        ");
 
         try {
             $statement->execute([
@@ -69,25 +69,22 @@ class PhotoRepository
         }
     }
 
-
     public function findById(int $id): ?Photo
     {
         $statement = $this->pdo->prepare("
             SELECT
                 p.*,
-                u.name AS user_name
+                u.name AS user_name,
+                u.avatar AS user_avatar 
             FROM photos p
-            JOIN users u
-                ON u.id = p.user_id
+            JOIN users u ON u.id = p.user_id
             WHERE p.id = ?
             AND p.deleted_at IS NULL
             LIMIT 1
         ");
 
         try {
-
             $statement->execute([$id]);
-
             $row = $statement->fetch(PDO::FETCH_ASSOC);
 
             if (!$row) {
@@ -95,7 +92,6 @@ class PhotoRepository
             }
 
             return $this->mapToPhoto($row);
-
         } finally {
             $statement->closeCursor();
         }
@@ -106,18 +102,16 @@ class PhotoRepository
         $statement = $this->pdo->prepare("
             SELECT
                 p.*,
-                u.name AS user_name
+                u.name AS user_name,
+                u.avatar AS user_avatar  -- <-- TAMBAHKAN INI
             FROM photos p
-            JOIN users u
-                ON u.id = p.user_id
+            JOIN users u ON u.id = p.user_id
             WHERE p.deleted_at IS NULL
             ORDER BY p.created_at DESC, p.id DESC
         ");
 
         try {
-
             $statement->execute();
-
             $photos = [];
 
             while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
@@ -125,7 +119,6 @@ class PhotoRepository
             }
 
             return $photos;
-
         } finally {
             $statement->closeCursor();
         }
@@ -136,20 +129,17 @@ class PhotoRepository
         $statement = $this->pdo->prepare("
             SELECT
                 p.*,
-                u.name AS user_name
+                u.name AS user_name,
+                u.avatar AS user_avatar  -- <-- TAMBAHKAN INI JUGA
             FROM photos p
-            JOIN users u
-                ON u.id = p.user_id
-            WHERE
-                p.user_id = ?
-                AND p.deleted_at IS NULL
+            JOIN users u ON u.id = p.user_id
+            WHERE p.user_id = ?
+            AND p.deleted_at IS NULL
             ORDER BY p.created_at DESC
         ");
 
         try {
-
             $statement->execute([$userId]);
-
             $photos = [];
 
             while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
@@ -157,7 +147,6 @@ class PhotoRepository
             }
 
             return $photos;
-
         } finally {
             $statement->closeCursor();
         }
@@ -172,9 +161,7 @@ class PhotoRepository
         ");
 
         try {
-
             $statement->execute([$id]);
-
         } finally {
             $statement->closeCursor();
         }
@@ -185,7 +172,6 @@ class PhotoRepository
         $this->pdo->exec("DELETE FROM photos");
     }
 
-
     private function mapToPhoto(array $row): Photo
     {
         $photo = new Photo();
@@ -193,9 +179,10 @@ class PhotoRepository
         $photo->id = (int) $row['id'];
         $photo->caption = $row['caption'] ?? '';
         $photo->location = $row['location'] ?? '';
-        $photo->image = $row['image'] ?? null; // <-- Tambahkan ini
+        $photo->image = $row['image'] ?? null;
         $photo->userId = (int) $row['user_id'];
         $photo->userName = $row['user_name'] ?? '';
+        $photo->userAvatar = $row['user_avatar'] ?? null; // <-- INI SUDAH BENAR
         $photo->createdAt = $row['created_at'] ?? null;
         $photo->updatedAt = $row['updated_at'] ?? null;
         $photo->deletedAt = $row['deleted_at'] ?? null;

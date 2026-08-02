@@ -1,3 +1,44 @@
+<!-- ==========================================================
+BREADCRUMB
+========================================================== -->
+
+<nav class="flex mt-16" aria-label="Breadcrumb">
+    <ol class="inline-flex items-center space-x-1 md:space-x-3">
+        <li class="inline-flex items-center">
+            <a href="/"
+                class="ml-1 inline-flex text-sm font-medium text-gray-500 hover:text-primary hover:underline md:ml-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="mr-4 h-4 w-4">
+                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                Home
+            </a>
+        </li>
+        <li>
+            <div class="flex items-center">
+                <span class="mx-2.5 text-gray-400">/</span>
+                <a href="/profil"
+                    class="ml-1 text-sm font-medium text-gray-500 hover:text-primary hover:underline md:ml-2">
+                    Profile
+                </a>
+            </div>
+        </li>
+        <li aria-current="page">
+            <div class="flex items-center">
+                <span class="mx-2.5 text-gray-400">/</span>
+                <span class="ml-1 text-sm font-medium text-gray-800 md:ml-2">
+                    Aparatur Desa
+                </span>
+            </div>
+        </li>
+    </ol>
+</nav>
+
+<!-- ==========================================================
+HEADER
+========================================================== -->
 
 <section class="py-16 bg-white">
 
@@ -15,378 +56,208 @@
 
 </section>
 
+<!-- ==========================================================
+KEPALA DESA
+========================================================== -->
+
 <section class="pb-20">
 
     <h2 class="text-3xl font-bold mb-10">
         Kepala Desa
     </h2>
 
-    <div class="bg-white rounded-3xl shadow-lg p-10">
+    <?php
+    // Filter Kepala Desa
+    $kades = array_filter($model['officials'], function ($o) {
+        return $o->position === 'Kepala Desa' && $o->isActive === true;
+    });
+    $kades = array_values($kades);
+    ?>
 
-        <div class="flex flex-col lg:flex-row items-center gap-10">
+    <?php if (!empty($kades)): ?>
+        <?php foreach ($kades as $official): ?>
+            <div class="bg-white rounded-3xl shadow-lg p-10">
 
-            <img src="../assets/foto-kades.png" class="w-48 h-48 rounded-full object-cover">
+                <div class="flex flex-col lg:flex-row items-center gap-10">
 
-            <div>
+                    <?php if (!empty($official->photo)): ?>
+                        <img src="/uploads/official/<?= htmlspecialchars($official->photo) ?>"
+                            class="w-48 h-48 rounded-full object-cover" alt="<?= htmlspecialchars($official->name) ?>"
+                            onerror="this.src='https://ui-avatars.com/api/?name=<?= urlencode($official->name) ?>&size=200&background=15803d&color=fff'">
+                    <?php else: ?>
+                        <img src="https://ui-avatars.com/api/?name=<?= urlencode($official->name) ?>&size=200&background=15803d&color=fff"
+                            class="w-48 h-48 rounded-full object-cover" alt="<?= htmlspecialchars($official->name) ?>">
+                    <?php endif; ?>
 
-                <span class="text-primary font-semibold">
-                    Kepala Desa
-                </span>
+                    <div>
 
-                <h3 class="text-4xl font-bold mt-2">
-                    Ahmad Fauzi
-                </h3>
+                        <span class="text-primary font-semibold">
+                            <?= htmlspecialchars($official->position) ?>
+                        </span>
 
-                <div class="mt-8 flex items-center gap-4">
+                        <h3 class="text-4xl font-bold mt-2">
+                            <?= htmlspecialchars($official->name) ?>
+                        </h3>
 
-                    <!-- WhatsApp -->
-                    <a href="https://wa.me/6281234567890" target="_blank"
-                        class="w-11 h-11 rounded-full bg-green-500 text-white flex items-center justify-center hover:scale-110 transition duration-300">
+                        <p class="text-gray-500 text-sm mt-1">
+                            Periode: <?= htmlspecialchars($official->period) ?>
+                        </p>
 
-                        <i class="bi bi-whatsapp text-xl"></i>
+                        <div class="mt-8 flex items-center gap-4">
 
-                    </a>
+                            <?php if (!empty($official->whatsapp)): ?>
+                                <a href="https://wa.me/<?= htmlspecialchars($official->whatsapp) ?>" target="_blank"
+                                    class="w-11 h-11 rounded-full bg-green-500 text-white flex items-center justify-center hover:scale-110 transition duration-300">
+                                    <i class="bi bi-whatsapp text-xl"></i>
+                                </a>
+                            <?php endif; ?>
 
-                    <!-- Facebook -->
-                    <a href="https://facebook.com/" target="_blank"
-                        class="w-11 h-11 rounded-full bg-blue-600 text-white flex items-center justify-center hover:scale-110 transition duration-300">
+                            <?php if (!empty($official->facebook)): ?>
+                                <a href="<?= htmlspecialchars($official->facebook) ?>" target="_blank"
+                                    class="w-11 h-11 rounded-full bg-blue-600 text-white flex items-center justify-center hover:scale-110 transition duration-300">
+                                    <i class="bi bi-facebook text-xl"></i>
+                                </a>
+                            <?php endif; ?>
 
-                        <i class="bi bi-facebook text-xl"></i>
+                            <?php if (!empty($official->email)): ?>
+                                <a href="mailto:<?= htmlspecialchars($official->email) ?>"
+                                    class="w-11 h-11 rounded-full bg-red-500 text-white flex items-center justify-center hover:scale-110 transition duration-300">
+                                    <i class="bi bi-envelope-fill text-xl"></i>
+                                </a>
+                            <?php endif; ?>
 
-                    </a>
+                            <?php if (!empty($official->address)): ?>
+                                <button type="button" onclick="copyAddress('<?= htmlspecialchars($official->address) ?>')"
+                                    class="w-11 h-11 rounded-full bg-gray-700 text-white flex items-center justify-center hover:scale-110 transition duration-300"
+                                    title="Salin Alamat">
+                                    <i class="bi bi-geo-alt-fill text-xl"></i>
+                                </button>
+                            <?php endif; ?>
 
-                    <!-- Email -->
-                    <a href="mailto:admin@desa.id"
-                        class="w-11 h-11 rounded-full bg-red-500 text-white flex items-center justify-center hover:scale-110 transition duration-300">
+                        </div>
 
-                        <i class="bi bi-envelope-fill text-xl"></i>
-
-                    </a>
-
-                    <!-- Address -->
-                    <button type="button" onclick="copyAddress()"
-                        class="w-11 h-11 rounded-full bg-gray-700 text-white flex items-center justify-center hover:scale-110 transition duration-300"
-                        title="Salin Alamat">
-
-                        <i class="bi bi-geo-alt-fill text-xl"></i>
-
-                    </button>
+                    </div>
 
                 </div>
 
             </div>
-
+        <?php endforeach; ?>
+    <?php else: ?>
+        <div class="bg-white rounded-3xl shadow-lg p-10 text-center text-gray-400">
+            <p>Belum ada data Kepala Desa</p>
         </div>
-
-    </div>
-
+    <?php endif; ?>
 
 </section>
+
+<!-- ==========================================================
+PERANGKAT DESA LAINNYA
+========================================================== -->
 
 <section class="pb-20">
 
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10">
-        <div>
-            <h2 class="text-3xl font-bold mb-10">
-                Sekretariat Desa
-            </h2>
+    <?php
+    // Filter perangkat desa lainnya (bukan Kepala Desa)
+    $otherOfficials = array_filter($model['officials'], function ($o) {
+        return $o->position !== 'Kepala Desa' && $o->isActive === true;
+    });
 
-            <div
-                class="bg-white rounded-3xl shadow-md p-8 text-center hover:-translate-y-2 hover:shadow-xl transition duration-300">
+    // Kelompokkan berdasarkan posisi
+    $groupedOfficials = [];
+    foreach ($otherOfficials as $official) {
+        $position = $official->position;
+        if (!isset($groupedOfficials[$position])) {
+            $groupedOfficials[$position] = [];
+        }
+        $groupedOfficials[$position][] = $official;
+    }
+    ?>
 
-                <img src="https://suarabojonegoro.com/wp-content/uploads/2025/10/IMG_20251028_201124.jpg"
-                    class="w-32 h-32 rounded-full mx-auto object-cover">
+    <?php if (!empty($groupedOfficials)): ?>
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10">
 
-                <h3 class="text-xl font-bold mt-6">
-                    Budi Santoso
-                </h3>
+            <?php foreach ($groupedOfficials as $position => $officials): ?>
+                <div>
+                    <h2 class="text-3xl font-bold mb-10">
+                        <?= htmlspecialchars($position) ?>
+                    </h2>
 
-                <p class="text-primary mt-2 font-medium">
-                    Sekretaris Desa
-                </p>
+                    <?php foreach ($officials as $official): ?>
+                        <div
+                            class="bg-white rounded-3xl shadow-md p-8 text-center hover:-translate-y-2 hover:shadow-xl transition duration-300 mb-6">
 
-                <!-- Social -->
-                <div class="flex justify-center gap-3 mt-6">
+                            <?php if (!empty($official->photo)): ?>
+                                <img src="/uploads/official/<?= htmlspecialchars($official->photo) ?>"
+                                    class="w-32 h-32 rounded-full mx-auto object-cover" alt="<?= htmlspecialchars($official->name) ?>"
+                                    onerror="this.src='https://ui-avatars.com/api/?name=<?= urlencode($official->name) ?>&size=128&background=15803d&color=fff'">
+                            <?php else: ?>
+                                <img src="https://ui-avatars.com/api/?name=<?= urlencode($official->name) ?>&size=128&background=15803d&color=fff"
+                                    class="w-32 h-32 rounded-full mx-auto object-cover" alt="<?= htmlspecialchars($official->name) ?>">
+                            <?php endif; ?>
 
-                    <!-- WhatsApp -->
-                    <a href="https://wa.me/6281234567890" target="_blank"
-                        class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center hover:scale-110 transition">
+                            <h3 class="text-xl font-bold mt-6">
+                                <?= htmlspecialchars($official->name) ?>
+                            </h3>
 
-                        <i class="bi bi-whatsapp"></i>
+                            <p class="text-primary mt-2 font-medium">
+                                <?= htmlspecialchars($official->position) ?>
+                            </p>
 
-                    </a>
+                            <p class="text-gray-500 text-sm mt-1">
+                                Periode: <?= htmlspecialchars($official->period) ?>
+                            </p>
 
-                    <!-- Facebook -->
-                    <a href="https://facebook.com/" target="_blank"
-                        class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:scale-110 transition">
+                            <div class="flex justify-center gap-3 mt-6">
 
-                        <i class="bi bi-facebook"></i>
+                                <?php if (!empty($official->whatsapp)): ?>
+                                    <a href="https://wa.me/<?= htmlspecialchars($official->whatsapp) ?>" target="_blank"
+                                        class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center hover:scale-110 transition">
+                                        <i class="bi bi-whatsapp"></i>
+                                    </a>
+                                <?php endif; ?>
 
-                    </a>
+                                <?php if (!empty($official->facebook)): ?>
+                                    <a href="<?= htmlspecialchars($official->facebook) ?>" target="_blank"
+                                        class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:scale-110 transition">
+                                        <i class="bi bi-facebook"></i>
+                                    </a>
+                                <?php endif; ?>
 
-                    <!-- Email -->
-                    <a href="mailto:admin@desa.id"
-                        class="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center hover:scale-110 transition">
+                                <?php if (!empty($official->email)): ?>
+                                    <a href="mailto:<?= htmlspecialchars($official->email) ?>"
+                                        class="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center hover:scale-110 transition">
+                                        <i class="bi bi-envelope-fill"></i>
+                                    </a>
+                                <?php endif; ?>
 
-                        <i class="bi bi-envelope-fill"></i>
+                                <?php if (!empty($official->address)): ?>
+                                    <button type="button" onclick="copyAddress('<?= htmlspecialchars($official->address) ?>')"
+                                        class="w-10 h-10 rounded-full bg-gray-700 text-white flex items-center justify-center hover:scale-110 transition"
+                                        title="Salin Alamat">
+                                        <i class="bi bi-geo-alt-fill"></i>
+                                    </button>
+                                <?php endif; ?>
 
-                    </a>
+                            </div>
 
-                    <!-- Salin Alamat -->
-                    <button type="button" onclick="copyAddress()"
-                        class="w-10 h-10 rounded-full bg-gray-700 text-white flex items-center justify-center hover:scale-110 transition"
-                        title="Salin Alamat">
-
-                        <i class="bi bi-geo-alt-fill"></i>
-
-                    </button>
-
+                        </div>
+                    <?php endforeach; ?>
                 </div>
+            <?php endforeach; ?>
 
-            </div>
         </div>
-        <div>
-            <h2 class="text-3xl font-bold mb-10">
-                Sekretariat Desa
-            </h2>
-
-            <div
-                class="bg-white rounded-3xl shadow-md p-8 text-center hover:-translate-y-2 hover:shadow-xl transition duration-300">
-
-                <img src="https://suarabojonegoro.com/wp-content/uploads/2025/10/IMG_20251028_201124.jpg"
-                    class="w-32 h-32 rounded-full mx-auto object-cover">
-
-                <h3 class="text-xl font-bold mt-6">
-                    Budi Santoso
-                </h3>
-
-                <p class="text-primary mt-2 font-medium">
-                    Sekretaris Desa
-                </p>
-
-                <!-- Social -->
-                <div class="flex justify-center gap-3 mt-6">
-
-                    <!-- WhatsApp -->
-                    <a href="https://wa.me/6281234567890" target="_blank"
-                        class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center hover:scale-110 transition">
-
-                        <i class="bi bi-whatsapp"></i>
-
-                    </a>
-
-                    <!-- Facebook -->
-                    <a href="https://facebook.com/" target="_blank"
-                        class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:scale-110 transition">
-
-                        <i class="bi bi-facebook"></i>
-
-                    </a>
-
-                    <!-- Email -->
-                    <a href="mailto:admin@desa.id"
-                        class="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center hover:scale-110 transition">
-
-                        <i class="bi bi-envelope-fill"></i>
-
-                    </a>
-
-                    <!-- Salin Alamat -->
-                    <button type="button" onclick="copyAddress()"
-                        class="w-10 h-10 rounded-full bg-gray-700 text-white flex items-center justify-center hover:scale-110 transition"
-                        title="Salin Alamat">
-
-                        <i class="bi bi-geo-alt-fill"></i>
-
-                    </button>
-
-                </div>
-
-            </div>
+    <?php else: ?>
+        <div class="text-center text-gray-400 py-12">
+            <iconify-icon icon="solar:users-group-rounded-linear" class="text-6xl mx-auto"></iconify-icon>
+            <p class="mt-4">Belum ada perangkat desa lainnya</p>
         </div>
-        <div>
-            <h2 class="text-3xl font-bold mb-10">
-                Sekretariat Desa
-            </h2>
-
-            <div
-                class="bg-white rounded-3xl shadow-md p-8 text-center hover:-translate-y-2 hover:shadow-xl transition duration-300">
-
-                <img src="https://suarabojonegoro.com/wp-content/uploads/2025/10/IMG_20251028_201124.jpg"
-                    class="w-32 h-32 rounded-full mx-auto object-cover">
-
-                <h3 class="text-xl font-bold mt-6">
-                    Budi Santoso
-                </h3>
-
-                <p class="text-primary mt-2 font-medium">
-                    Sekretaris Desa
-                </p>
-
-                <!-- Social -->
-                <div class="flex justify-center gap-3 mt-6">
-
-                    <!-- WhatsApp -->
-                    <a href="https://wa.me/6281234567890" target="_blank"
-                        class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center hover:scale-110 transition">
-
-                        <i class="bi bi-whatsapp"></i>
-
-                    </a>
-
-                    <!-- Facebook -->
-                    <a href="https://facebook.com/" target="_blank"
-                        class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:scale-110 transition">
-
-                        <i class="bi bi-facebook"></i>
-
-                    </a>
-
-                    <!-- Email -->
-                    <a href="mailto:admin@desa.id"
-                        class="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center hover:scale-110 transition">
-
-                        <i class="bi bi-envelope-fill"></i>
-
-                    </a>
-
-                    <!-- Salin Alamat -->
-                    <button type="button" onclick="copyAddress()"
-                        class="w-10 h-10 rounded-full bg-gray-700 text-white flex items-center justify-center hover:scale-110 transition"
-                        title="Salin Alamat">
-
-                        <i class="bi bi-geo-alt-fill"></i>
-
-                    </button>
-
-                </div>
-
-            </div>
-        </div>
-        <div>
-            <h2 class="text-3xl font-bold mb-10">
-                Sekretariat Desa
-            </h2>
-
-            <div
-                class="bg-white rounded-3xl shadow-md p-8 text-center hover:-translate-y-2 hover:shadow-xl transition duration-300">
-
-                <img src="https://suarabojonegoro.com/wp-content/uploads/2025/10/IMG_20251028_201124.jpg"
-                    class="w-32 h-32 rounded-full mx-auto object-cover">
-
-                <h3 class="text-xl font-bold mt-6">
-                    Budi Santoso
-                </h3>
-
-                <p class="text-primary mt-2 font-medium">
-                    Sekretaris Desa
-                </p>
-
-                <!-- Social -->
-                <div class="flex justify-center gap-3 mt-6">
-
-                    <!-- WhatsApp -->
-                    <a href="https://wa.me/6281234567890" target="_blank"
-                        class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center hover:scale-110 transition">
-
-                        <i class="bi bi-whatsapp"></i>
-
-                    </a>
-
-                    <!-- Facebook -->
-                    <a href="https://facebook.com/" target="_blank"
-                        class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:scale-110 transition">
-
-                        <i class="bi bi-facebook"></i>
-
-                    </a>
-
-                    <!-- Email -->
-                    <a href="mailto:admin@desa.id"
-                        class="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center hover:scale-110 transition">
-
-                        <i class="bi bi-envelope-fill"></i>
-
-                    </a>
-
-                    <!-- Salin Alamat -->
-                    <button type="button" onclick="copyAddress()"
-                        class="w-10 h-10 rounded-full bg-gray-700 text-white flex items-center justify-center hover:scale-110 transition"
-                        title="Salin Alamat">
-
-                        <i class="bi bi-geo-alt-fill"></i>
-
-                    </button>
-
-                </div>
-
-            </div>
-        </div>
-        <div>
-            <h2 class="text-3xl font-bold mb-10">
-                Sekretariat Desa
-            </h2>
-
-            <div
-                class="bg-white rounded-3xl shadow-md p-8 text-center hover:-translate-y-2 hover:shadow-xl transition duration-300">
-
-                <img src="https://suarabojonegoro.com/wp-content/uploads/2025/10/IMG_20251028_201124.jpg"
-                    class="w-32 h-32 rounded-full mx-auto object-cover">
-
-                <h3 class="text-xl font-bold mt-6">
-                    Budi Santoso
-                </h3>
-
-                <p class="text-primary mt-2 font-medium">
-                    Sekretaris Desa
-                </p>
-
-                <!-- Social -->
-                <div class="flex justify-center gap-3 mt-6">
-
-                    <!-- WhatsApp -->
-                    <a href="https://wa.me/6281234567890" target="_blank"
-                        class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center hover:scale-110 transition">
-
-                        <i class="bi bi-whatsapp"></i>
-
-                    </a>
-
-                    <!-- Facebook -->
-                    <a href="https://facebook.com/" target="_blank"
-                        class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:scale-110 transition">
-
-                        <i class="bi bi-facebook"></i>
-
-                    </a>
-
-                    <!-- Email -->
-                    <a href="mailto:admin@desa.id"
-                        class="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center hover:scale-110 transition">
-
-                        <i class="bi bi-envelope-fill"></i>
-
-                    </a>
-
-                    <!-- Salin Alamat -->
-                    <button type="button" onclick="copyAddress()"
-                        class="w-10 h-10 rounded-full bg-gray-700 text-white flex items-center justify-center hover:scale-110 transition"
-                        title="Salin Alamat">
-
-                        <i class="bi bi-geo-alt-fill"></i>
-
-                    </button>
-
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-
-
+    <?php endif; ?>
 
 </section>
+
+<!-- ==========================================================
+LINK RIWAYAT
+========================================================== -->
 
 <div class="mt-20 text-center">
 
@@ -394,7 +265,7 @@
         Ingin melihat daftar Kepala Desa dan perangkat desa yang pernah menjabat?
     </p>
 
-    <a href="/aparatur-desa-lengkap"
+    <a href="/profil/aparatur/semua"
         class="inline-flex items-center gap-3 px-8 py-4 rounded-full border-2 border-primary text-primary font-semibold hover:bg-primary hover:text-white transition duration-300">
 
         Lihat Riwayat Aparatur Desa
@@ -404,3 +275,56 @@
     </a>
 
 </div>
+
+<script>
+    function copyAddress(address) {
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(address).then(() => {
+                showToast('✅ Alamat berhasil disalin!', 'success');
+            }).catch(() => {
+                fallbackCopyAddress(address);
+            });
+        } else {
+            fallbackCopyAddress(address);
+        }
+    }
+
+    function fallbackCopyAddress(address) {
+        const textarea = document.createElement('textarea');
+        textarea.value = address;
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+            document.execCommand('copy');
+            showToast('✅ Alamat berhasil disalin!', 'success');
+        } catch (e) {
+            showToast('⚠️ Gagal menyalin alamat', 'error');
+        }
+        document.body.removeChild(textarea);
+    }
+
+    function showToast(message, type = 'info') {
+        const oldToast = document.querySelector('.custom-toast');
+        if (oldToast) oldToast.remove();
+
+        const toast = document.createElement('div');
+        toast.className = 'custom-toast fixed bottom-6 right-6 z-[99999] px-6 py-4 rounded-2xl shadow-2xl text-white text-sm font-medium max-w-md transition-all duration-300';
+
+        const colors = {
+            success: 'bg-green-600',
+            error: 'bg-red-600',
+            info: 'bg-blue-600',
+            warning: 'bg-amber-600'
+        };
+
+        toast.className += ` ${colors[type] || colors.info}`;
+        toast.textContent = message;
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(10px)';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+</script>

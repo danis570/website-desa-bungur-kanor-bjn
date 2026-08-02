@@ -337,7 +337,7 @@
                         Demografi
                     </a>
 
-                    <a href="/kabar-desa" class="nav-link">
+                    <a href="/kabar" class="nav-link">
                         kabar Desa
                     </a>
 
@@ -414,7 +414,7 @@
                 Demografi
             </a>
 
-            <a href="/kabar-desa" class="block font-medium">
+            <a href="/kabar" class="block font-medium">
                 Kabar Desa
             </a>
 
@@ -441,119 +441,62 @@
 
             <div class="swiper-wrapper">
 
-                <!-- Slide 1 -->
-                <div class="swiper-slide relative">
+                <?php if (!empty($model['banners'])): ?>
+                    <?php foreach ($model['banners'] as $banner): ?>
+                        <div class="swiper-slide relative">
+                            <img src="/uploads/banner/<?= htmlspecialchars($banner->image) ?>"
+                                class="hero-image absolute inset-0 w-full h-full object-cover"
+                                alt="<?= htmlspecialchars($banner->title) ?>"
+                                onerror="this.src='https://picsum.photos/seed/banner<?= $banner->id ?>/1920/1080'">
 
-                    <img src="assets/hero1.png" class="hero-image absolute inset-0 w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-black/20"></div>
 
-                    <div class="absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-black/20"></div>
-
-                    <div class="relative z-10 h-full flex items-center">
-
-
-
-                        <div class="max-w-7xl mx-auto px-6">
-
-                            <div class="container-web">
-
-                                <div class="max-w-3xl">
-
-                                    <h2 class="text-5xl lg:text-6xl font-bold text-white mb-6">
-                                        Desa Bungur
-                                    </h2>
-
-                                    <p class="text-xl text-gray-200 mb-8">
-                                        Kecamatan Kanor - Kabupaten Bojonegoro
-                                        <br>
-                                        Selamat datang di website resmi desa bungur
-                                    </p>
-
+                            <div class="relative z-10 h-full flex items-center">
+                                <div class="max-w-7xl mx-auto px-6">
+                                    <div class="container-web">
+                                        <div class="max-w-3xl">
+                                            <h2 class="text-5xl lg:text-6xl font-bold text-white mb-6">
+                                                <?= htmlspecialchars($banner->title) ?>
+                                            </h2>
+                                            <?php if (!empty($banner->description)): ?>
+                                                <p class="text-xl text-gray-200 mb-8">
+                                                    <?= htmlspecialchars($banner->description) ?>
+                                                </p>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
                                 </div>
-
                             </div>
-
                         </div>
-
-
-
-                    </div>
-
-                </div>
-
-                <!-- Slide 2 -->
-
-                <div class="swiper-slide relative">
-
-                    <img src="assets/hero2.png" class="hero-image absolute inset-0 w-full h-full object-cover">
-
-                    <div class="absolute inset-0 bg-black/55"></div>
-
-                    <div class="relative h-full flex items-center">
-
-                        <div class="max-w-7xl mx-auto px-6">
-
-                            <div class="container-web">
-
-                                <div class="max-w-3xl">
-
-                                    <h2 class="text-5xl lg:text-6xl font-bold text-white mb-6">
-                                        Potensi Pertanian
-                                    </h2>
-
-                                    <p class="text-xl text-gray-200 mb-8">
-                                        Desa Bungur memiliki potensi pertanian yang menjadi
-                                        penopang utama ekonomi masyarakat.
-                                    </p>
-
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <!-- Default Slide jika tidak ada banner -->
+                    <div class="swiper-slide relative">
+                        <img src="https://picsum.photos/seed/desa/1920/1080"
+                            class="hero-image absolute inset-0 w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-black/20"></div>
+                        <div class="relative z-10 h-full flex items-center">
+                            <div class="max-w-7xl mx-auto px-6">
+                                <div class="container-web">
+                                    <div class="max-w-3xl">
+                                        <h2 class="text-5xl lg:text-6xl font-bold text-white mb-6">
+                                            Desa Bungur
+                                        </h2>
+                                        <p class="text-xl text-gray-200 mb-8">
+                                            Kecamatan Kanor - Kabupaten Bojonegoro
+                                            <br>
+                                            Selamat datang di website resmi desa bungur
+                                        </p>
+                                    </div>
                                 </div>
-
                             </div>
-
                         </div>
-
                     </div>
-
-                </div>
-
-                <!-- Slide 3 -->
-
-                <div class="swiper-slide relative">
-
-                    <img src="assets/hero3.png" class="hero-image absolute inset-0 w-full h-full object-cover">
-
-                    <div class="absolute inset-0 bg-black/55"></div>
-
-                    <div class="relative h-full flex items-center">
-
-                        <div class="max-w-7xl mx-auto px-6">
-
-                            <div class="container-web">
-
-                                <div class="max-w-3xl">
-
-                                    <h2 class="text-5xl lg:text-6xl font-bold text-white mb-6">
-                                        Masyarakat Gotong Royong
-                                    </h2>
-
-                                    <p class="text-xl text-gray-200">
-                                        Menjaga budaya kebersamaan dan membangun desa
-                                        menuju masa depan yang lebih baik.
-                                    </p>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
+                <?php endif; ?>
 
             </div>
 
             <div class="swiper-pagination"></div>
-
 
             <div class="swiper-button-prev">
                 <i data-lucide="chevron-left"></i>
@@ -570,13 +513,12 @@
     <main class="relative z-20 bg-white rounded-t-[48px] -mt-12">
 
         <!-- ==========================================================
-            SAMBUTAN KEPALA DESA
+        SAMBUTAN KEPALA DESA
         ========================================================== -->
 
         <section class="py-20 bg-white">
 
             <div class="container-web">
-
 
                 <!-- Heading -->
                 <div class="mb-12" data-aos="fade-up">
@@ -587,307 +529,235 @@
 
                     <h2 class="text-3xl lg:text-4xl font-bold mt-4 text-gray-900">
                         Membangun Desa Bersama Masyarakat
-                    </h2>
+                        </hh2>
 
                 </div>
 
+                <?php if (!empty($model['greeting'])): ?>
+                    <?php $greeting = $model['greeting']; ?>
 
+                    <div class="grid lg:grid-cols-[1.5fr_380px] gap-14 items-start">
 
-                <div class="grid lg:grid-cols-[1.5fr_380px] gap-14 items-start">
+                        <!-- Text -->
+                        <div class="text-gray-600 text-lg leading-9" data-aos="fade-right">
 
-
-                    <!-- Text -->
-
-                    <div class="text-gray-600 text-lg leading-9" data-aos="fade-right">
-
-
-                        <p class="font-semibold text-gray-900 mb-6">
-                            Assalamu'alaikum Warahmatullahi Wabarakatuh.
-                        </p>
-
-
-                        <p class="mb-6 text-justify">
-                            Puji syukur kehadirat Allah SWT atas limpahan rahmat dan
-                            karunia-Nya sehingga Website Resmi Desa Bungur hadir sebagai
-                            media informasi dan pelayanan publik digital.
-                        </p>
-
-
-                        <p class="mb-6 text-justify">
-                            Website ini menjadi sarana keterbukaan informasi mengenai
-                            pemerintahan desa, pembangunan, pelayanan masyarakat,
-                            serta potensi Desa Bungur.
-                        </p>
-
-
-                        <p class="text-justify">
-                            Mari bersama-sama menjaga semangat gotong royong untuk
-                            mewujudkan desa yang maju, mandiri, dan sejahtera.
-                        </p>
-
-
-                        <p class="mt-8 font-semibold text-gray-900">
-                            Wassalamu'alaikum Warahmatullahi Wabarakatuh.
-                        </p>
-
-
-                    </div>
-
-
-
-                    <!-- Profile -->
-
-                    <div class="lg:sticky lg:top-28">
-
-
-                        <div class="p-6 text-center">
-
-
-                            <img src="assets/foto-kades.png" class="w-full aspect-[4/5] object-cover rounded-3xl"
-                                alt="Kepala Desa">
-
-
-                            <div class="mt-6">
-
-
-                                <p class="text-gray-500">
-                                    Hormat Kami,
+                            <?php if (!empty($greeting->opening)): ?>
+                                <p class="font-semibold text-gray-900 mb-6">
+                                    <?= htmlspecialchars($greeting->opening) ?>
                                 </p>
+                            <?php endif; ?>
 
+                            <?php
+                            // Pisahkan paragraf berdasarkan baris kosong
+                            $paragraphs = preg_split("/\R{2,}/", trim($greeting->content));
 
-                                <img src="assets/ttd-kades.png" class="h-16 mx-auto my-4 object-contain">
-
-
-                                <h3 class="text-xl font-bold">
-                                    Nama Kepala Desa
-                                </h3>
-
-
-                                <p class="text-gray-500">
-                                    Kepala Desa Bungur
+                            foreach ($paragraphs as $paragraph):
+                                ?>
+                                <p class="mb-6 text-justify">
+                                    <?= nl2br(htmlspecialchars(trim($paragraph))) ?>
                                 </p>
+                            <?php endforeach; ?>
 
-
-                            </div>
-
+                            <?php if (!empty($greeting->closing)): ?>
+                                <p class="mt-8 font-semibold text-gray-900">
+                                    <?= htmlspecialchars($greeting->closing) ?>
+                                </p>
+                            <?php endif; ?>
 
                         </div>
 
+                        <!-- Profile -->
+                        <div class="lg:sticky lg:top-28">
+
+                            <div class="p-6 text-center">
+
+                                <?php if (!empty($greeting->image)): ?>
+                                    <img src="/uploads/greeting/<?= htmlspecialchars($greeting->image) ?>"
+                                        class="w-full aspect-[4/5] object-cover rounded-3xl"
+                                        alt="<?= htmlspecialchars($greeting->name) ?>"
+                                        onerror="this.src='https://ui-avatars.com/api/?name=<?= urlencode($greeting->name) ?>&size=400&background=15803d&color=fff'">
+                                <?php else: ?>
+                                    <img src="https://ui-avatars.com/api/?name=<?= urlencode($greeting->name) ?>&size=400&background=15803d&color=fff"
+                                        class="w-full aspect-[4/5] object-cover rounded-3xl"
+                                        alt="<?= htmlspecialchars($greeting->name) ?>">
+                                <?php endif; ?>
+
+                                <div class="mt-6">
+
+                                    <p class="text-gray-500">
+                                        Hormat Kami,
+                                    </p>
+
+                                    <?php if (!empty($greeting->signatureImage)): ?>
+                                        <img src="/uploads/signature/<?= htmlspecialchars($greeting->signatureImage) ?>"
+                                            class="h-16 mx-auto my-4 object-contain" alt="Tanda Tangan"
+                                            onerror="this.style.display='none'">
+                                    <?php else: ?>
+                                        <div class="h-16 my-4"></div>
+                                    <?php endif; ?>
+
+                                    <h3 class="text-xl font-bold">
+                                        <?= htmlspecialchars($greeting->name) ?>
+                                    </h3>
+
+                                    <p class="text-gray-500">
+                                        Kepala Desa Bungur
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
 
                     </div>
 
+                <?php else: ?>
 
-                </div>
+                    <!-- Default jika tidak ada data -->
+                    <div class="text-center py-12">
 
+                        <div class="text-gray-400">
+
+                            <iconify-icon icon="solar:user-speak-rounded-linear" class="text-6xl mx-auto"></iconify-icon>
+
+                            <p class="mt-4 text-lg">
+                                Belum ada sambutan Kepala Desa
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                <?php endif; ?>
 
             </div>
 
         </section>
 
         <!-- ==========================================================
-            LIVE WEBCAM & BERITA TERBARU
+            GALERI & BERITA
         ========================================================== -->
-
 
         <section class="py-20">
 
             <div class="container-web">
 
-
                 <div class="mb-12">
-
                     <span class="text-sm tracking-[0.25em] uppercase text-primary font-semibold">
                         Informasi Terbaru
                     </span>
-
                     <h2 class="text-3xl font-bold mt-4">
                         Berita & Aktivitas Desa
                     </h2>
-
                 </div>
-
-
 
                 <div class="grid lg:grid-cols-[1.2fr_1fr] gap-10">
 
-
-
-                    <!-- Webcam -->
-
+                    <!-- Galeri -->
                     <div class="overflow-hidden">
-
 
                         <div class="p-6 flex justify-between items-center">
 
-
                             <div>
-
                                 <h3 class="text-xl font-bold">
                                     Galeri
                                 </h3>
-
                                 <p class="text-gray-500 text-sm">
-                                    Descripsi
+                                    <?= !empty($model['latestPhoto']) ? 'Foto terbaru dari desa' : 'Belum ada foto' ?>
                                 </p>
-
                             </div>
 
-
                             <span class="flex items-center gap-2 text-red-500 font-semibold text-sm">
-
-
-                                <a href="Photo/foto.php">Lihat semua foto</a>
-
+                                <a href="/photo">Lihat semua foto</a>
                             </span>
-
 
                         </div>
 
-
-
-                        <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop"
-                            class="w-full aspect-video object-cover">
-
-
+                        <?php if (!empty($model['latestPhoto'])): ?>
+                            <img src="/uploads/photos/<?= htmlspecialchars($model['latestPhoto']->image ?? 'default-photo.jpg') ?>"
+                                class="w-full aspect-video object-cover"
+                                alt="<?= htmlspecialchars($model['latestPhoto']->caption ?? 'Foto Desa') ?>"
+                                onerror="this.src='https://picsum.photos/seed/desa/1200/675'">
+                        <?php else: ?>
+                            <img src="https://picsum.photos/seed/desa/1200/675" class="w-full aspect-video object-cover"
+                                alt="Galeri Desa">
+                        <?php endif; ?>
 
                         <div class="px-6 py-4 text-sm text-gray-500 flex justify-between">
-
                             <span>
-                                Update terakhir
+                                <?= !empty($model['latestPhoto']) ? 'Update terakhir' : 'Total foto' ?>
                             </span>
-
                             <span>
-                                23 Juli 2026 • 20:15 WIB
+                                <?php if (!empty($model['latestPhoto']) && !empty($model['latestPhoto']->createdAt)): ?>
+                                    <?= date('d M Y • H:i', strtotime($model['latestPhoto']->createdAt)) ?> WIB
+                                <?php else: ?>
+                                    <?= ($model['totalPhotos'] ?? 0) ?> foto
+                                <?php endif; ?>
                             </span>
-
                         </div>
-
 
                     </div>
 
                     <!-- Berita -->
-
+                    <!-- Berita -->
                     <div>
 
                         <div class="flex justify-between mb-8">
-
                             <h3 class="text-xl font-bold">
                                 Berita Terbaru
                             </h3>
 
-
-                            <a href="#" class="text-primary font-semibold text-sm">
+                            <a href=" /kabar" class="text-primary font-semibold text-sm">
                                 Lihat Semua →
                             </a>
-
                         </div>
-
 
                         <div class="space-y-8">
 
+                            <?php if (!empty($model['latestArticles'])): ?>
+                                <?php foreach ($model['latestArticles'] as $index => $article): ?>
+                                    <a href=" /kabar/detail/<?= htmlspecialchars($article->slug) ?>" class="flex gap-5 group"
+                                        data-aos="fade-up" data-aos-delay="<?= ($index + 1) * 100 ?>">
 
-                            <a href="#" class="flex gap-5 group" data-aos="fade-up" data-aos-delay="100">
+                                        <img src="/uploads/articles/<?= htmlspecialchars($article->image ?? 'default-news.jpg') ?>"
+                                            class="w-28 h-20 rounded-2xl object-cover"
+                                            alt="<?= htmlspecialchars($article->title) ?>"
+                                            onerror="this.src='https://picsum.photos/seed /kabar<?= $index ?>/200/150'">
 
-                                <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop"
-                                    class="w-28 h-20 rounded-2xl object-cover">
+                                        <div>
 
-                                <div>
+                                            <p class="text-sm text-primary font-semibold">
+                                                <?php if (!empty($article->publishedAt)): ?>
+                                                    <?= date('d M Y', strtotime($article->publishedAt)) ?>
+                                                <?php else: ?>
+                                                    <?= date('d M Y', strtotime($article->createdAt)) ?>
+                                                <?php endif; ?>
+                                            </p>
 
-                                    <p class="text-sm text-primary font-semibold">
-                                        23 Juli 2026
-                                    </p>
+                                            <h4 class="font-bold group-hover:text-primary transition">
+                                                <?= htmlspecialchars($article->title) ?>
+                                            </h4>
 
-                                    <h4 class="font-bold group-hover:text-primary transition">
-                                        Pembangunan Jalan Dusun Dimulai
-                                    </h4>
+                                            <p class="text-sm text-gray-500">
+                                                <?= htmlspecialchars(substr(strip_tags($article->excerpt ?? $article->content ?? ''), 0, 50)) ?>...
+                                            </p>
 
-                                    <p class="text-sm text-gray-500">
-                                        Pemerintah desa mulai melakukan pembangunan...
-                                    </p>
+                                        </div>
 
+                                    </a>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <div class="text-center text-gray-400 py-8">
+                                    <p>Belum ada berita terbaru</p>
                                 </div>
-
-                            </a>
-
-                            <a href="#" class="flex gap-5 group" data-aos="fade-up" data-aos-delay="100">
-
-                                <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop"
-                                    class="w-28 h-20 rounded-2xl object-cover">
-
-                                <div>
-
-                                    <p class="text-sm text-primary font-semibold">
-                                        23 Juli 2026
-                                    </p>
-
-                                    <h4 class="font-bold group-hover:text-primary transition">
-                                        Pembangunan Jalan Dusun Dimulai
-                                    </h4>
-
-                                    <p class="text-sm text-gray-500">
-                                        Pemerintah desa mulai melakukan pembangunan...
-                                    </p>
-
-                                </div>
-
-                            </a>
-
-                            <a href="#" class="flex gap-5 group" data-aos="fade-up" data-aos-delay="200">
-
-                                <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop"
-                                    class="w-28 h-20 rounded-2xl object-cover">
-
-                                <div>
-
-                                    <p class="text-sm text-primary font-semibold">
-                                        21 Juli 2026
-                                    </p>
-
-                                    <h4 class="font-bold group-hover:text-primary transition">
-                                        Musyawarah Desa Bersama Warga
-                                    </h4>
-
-                                    <p class="text-sm text-gray-500">
-                                        Pembahasan program pembangunan desa...
-                                    </p>
-
-                                </div>
-
-                            </a>
-
-
-                            <a href="#" class="flex gap-5 group" data-aos="fade-up" data-aos-delay="300">
-
-                                <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop"
-                                    class="w-28 h-20 rounded-2xl object-cover">
-
-                                <div>
-
-                                    <p class="text-sm text-primary font-semibold">
-                                        21 Juli 2026
-                                    </p>
-
-                                    <h4 class="font-bold group-hover:text-primary transition">
-                                        Musyawarah Desa Bersama Warga
-                                    </h4>
-
-                                    <p class="text-sm text-gray-500">
-                                        Pembahasan program pembangunan desa...
-                                    </p>
-
-                                </div>
-
-                            </a>
+                            <?php endif; ?>
 
                         </div>
 
-
                     </div>
 
-
-
                 </div>
-
 
             </div>
 

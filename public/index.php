@@ -6,12 +6,18 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Kkn27Unirow\WebsiteDesaBungur\App\Router;
 use Kkn27Unirow\WebsiteDesaBungur\Config\Database;
 use Kkn27Unirow\WebsiteDesaBungur\Controller\Admin\DemographicController;
+use Kkn27Unirow\WebsiteDesaBungur\Controller\Public\DemographicController as PublicDemographicController;
 use Kkn27Unirow\WebsiteDesaBungur\Controller\Admin\LandingPageController;
+use Kkn27Unirow\WebsiteDesaBungur\Controller\Public\LandingPageController as PublicLandingPageController;
 use Kkn27Unirow\WebsiteDesaBungur\Controller\Admin\UmkmController;
+use Kkn27Unirow\WebsiteDesaBungur\Controller\Public\UmkmController as PublicUmkmController;
 use Kkn27Unirow\WebsiteDesaBungur\Controller\Auth\AuthController;
 use Kkn27Unirow\WebsiteDesaBungur\Controller\PublicController;
 use Kkn27Unirow\WebsiteDesaBungur\Controller\Admin\UserController as AdminUserController;
 use Kkn27Unirow\WebsiteDesaBungur\Controller\Admin\VillageProfileController;
+use Kkn27Unirow\WebsiteDesaBungur\Controller\Public\NewsController;
+use Kkn27Unirow\WebsiteDesaBungur\Controller\Public\PhotoController;
+use Kkn27Unirow\WebsiteDesaBungur\Controller\Public\ProfileController;
 use Kkn27Unirow\WebsiteDesaBungur\Controller\User\NewsController as UserNewsController;
 use Kkn27Unirow\WebsiteDesaBungur\Controller\User\PhotoController as UserPhotoController;
 use Kkn27Unirow\WebsiteDesaBungur\Controller\User\UserController as UsersController;
@@ -86,26 +92,22 @@ Router::add('POST', '/admin/profile/visions-missions/delete', VillageProfileCont
 // ADMIN LANDING PAGE
 // ==========================================================
 // Hero Banners
-Router::add('GET', '/admin/landing/banners', LandingPageController::class, 'banners', [MustLoginMiddleware::class,  AdminMiddleware::class]);
-Router::add('GET', '/admin/landing/banners/add', LandingPageController::class, 'bannerAdd', [MustLoginMiddleware::class,  AdminMiddleware::class]);
-Router::add('POST', '/admin/landing/banners/add', LandingPageController::class, 'postBannerAdd', [MustLoginMiddleware::class,  AdminMiddleware::class]);
-Router::add('GET', '/admin/landing/banners/edit/([0-9]+)', LandingPageController::class, 'bannerEdit', [MustLoginMiddleware::class,  AdminMiddleware::class]);
-Router::add('POST', '/admin/landing/banners/edit/([0-9]+)', LandingPageController::class, 'postBannerEdit', [MustLoginMiddleware::class,  AdminMiddleware::class]);
-Router::add('POST', '/admin/landing/banners/delete', LandingPageController::class, 'postBannerDelete', [MustLoginMiddleware::class,  AdminMiddleware::class]);
+Router::add('GET', '/admin/landing/banners', LandingPageController::class, 'banners', [MustLoginMiddleware::class, AdminMiddleware::class]);
+Router::add('GET', '/admin/landing/banners/add', LandingPageController::class, 'bannerAdd', [MustLoginMiddleware::class, AdminMiddleware::class]);
+Router::add('POST', '/admin/landing/banners/add', LandingPageController::class, 'postBannerAdd', [MustLoginMiddleware::class, AdminMiddleware::class]);
+Router::add('GET', '/admin/landing/banners/edit/([0-9]+)', LandingPageController::class, 'bannerEdit', [MustLoginMiddleware::class, AdminMiddleware::class]);
+Router::add('POST', '/admin/landing/banners/edit/([0-9]+)', LandingPageController::class, 'postBannerEdit', [MustLoginMiddleware::class, AdminMiddleware::class]);
+Router::add('POST', '/admin/landing/banners/delete', LandingPageController::class, 'postBannerDelete', [MustLoginMiddleware::class, AdminMiddleware::class]);
 // Village Greetings
-Router::add('GET', '/admin/landing/greetings', LandingPageController::class, 'greetings', [MustLoginMiddleware::class,  AdminMiddleware::class]);
-Router::add('GET', '/admin/landing/greetings/add', LandingPageController::class, 'greetingAdd', [MustLoginMiddleware::class,  AdminMiddleware::class]);
-Router::add('POST', '/admin/landing/greetings/add', LandingPageController::class, 'postGreetingAdd', [MustLoginMiddleware::class,  AdminMiddleware::class]);
-Router::add('GET', '/admin/landing/greetings/edit/([0-9]+)', LandingPageController::class, 'greetingEdit', [MustLoginMiddleware::class,  AdminMiddleware::class]);
-Router::add('POST', '/admin/landing/greetings/edit/([0-9]+)', LandingPageController::class, 'postGreetingEdit', [MustLoginMiddleware::class,  AdminMiddleware::class]);
-Router::add('POST', '/admin/landing/greetings/delete', LandingPageController::class, 'postGreetingDelete', [MustLoginMiddleware::class,  AdminMiddleware::class]);
+Router::add('GET', '/admin/landing/greetings', LandingPageController::class, 'greetings', [MustLoginMiddleware::class, AdminMiddleware::class]);
+Router::add('GET', '/admin/landing/greetings/add', LandingPageController::class, 'greetingAdd', [MustLoginMiddleware::class, AdminMiddleware::class]);
+Router::add('POST', '/admin/landing/greetings/add', LandingPageController::class, 'postGreetingAdd', [MustLoginMiddleware::class, AdminMiddleware::class]);
+Router::add('GET', '/admin/landing/greetings/edit/([0-9]+)', LandingPageController::class, 'greetingEdit', [MustLoginMiddleware::class, AdminMiddleware::class]);
+Router::add('POST', '/admin/landing/greetings/edit/([0-9]+)', LandingPageController::class, 'postGreetingEdit', [MustLoginMiddleware::class, AdminMiddleware::class]);
+Router::add('POST', '/admin/landing/greetings/delete', LandingPageController::class, 'postGreetingDelete', [MustLoginMiddleware::class, AdminMiddleware::class]);
 
 // Admin - Logout
 Router::add('GET', '/admin/logout', AdminUserController::class, 'logout', [MustLoginMiddleware::class, AdminMiddleware::class]);
-
-
-
-
 
 // USER DASHBOARD
 Router::add('GET', '/user/dashboard', UsersController::class, 'userDashboard', [MustLoginMiddleware::class, UserMiddleware::class]);
@@ -134,26 +136,33 @@ Router::add('GET', '/user/logout', UsersController::class, 'logout', [MustLoginM
 
 
 // Public Controller
-Router::add('GET', '/', PublicController::class, 'index', [MustNotLoginMiddleware::class]);
-// Profile
-Router::add('GET', '/profil', PublicController::class, 'profile', []);
-// Village Apparatus
-Router::add('GET', '/aparatur-desa-aktif', PublicController::class, 'VillageApparatusActive', []);
-Router::add('GET', '/aparatur-desa-lengkap', PublicController::class, 'VillageApparatusHistory', []);
-// History
-Router::add('GET', '/sejarah-desa-lengkap', PublicController::class, 'VillageHistory', []);
-// News
-Router::add('GET', '/kabar-desa', PublicController::class, 'VillageNews', []);
-Router::add('GET', '/kabar-desa-detail', PublicController::class, 'VillageNewsDetail', []);
-// Demographics
-Router::add('GET', '/demografi', PublicController::class, 'demographics', []);
+// Landing Page / Home
+Router::add('GET', '/', PublicLandingPageController::class, 'index', []);
+// Profile utama
+Router::add('GET', '/profil', ProfileController::class, 'profile');
+// Aparatur Desa
+Router::add('GET', '/profil/aparatur', ProfileController::class, 'apparatusActive');
+Router::add('GET', '/profil/aparatur/semua', ProfileController::class, 'apparatusHistory');
+// Sejarah Desa
+Router::add('GET', '/profil/sejarah', ProfileController::class, 'history');
+// ==========================================================
+// PUBLIC ROUTES - DEMOGRAPHICS
+// ==========================================================
+Router::add('GET', '/demografi', PublicDemographicController::class, 'index');
+
+// ==========================================================
+// PUBLIC ROUTES - NEWS
+// ==========================================================
+
+Router::add('GET', '/kabar', NewsController::class, 'index');
+Router::add('GET', '/kabar/arsip', NewsController::class, 'archive');
+Router::add('GET', '/kabar/detail/([a-zA-Z0-9\-]+)', NewsController::class, 'detail');
 // Photo
-Router::add('GET', '/photo', PublicController::class, 'photo', []);
-// UMKMs
-Router::add('GET', '/umkm', PublicController::class, 'msme', []);
-Router::add('GET', '/umkm-detail', PublicController::class, 'msmeDetail', []);
-
-
-
+Router::add('GET', '/photo', PhotoController::class, 'photo', []);
+// ==========================================================
+// PUBLIC ROUTES - UMKM
+// ==========================================================
+Router::add('GET', '/umkm', PublicUmkmController::class, 'index');
+Router::add('GET', '/umkm/detail/([0-9]+)', PublicUmkmController::class, 'detail');
 
 Router::run();

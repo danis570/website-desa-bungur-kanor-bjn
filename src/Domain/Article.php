@@ -13,6 +13,8 @@ class Article
     public int $categoryId;
 
     public ?string $authorName = null;
+    public ?string $authorPosition = null;
+    public ?string $authorAvatar = null;
     public ?string $categoryName = null;
 
     public ?string $excerpt = null;
@@ -22,6 +24,7 @@ class Article
     public ?string $publishedAt = null;
 
     public ?string $image = null;
+    public ?string $imageAlt = null;
 
     public string $content;
 

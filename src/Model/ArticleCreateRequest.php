@@ -11,4 +11,5 @@ class ArticleCreateRequest
     public string $status = 'draft';
     public ?string $excerpt = null;
     public ?string $image = null;
+      public ?string $imageAlt = null;
 }

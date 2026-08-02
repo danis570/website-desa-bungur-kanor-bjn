@@ -6,10 +6,6 @@ use Kkn27Unirow\WebsiteDesaBungur\App\View;
 
 class PublicController
 {
-    function index()
-    {
-        View::renderPublicHome();
-    }
 
     // Profile
     function profile()

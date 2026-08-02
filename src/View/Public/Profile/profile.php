@@ -1,4 +1,3 @@
-
 <style>
     .aparaturSwiper {
         width: 100%;
@@ -23,7 +22,9 @@
     }
 </style>
 
-<!-- Aparatur -->
+<!-- ==========================================================
+    APARATUR DESA
+========================================================== -->
 
 <section id="aparatur" class="py-16">
 
@@ -38,147 +39,96 @@
             Pejabat aktif Desa Bungur
         </h2>
 
-        <!-- <p class="mt-5 text-gray-600 leading-8">
-            Kenali aparatur Pemerintah Desa Bungur yang berkomitmen memberikan
-            pelayanan terbaik kepada masyarakat.
-        </p> -->
-
     </div>
 
     <div class="swiper aparaturSwiper">
 
         <div class="swiper-wrapper">
 
-            <!-- Slide -->
-            <div class="swiper-slide">
+            <?php if (!empty($model['activeOfficials'])): ?>
+                <?php foreach ($model['activeOfficials'] as $official): ?>
+                    <div class="swiper-slide">
 
-                <div class="bg-white rounded-3xl shadow-lg p-8">
+                        <div class="bg-white rounded-3xl shadow-lg p-8">
 
-                    <div class="flex flex-col lg:flex-row gap-8 items-center">
+                            <div class="flex flex-col lg:flex-row gap-8 items-center">
 
-                        <img src="../assets/foto-kades.png" class="w-40 h-40 rounded-full object-cover flex-shrink-0">
+                                <?php if (!empty($official->photo)): ?>
+                                    <img src="/uploads/official/<?= htmlspecialchars($official->photo) ?>"
+                                        class="w-40 h-40 rounded-full object-cover flex-shrink-0"
+                                        alt="<?= htmlspecialchars($official->name) ?>"
+                                        onerror="this.src='https://ui-avatars.com/api/?name=<?= urlencode($official->name) ?>&size=160&background=15803d&color=fff'">
+                                <?php else: ?>
+                                    <img src="https://ui-avatars.com/api/?name=<?= urlencode($official->name) ?>&size=160&background=15803d&color=fff"
+                                        class="w-40 h-40 rounded-full object-cover flex-shrink-0"
+                                        alt="<?= htmlspecialchars($official->name) ?>">
+                                <?php endif; ?>
 
-                        <div class="flex-1">
+                                <div class="flex-1">
 
-                            <span
-                                class="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-semibold">
-                                Kepala Desa
-                            </span>
+                                    <span
+                                        class="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-semibold">
+                                        <?= htmlspecialchars($official->position) ?>
+                                    </span>
 
-                            <h3 class="text-3xl font-bold mt-5">
-                                Ahmad Fauzi
-                            </h3>
+                                    <h3 class="text-3xl font-bold mt-5">
+                                        <?= htmlspecialchars($official->name) ?>
+                                    </h3>
 
-                            <!-- <p class="text-gray-600 mt-5 leading-8">
-                                Bertanggung jawab memimpin penyelenggaraan pemerintahan,
-                                pembangunan serta pelayanan kepada masyarakat Desa Bungur.
-                            </p> -->
+                                    <p class="text-gray-500 text-sm mt-2">
+                                        Periode: <?= htmlspecialchars($official->period) ?>
+                                    </p>
 
-                            <div class="mt-8 flex items-center gap-4">
+                                    <div class="mt-8 flex items-center gap-4">
 
-                                <!-- WhatsApp -->
-                                <a href="https://wa.me/6281234567890" target="_blank"
-                                    class="w-11 h-11 rounded-full bg-green-500 text-white flex items-center justify-center hover:scale-110 transition duration-300">
+                                        <?php if (!empty($official->whatsapp)): ?>
+                                            <a href="https://wa.me/<?= htmlspecialchars($official->whatsapp) ?>" target="_blank"
+                                                class="w-11 h-11 rounded-full bg-green-500 text-white flex items-center justify-center hover:scale-110 transition duration-300">
+                                                <i class="bi bi-whatsapp text-xl"></i>
+                                            </a>
+                                        <?php endif; ?>
 
-                                    <i class="bi bi-whatsapp text-xl"></i>
+                                        <?php if (!empty($official->facebook)): ?>
+                                            <a href="<?= htmlspecialchars($official->facebook) ?>" target="_blank"
+                                                class="w-11 h-11 rounded-full bg-blue-600 text-white flex items-center justify-center hover:scale-110 transition duration-300">
+                                                <i class="bi bi-facebook text-xl"></i>
+                                            </a>
+                                        <?php endif; ?>
 
-                                </a>
+                                        <?php if (!empty($official->email)): ?>
+                                            <a href="mailto:<?= htmlspecialchars($official->email) ?>"
+                                                class="w-11 h-11 rounded-full bg-red-500 text-white flex items-center justify-center hover:scale-110 transition duration-300">
+                                                <i class="bi bi-envelope-fill text-xl"></i>
+                                            </a>
+                                        <?php endif; ?>
 
-                                <!-- Facebook -->
-                                <a href="https://facebook.com/" target="_blank"
-                                    class="w-11 h-11 rounded-full bg-blue-600 text-white flex items-center justify-center hover:scale-110 transition duration-300">
+                                        <?php if (!empty($official->address)): ?>
+                                            <button type="button"
+                                                onclick="copyAddress('<?= htmlspecialchars($official->address) ?>')"
+                                                class="w-11 h-11 rounded-full bg-gray-700 text-white flex items-center justify-center hover:scale-110 transition duration-300"
+                                                title="Salin Alamat">
+                                                <i class="bi bi-geo-alt-fill text-xl"></i>
+                                            </button>
+                                        <?php endif; ?>
 
-                                    <i class="bi bi-facebook text-xl"></i>
+                                    </div>
 
-                                </a>
-
-                                <!-- Email -->
-                                <a href="mailto:admin@desa.id"
-                                    class="w-11 h-11 rounded-full bg-red-500 text-white flex items-center justify-center hover:scale-110 transition duration-300">
-
-                                    <i class="bi bi-envelope-fill text-xl"></i>
-
-                                </a>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- Slide -->
-            <div class="swiper-slide">
-
-                <div class="bg-white rounded-3xl shadow-lg p-8">
-
-                    <div class="flex flex-col lg:flex-row gap-8 items-center">
-
-                        <img src="../assets/foto-kades.png" class="w-40 h-40 rounded-full object-cover flex-shrink-0">
-
-                        <div class="flex-1">
-
-                            <span
-                                class="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-semibold">
-                                Kepala Desa
-                            </span>
-
-                            <h3 class="text-3xl font-bold mt-5">
-                                Ahmad Fauzi
-                            </h3>
-
-                            <!-- <p class="text-gray-600 mt-5 leading-8">
-                                Bertanggung jawab memimpin penyelenggaraan pemerintahan,
-                                pembangunan serta pelayanan kepada masyarakat Desa Bungur.
-                            </p> -->
-
-                            <div class="mt-8 flex items-center gap-4">
-
-                                <!-- WhatsApp -->
-                                <a href="https://wa.me/6281234567890" target="_blank"
-                                    class="w-11 h-11 rounded-full bg-green-500 text-white flex items-center justify-center hover:scale-110 transition duration-300">
-
-                                    <i class="bi bi-whatsapp text-xl"></i>
-
-                                </a>
-
-                                <!-- Facebook -->
-                                <a href="https://facebook.com/" target="_blank"
-                                    class="w-11 h-11 rounded-full bg-blue-600 text-white flex items-center justify-center hover:scale-110 transition duration-300">
-
-                                    <i class="bi bi-facebook text-xl"></i>
-
-                                </a>
-
-                                <!-- Email -->
-                                <a href="mailto:admin@desa.id"
-                                    class="w-11 h-11 rounded-full bg-red-500 text-white flex items-center justify-center hover:scale-110 transition duration-300">
-
-                                    <i class="bi bi-envelope-fill text-xl"></i>
-
-                                </a>
-
-                                <!-- Address -->
-                                <button type="button" onclick="copyAddress()"
-                                    class="w-11 h-11 rounded-full bg-gray-700 text-white flex items-center justify-center hover:scale-110 transition duration-300"
-                                    title="Salin Alamat">
-
-                                    <i class="bi bi-geo-alt-fill text-xl"></i>
-
-                                </button>
+                                </div>
 
                             </div>
 
                         </div>
 
                     </div>
-
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="swiper-slide">
+                    <div class="bg-white rounded-3xl shadow-lg p-8 text-center">
+                        <p class="text-gray-500">Belum ada aparatur aktif</p>
+                    </div>
                 </div>
+            <?php endif; ?>
 
-            </div>
         </div>
 
         <div class="swiper-pagination mt-8"></div>
@@ -188,14 +138,13 @@
 
     </div>
 
-
     <div class="mt-20 text-center">
 
         <p class="text-gray-600 mb-6">
             Ingin melihat daftar aparatur desa lainnya?
         </p>
 
-        <a href="/aparatur-desa-aktif"
+        <a href="/profil/aparatur"
             class="inline-flex items-center gap-3 px-8 py-4 rounded-full border-2 border-primary text-primary font-semibold hover:bg-primary hover:text-white transition duration-300">
 
             Aparatur Desa
@@ -206,10 +155,11 @@
 
 </section>
 
-<!-- Visi Misi -->
+<!-- ==========================================================
+    VISI & MISI
+========================================================== -->
 
 <section id="visi-misi" class="py-16">
-
 
     <!-- Heading -->
     <div class="max-w-2xl mb-16">
@@ -230,22 +180,22 @@
         <div class="bg-white rounded-3xl shadow-lg p-10">
 
             <div class="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
-
                 <i data-lucide="eye" class="w-8 h-8"></i>
-
             </div>
 
             <h3 class="text-3xl font-bold mt-8">
                 Visi
             </h3>
 
-            <p class="mt-6 text-gray-600 leading-9 italic text-lg">
-
-                "Terwujudnya Desa Bungur yang Maju,
-                Mandiri, Sejahtera, Berdaya Saing,
-                dan Berkelanjutan."
-
-            </p>
+            <?php if (!empty($model['visions'])): ?>
+                <?php foreach ($model['visions'] as $vision): ?>
+                    <p class="mt-6 text-gray-600 leading-9 italic text-lg">
+                        "<?= htmlspecialchars($vision->description) ?>"
+                    </p>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p class="mt-6 text-gray-400">Belum ada visi</p>
+            <?php endif; ?>
 
         </div>
 
@@ -253,9 +203,7 @@
         <div class="bg-white rounded-3xl shadow-lg p-10">
 
             <div class="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
-
                 <i data-lucide="target" class="w-8 h-8"></i>
-
             </div>
 
             <h3 class="text-3xl font-bold mt-8">
@@ -264,69 +212,24 @@
 
             <div class="mt-8 space-y-5">
 
-                <div class="flex gap-4">
+                <?php if (!empty($model['missions'])): ?>
+                    <?php foreach ($model['missions'] as $mission): ?>
+                        <div class="flex gap-4">
 
-                    <div
-                        class="w-9 h-9 rounded-full bg-green-100 text-green-600 flex items-center justify-center shrink-0">
+                            <div
+                                class="w-9 h-9 rounded-full bg-green-100 text-green-600 flex items-center justify-center shrink-0">
+                                <i data-lucide="check"></i>
+                            </div>
 
-                        <i data-lucide="check"></i>
+                            <p class="text-gray-600 leading-7">
+                                <?= htmlspecialchars($mission->description) ?>
+                            </p>
 
-                    </div>
-
-                    <p class="text-gray-600 leading-7">
-                        Meningkatkan kualitas pelayanan publik yang cepat,
-                        transparan, dan profesional.
-                    </p>
-
-                </div>
-
-                <div class="flex gap-4">
-
-                    <div
-                        class="w-9 h-9 rounded-full bg-green-100 text-green-600 flex items-center justify-center shrink-0">
-
-                        <i data-lucide="check"></i>
-
-                    </div>
-
-                    <p class="text-gray-600 leading-7">
-                        Mendorong pembangunan infrastruktur desa secara
-                        berkelanjutan.
-                    </p>
-
-                </div>
-
-                <div class="flex gap-4">
-
-                    <div
-                        class="w-9 h-9 rounded-full bg-green-100 text-green-600 flex items-center justify-center shrink-0">
-
-                        <i data-lucide="check"></i>
-
-                    </div>
-
-                    <p class="text-gray-600 leading-7">
-                        Mengembangkan potensi ekonomi lokal melalui UMKM,
-                        pertanian, dan sektor produktif lainnya.
-                    </p>
-
-                </div>
-
-                <div class="flex gap-4">
-
-                    <div
-                        class="w-9 h-9 rounded-full bg-green-100 text-green-600 flex items-center justify-center shrink-0">
-
-                        <i data-lucide="check"></i>
-
-                    </div>
-
-                    <p class="text-gray-600 leading-7">
-                        Meningkatkan kualitas sumber daya manusia melalui
-                        pendidikan, kesehatan, dan pemberdayaan masyarakat.
-                    </p>
-
-                </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p class="text-gray-400">Belum ada misi</p>
+                <?php endif; ?>
 
             </div>
 
@@ -334,6 +237,10 @@
 
     </div>
 </section>
+
+<!-- ==========================================================
+    SEJARAH DESA
+========================================================== -->
 
 <section id="sejarah" class="py-16">
 
@@ -350,196 +257,68 @@
 
     </div>
 
-   <div class="relative max-w-5xl mx-auto overflow-hidden">
+    <div class="relative max-w-5xl mx-auto overflow-hidden">
 
         <!-- Garis Timeline -->
         <div class="absolute left-6 lg:left-1/2 top-0 bottom-0 w-[3px] bg-primary/20 -translate-x-1/2"></div>
 
-        <!-- ITEM 1 -->
-        <div class="relative flex flex-col lg:flex-row items-center mb-20">
+        <?php if (!empty($model['latestHistories'])): ?>
+            <?php $count = count($model['latestHistories']); ?>
+            <?php foreach ($model['latestHistories'] as $index => $history): ?>
+                <?php $isEven = $index % 2 == 0; ?>
 
-            <div class="hidden lg:block lg:w-1/2 pr-16 text-right" data-aos="fade-right">
+                <div
+                    class="relative flex flex-col <?= $isEven ? 'lg:flex-row' : 'lg:flex-row-reverse' ?> items-center <?= $index < $count - 1 ? 'mb-20' : '' ?>">
 
-                <img src="https://desasulangai.badungkab.go.id/storage/desasulangai/image/WhatsApp%20Image%202025-10-22%20at%2019.12.28_899f1a44.jpg"
-                    class="rounded-3xl shadow-xl h-72 w-full object-cover">
+                    <div class="hidden lg:block lg:w-1/2 <?= $isEven ? 'pr-16 text-right' : 'pl-16' ?>"
+                        data-aos="<?= $isEven ? 'fade-right' : 'fade-left' ?>">
 
-            </div>
+                        <?php if (!empty($history->image)): ?>
+                            <img src="/uploads/history/<?= htmlspecialchars($history->image) ?>"
+                                class="rounded-3xl shadow-xl h-72 w-full object-cover"
+                                alt="<?= htmlspecialchars($history->title) ?>"
+                                onerror="this.src='https://picsum.photos/seed/history<?= $history->id ?>/800/500'">
+                        <?php else: ?>
+                            <img src="https://picsum.photos/seed/history<?= $history->id ?>/800/500"
+                                class="rounded-3xl shadow-xl h-72 w-full object-cover"
+                                alt="<?= htmlspecialchars($history->title) ?>">
+                        <?php endif; ?>
 
-            <div
-                class="absolute left-6 lg:left-1/2 -translate-x-1/2 w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center shadow-xl z-10">
+                    </div>
 
-                <i data-lucide="flag"></i>
+                    <div
+                        class="absolute left-6 lg:left-1/2 -translate-x-1/2 w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center shadow-xl z-10">
+                        <i data-lucide="flag"></i>
+                    </div>
 
-            </div>
+                    <div class="lg:w-1/2 <?= $isEven ? 'lg:pl-16' : 'lg:pr-16' ?> mt-8 lg:mt-0"
+                        data-aos="<?= $isEven ? 'fade-left' : 'fade-right' ?>">
 
-            <div class="lg:w-1/2 lg:pl-16 mt-8 lg:mt-0" data-aos="fade-left">
+                        <div class="bg-white rounded-3xl shadow-lg p-8">
 
-                <div class="bg-white rounded-3xl shadow-lg p-8">
+                            <span class="text-primary font-bold text-lg">
+                                <?= htmlspecialchars($history->year) ?>
+                            </span>
 
-                    <span class="text-primary font-bold text-lg">
+                            <h3 class="text-2xl font-bold mt-3">
+                                <?= htmlspecialchars($history->title) ?>
+                            </h3>
 
-                        1923
+                            <p class="mt-5 text-gray-600 leading-8">
+                                <?= htmlspecialchars($history->description) ?>
+                            </p>
 
-                    </span>
+                        </div>
 
-                    <h3 class="text-2xl font-bold mt-3">
-
-                        Awal Berdirinya Desa
-
-                    </h3>
-
-                    <p class="mt-5 text-gray-600 leading-8">
-
-                        Desa Bungur mulai terbentuk sebagai kawasan permukiman
-                        masyarakat agraris yang mengandalkan pertanian sebagai
-                        sumber kehidupan utama.
-
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- ITEM 2 -->
-        <div class="relative flex flex-col lg:flex-row-reverse items-center mb-20">
-
-            <div class="hidden lg:block lg:w-1/2 pl-16" data-aos="fade-left">
-
-                <img src="https://desasulangai.badungkab.go.id/storage/desasulangai/image/WhatsApp%20Image%202025-10-22%20at%2019.12.28_899f1a44.jpg"
-                    class="rounded-3xl shadow-xl h-72 w-full object-cover">
-
-            </div>
-
-            <div
-                class="absolute left-6 lg:left-1/2 -translate-x-1/2 w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center shadow-xl z-10">
-
-                <i data-lucide="building-2"></i>
-
-            </div>
-
-            <div class="lg:w-1/2 lg:pr-16 mt-8 lg:mt-0" data-aos="fade-right">
-
-                <div class="bg-white rounded-3xl shadow-lg p-8">
-
-                    <span class="text-primary font-bold text-lg">
-
-                        1985
-
-                    </span>
-
-                    <h3 class="text-2xl font-bold mt-3">
-
-                        Pembangunan Kantor Desa
-
-                    </h3>
-
-                    <p class="mt-5 text-gray-600 leading-8">
-
-                        Pemerintah desa mulai membangun kantor desa sebagai
-                        pusat pelayanan masyarakat dan administrasi pemerintahan.
-
-                    </p>
+                    </div>
 
                 </div>
-
+            <?php endforeach; ?>
+        <?php else: ?>
+            <div class="text-center text-gray-400 py-12">
+                <p>Belum ada data sejarah</p>
             </div>
-
-        </div>
-
-        <!-- ITEM 3 -->
-        <div class="relative flex flex-col lg:flex-row items-center mb-20">
-
-            <div class="hidden lg:block lg:w-1/2 pr-16 text-right" data-aos="fade-right">
-
-                <img src="https://desasulangai.badungkab.go.id/storage/desasulangai/image/WhatsApp%20Image%202025-10-22%20at%2019.12.28_899f1a44.jpg"
-                    class="rounded-3xl shadow-xl h-72 w-full object-cover">
-
-            </div>
-
-            <div
-                class="absolute left-6 lg:left-1/2 -translate-x-1/2 w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center shadow-xl z-10">
-
-                <i data-lucide="tractor"></i>
-
-            </div>
-
-            <div class="lg:w-1/2 lg:pl-16 mt-8 lg:mt-0" data-aos="fade-left">
-
-                <div class="bg-white rounded-3xl shadow-lg p-8">
-
-                    <span class="text-primary font-bold text-lg">
-
-                        2010
-
-                    </span>
-
-                    <h3 class="text-2xl font-bold mt-3">
-
-                        Modernisasi Pertanian
-
-                    </h3>
-
-                    <p class="mt-5 text-gray-600 leading-8">
-
-                        Penerapan teknologi pertanian mulai meningkatkan hasil
-                        panen dan kesejahteraan masyarakat Desa Bungur.
-
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- ITEM 4 -->
-        <div class="relative flex flex-col lg:flex-row-reverse items-center">
-
-            <div class="hidden lg:block lg:w-1/2 pl-16" data-aos="fade-left">
-
-                <img src="https://desasulangai.badungkab.go.id/storage/desasulangai/image/WhatsApp%20Image%202025-10-22%20at%2019.12.28_899f1a44.jpg"
-                    class="rounded-3xl shadow-xl h-72 w-full object-cover">
-
-            </div>
-
-            <div
-                class="absolute left-6 lg:left-1/2 -translate-x-1/2 w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center shadow-xl z-10">
-
-                <i data-lucide="laptop"></i>
-
-            </div>
-
-            <div class="lg:w-1/2 lg:pr-16 mt-8 lg:mt-0" data-aos="fade-right">
-
-                <div class="bg-white rounded-3xl shadow-lg p-8">
-
-                    <span class="text-primary font-bold text-lg">
-
-                        2026
-
-                    </span>
-
-                    <h3 class="text-2xl font-bold mt-3">
-
-                        Transformasi Desa Digital
-
-                    </h3>
-
-                    <p class="mt-5 text-gray-600 leading-8">
-
-                        Desa Bungur terus bertransformasi melalui digitalisasi
-                        pelayanan publik, transparansi informasi, dan pengembangan
-                        website resmi desa.
-
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
+        <?php endif; ?>
 
     </div>
 
@@ -549,14 +328,13 @@
             Ingin melihat sejarah lengkap desa bungur?
         </p>
 
-        <a href="sejarah-desa-lengkap"
+        <a href="/profil/sejarah"
             class="inline-flex items-center gap-3 px-8 py-4 rounded-full border-2 border-primary text-primary font-semibold hover:bg-primary hover:text-white transition duration-300">
 
-           Sejarah lengkap
+            Sejarah lengkap
 
         </a>
 
     </div>
-
 
 </section>
