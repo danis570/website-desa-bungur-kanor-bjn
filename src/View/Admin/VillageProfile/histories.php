@@ -7,10 +7,10 @@ HEADER
             Website Desa Bungur
         </p>
         <h1 class="mt-2 text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900">
-            Manajemen UMKM
+            Manajemen Sejarah Desa
         </h1>
         <p class="mt-2 text-slate-500 max-w-2xl text-sm lg:text-base leading-relaxed">
-            Kelola seluruh UMKM yang akan ditampilkan pada website resmi Desa Bungur.
+            Kelola seluruh timeline sejarah Desa Bungur yang akan ditampilkan pada website resmi.
         </p>
     </div>
 </div>
@@ -19,8 +19,7 @@ HEADER
 FLASH MESSAGES
 ========================================================== -->
 <?php if (isset($_SESSION['success'])): ?>
-    <div
-        class="mb-6 px-6 py-4 bg-green-50 border-l-4 border-green-500 text-green-700 rounded-lg flex items-center justify-between">
+    <div class="mb-6 px-6 py-4 bg-green-50 border-l-4 border-green-500 text-green-700 rounded-lg flex items-center justify-between">
         <div class="flex items-center gap-3">
             <iconify-icon icon="solar:check-circle-linear" class="text-2xl text-green-500"></iconify-icon>
             <span><?= htmlspecialchars($_SESSION['success']) ?></span>
@@ -33,8 +32,7 @@ FLASH MESSAGES
 <?php endif; ?>
 
 <?php if (isset($_SESSION['error'])): ?>
-    <div
-        class="mb-6 px-6 py-4 bg-red-50 border-l-4 border-red-500 text-red-700 rounded-lg flex items-center justify-between">
+    <div class="mb-6 px-6 py-4 bg-red-50 border-l-4 border-red-500 text-red-700 rounded-lg flex items-center justify-between">
         <div class="flex items-center gap-3">
             <iconify-icon icon="solar:danger-circle-linear" class="text-2xl text-red-500"></iconify-icon>
             <span><?= htmlspecialchars($_SESSION['error']) ?></span>
@@ -51,12 +49,12 @@ TOOLBAR
 ========================================================== -->
 <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-6">
 
-    <div
-        class="p-4 flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center border-b border-slate-200">
+    <div class="p-4 flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center border-b border-slate-200">
         <div class="flex items-center gap-3">
-            <h2 class="text-sm font-semibold text-slate-900">All UMKM</h2>
-            <span class="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full"
-                id="totalBadge"><?= count($model['umkms'] ?? []) ?></span>
+            <h2 class="text-sm font-semibold text-slate-900">All Timeline</h2>
+            <span class="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full" id="totalBadge">
+                <?= count($model['histories'] ?? []) ?>
+            </span>
         </div>
 
         <div class="flex items-center gap-3 w-full sm:w-auto">
@@ -75,15 +73,15 @@ TOOLBAR
             <div class="relative flex-1 sm:flex-none">
                 <iconify-icon icon="solar:magnifer-linear"
                     class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" width="16"></iconify-icon>
-                <input id="searchInput" type="text" placeholder="Search..."
+                <input id="searchInput" type="text" placeholder="Cari sejarah..."
                     class="w-full sm:w-48 lg:w-64 h-9 rounded-lg border border-slate-200 bg-white pl-9 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:border-slate-900 transition">
             </div>
 
             <!-- ADD -->
-            <a href="/admin/umkm/add"
+            <a href="/admin/profile/histories/add"
                 class="h-9 px-3.5 rounded-lg bg-slate-900 text-white hover:bg-black transition text-sm font-medium flex items-center gap-1.5">
                 <iconify-icon icon="solar:add-circle-linear" width="16"></iconify-icon>
-                Add
+                Tambah
             </a>
         </div>
     </div>
@@ -91,13 +89,12 @@ TOOLBAR
     <!-- ==========================================================
     AG GRID
     ========================================================== -->
-    <div id="umkmGrid" class="ag-theme-quartz" style="height:420px; width:100%;"></div>
+    <div id="sejarahGrid" class="ag-theme-quartz" style="height:420px; width:100%;"></div>
 
     <!-- ==========================================================
     PAGINATION
     ========================================================== -->
-    <div
-        class="border-t border-slate-200 px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-50/30">
+    <div class="border-t border-slate-200 px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-50/30">
         <div class="text-sm text-slate-500">
             Showing <span id="startRow"></span> to <span id="endRow"></span> of <span id="totalRows"></span>
         </div>
@@ -121,22 +118,22 @@ TOOLBAR
 
 </div>
 
+<!-- ==========================================================
+STYLE
+========================================================== -->
 <style>
     ::-webkit-scrollbar {
         width: 6px;
         height: 6px;
     }
-
     ::-webkit-scrollbar-track {
         background: #F1F5F9;
         border-radius: 10px;
     }
-
     ::-webkit-scrollbar-thumb {
         background: #CBD5E1;
         border-radius: 10px;
     }
-
     ::-webkit-scrollbar-thumb:hover {
         background: #94A3B8;
     }
@@ -158,6 +155,10 @@ TOOLBAR
         --ag-checkbox-border-radius: 6px;
         --ag-header-foreground-color: #475569;
         --ag-header-column-separator-display: none;
+        --ag-pagination-button-color: #475569;
+        --ag-pagination-button-hover-color: #0F172A;
+        --ag-pagination-background-color: #FFFFFF;
+        --ag-pagination-border-color: #F1F5F9;
         --ag-font-weight: 500;
     }
 
@@ -165,11 +166,9 @@ TOOLBAR
         border: none !important;
         border-radius: 0 !important;
     }
-
     .ag-theme-quartz .ag-header {
         border-bottom: 1px solid #F1F5F9 !important;
     }
-
     .ag-theme-quartz .ag-header-cell {
         padding: 0 12px;
         font-size: 11px !important;
@@ -178,7 +177,6 @@ TOOLBAR
         text-transform: uppercase !important;
         letter-spacing: 0.03em !important;
     }
-
     .ag-theme-quartz .ag-cell {
         padding: 0 12px;
         display: flex;
@@ -186,33 +184,16 @@ TOOLBAR
         font-size: 14px;
         color: #0F172A;
     }
-
     .ag-theme-quartz .ag-row {
         border-bottom: 1px solid #F1F5F9;
     }
-
     .ag-theme-quartz .ag-row:last-child {
         border-bottom: none;
     }
-
     .ag-theme-quartz .ag-row-hover {
         background-color: #F8FAFC !important;
     }
-
-    .ag-theme-quartz .ag-overlay-no-rows-center {
-        font-size: 14px;
-        color: #94A3B8;
-        font-weight: 500;
-    }
-
-    .ag-theme-quartz .ag-overlay-no-rows-center::before {
-        content: "🏪";
-        display: block;
-        font-size: 40px;
-        margin-bottom: 8px;
-    }
-
-    .category-badge {
+     .year-badge {
         display: inline-flex;
         align-items: center;
         gap: 4px;
@@ -222,36 +203,8 @@ TOOLBAR
         border-radius: 20px;
         font-size: 11px;
         font-weight: 600;
-    }
-
-    .category-kuliner {
-        background: #FEF3C7;
-        color: #92400E;
-    }
-
-    .category-kerajinan {
-        background: #EDE9FE;
-        color: #5B21B6;
-    }
-
-    .category-kesehatan {
-        background: #DCFCE7;
-        color: #166534;
-    }
-
-    .category-pertanian {
-        background: #D1FAE5;
-        color: #065F46;
-    }
-
-    .category-peternakan {
-        background: #DBEAFE;
-        color: #1E40AF;
-    }
-
-    .category-jasa {
-        background: #E0E7FF;
-        color: #3730A3;
+          background: #15803D;
+        color: #FFFFFF;
     }
 
     .page-btn {
@@ -268,17 +221,14 @@ TOOLBAR
         cursor: pointer;
         border: 1px solid transparent;
     }
-
     .page-btn:hover {
         background: #F1F5F9;
     }
-
     .page-btn.active {
         background: #0F172A;
         color: #FFFFFF;
         border-color: #0F172A;
     }
-
     .page-btn.disabled {
         opacity: 0.3;
         cursor: not-allowed;
@@ -293,13 +243,53 @@ TOOLBAR
         width: 1px;
         background: #E2E8F0;
     }
-
     .ag-theme-quartz .ag-header-cell:last-child::after {
         display: none;
     }
-
     .ag-theme-quartz .ag-header-cell[col-id="action"]::after {
         display: none;
+    }
+    .ag-theme-quartz .ag-header-cell-resize {
+        width: 8px !important;
+        cursor: col-resize !important;
+        opacity: 1 !important;
+        background: transparent !important;
+    }
+    .ag-theme-quartz .ag-header-cell-resize:hover {
+        background: #0F172A !important;
+        opacity: 0.3 !important;
+    }
+    .ag-theme-quartz .ag-header-cell-resize:active {
+        background: #0F172A !important;
+        opacity: 0.5 !important;
+    }
+    .ag-theme-quartz .ag-header-cell-resize::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+        width: 2px;
+        background: transparent;
+        transition: background 0.15s ease;
+    }
+    .ag-theme-quartz .ag-header-cell-resize:hover::after {
+        background: #0F172A;
+    }
+
+    .ag-theme-quartz .ag-paging-panel {
+        display: none !important;
+    }
+    .ag-theme-quartz .ag-overlay-no-rows-center {
+        font-size: 14px;
+        color: #94A3B8;
+        font-weight: 500;
+    }
+    .ag-theme-quartz .ag-overlay-no-rows-center::before {
+        content: "📜";
+        display: block;
+        font-size: 40px;
+        margin-bottom: 8px;
     }
 </style>
 
@@ -310,7 +300,7 @@ TOOLBAR
     // ==========================================================
     // DATA FROM PHP
     // ==========================================================
-    const allData = <?= json_encode($model['umkms'] ?? []) ?>;
+    const allData = <?= json_encode($model['histories'] ?? []) ?>;
 
     // ==========================================================
     // STATE
@@ -323,45 +313,49 @@ TOOLBAR
     // ==========================================================
     // RENDERERS
     // ==========================================================
+
     function NoRenderer(params) {
         const number = (currentPage - 1) * itemsPerPage + params.node.rowIndex + 1;
         return `<span class="text-slate-400 font-medium">${number}</span>`;
     }
 
-    function NameRenderer(params) {
-        return `<div class="w-full truncate font-medium text-slate-800" title="${params.value}">${params.value}</div>`;
+    function YearRenderer(params) {
+        return `<span class="year-badge">${params.value || '-'}</span>`;
     }
 
-    function OwnerRenderer(params) {
-        return `<span class="text-slate-600">${params.value ?? "-"}</span>`;
+    function TitleRenderer(params) {
+        return `<span class="font-medium text-slate-800">${params.value || '-'}</span>`;
     }
 
-    function CategoryRenderer(params) {
-        const map = {
-            'Kuliner': 'category-kuliner',
-            'Kerajinan': 'category-kerajinan',
-            'Kesehatan': 'category-kesehatan',
-            'Pertanian': 'category-pertanian',
-            'Peternakan': 'category-peternakan',
-            'Jasa': 'category-jasa'
-        };
-        const cls = map[params.value] || 'bg-slate-100 text-slate-700';
-        return `<span class="category-badge ${cls}">${params.value}</span>`;
+    function DescriptionRenderer(params) {
+        const maxLength = 80;
+        const text = params.value || '';
+        const truncated = text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+        return `<span class="text-slate-600 text-sm" title="${text}">${truncated}</span>`;
     }
 
-    function AddressRenderer(params) {
-        return `<span class="text-slate-600 text-sm truncate" title="${params.value}">${params.value ?? "-"}</span>`;
+    function ImageRenderer(params) {
+        if (params.value) {
+            return `<img src="/uploads/history/${encodeURIComponent(params.value)}" 
+                         class="w-12 h-12 object-cover rounded-lg border border-slate-200" 
+                         alt="Image"
+                         onerror="this.style.display='none'">`;
+        }
+        return `<span class="text-2xl">📜</span>`;
     }
 
     function ActionRenderer(params) {
+        const id = params.data.id || 0;
+        const title = params.data.title || '';
+        
         return `
             <div class="flex items-center gap-2">
-                <a href="/admin/umkm/edit/${params.data.id}" 
-                   class="p-1.5 rounded-lg hover:bg-slate-100 transition inline-flex">
+                <a href="/admin/profile/histories/edit/${id}" 
+                   class="p-1.5 rounded-lg hover:bg-slate-100 transition inline-flex" title="Edit">
                     <iconify-icon icon="solar:pen-2-linear" width="17"></iconify-icon>
                 </a>
-                <button onclick="openDeleteModal(${params.data.id}, '${params.data.name}')"
-                        class="p-1.5 rounded-lg hover:bg-red-50 text-red-500 transition">
+                <button onclick="openDeleteModal(${id}, '${title.replace(/'/g, "\\'")}')" 
+                        class="p-1.5 rounded-lg hover:bg-red-50 text-red-500 transition" title="Hapus">
                     <iconify-icon icon="solar:trash-bin-trash-linear" width="17"></iconify-icon>
                 </button>
             </div>
@@ -373,11 +367,11 @@ TOOLBAR
     // ==========================================================
     const columnDefs = [
         { headerName: "No", cellRenderer: NoRenderer, width: 70, minWidth: 70, maxWidth: 70, resizable: false },
-        { headerName: "Nama UMKM", field: "name", cellRenderer: NameRenderer, flex: 1, minWidth: 200, resizable: true },
-        { headerName: "Pemilik", field: "owner", cellRenderer: OwnerRenderer, width: 160, minWidth: 140, resizable: true },
-        { headerName: "Kategori", field: "categoryName", cellRenderer: CategoryRenderer, width: 130, minWidth: 110, resizable: true },
-        { headerName: "Alamat", field: "address", cellRenderer: AddressRenderer, flex: 1, minWidth: 200, resizable: true },
-        { headerName: "Action", cellRenderer: ActionRenderer, width: 90, minWidth: 90, maxWidth: 90, resizable: false }
+        { headerName: "Tahun", field: "year", cellRenderer: YearRenderer, width: 100, minWidth: 90, resizable: true },
+        { headerName: "Judul", field: "title", cellRenderer: TitleRenderer, flex: 1, minWidth: 200, resizable: true },
+        { headerName: "Deskripsi", field: "description", cellRenderer: DescriptionRenderer, flex: 1, minWidth: 250, resizable: true },
+        { headerName: "Gambar", field: "image", cellRenderer: ImageRenderer, width: 80, minWidth: 80, maxWidth: 80, resizable: false },
+        { headerName: "Aksi", cellRenderer: ActionRenderer, width: 90, minWidth: 90, maxWidth: 90, resizable: false }
     ];
 
     // ==========================================================
@@ -399,7 +393,8 @@ TOOLBAR
         },
         overlayNoRowsTemplate: `
             <div class="ag-overlay-no-rows-center flex flex-col items-center gap-2 text-slate-400">
-                <span>No UMKM Found</span>
+                <span>Belum ada data sejarah</span>
+                <a href="/admin/profile/histories/add" class="text-primary hover:underline text-sm">Tambah sejarah</a>
             </div>
         `
     };
@@ -466,10 +461,9 @@ TOOLBAR
         const keyword = document.getElementById("searchInput").value.toLowerCase().trim();
 
         filteredData = allData.filter(item => {
-            const matchSearch = (item.name || '').toLowerCase().includes(keyword) ||
-                (item.owner || '').toLowerCase().includes(keyword) ||
-                (item.categoryName || '').toLowerCase().includes(keyword) ||
-                (item.address || '').toLowerCase().includes(keyword);
+            const matchSearch = (item.year || '').toString().toLowerCase().includes(keyword) ||
+                               (item.title || '').toLowerCase().includes(keyword) ||
+                               (item.description || '').toLowerCase().includes(keyword);
             return matchSearch;
         });
 
@@ -478,7 +472,7 @@ TOOLBAR
     }
 
     // ==========================================================
-    // DELETE MODAL (Server Side)
+    // DELETE MODAL
     // ==========================================================
     function openDeleteModal(id, name) {
         document.getElementById('deleteId').value = id;
@@ -494,13 +488,13 @@ TOOLBAR
     // INITIALIZE
     // ==========================================================
     document.addEventListener("DOMContentLoaded", () => {
-        const gridDiv = document.querySelector("#umkmGrid");
+        const gridDiv = document.querySelector("#sejarahGrid");
         gridApi = agGrid.createGrid(gridDiv, gridOptions);
         refreshGrid();
 
         document.getElementById("searchInput").addEventListener("input", applyFilters);
 
-        document.getElementById("perPageSelect").addEventListener("change", function () {
+        document.getElementById("perPageSelect").addEventListener("change", function() {
             itemsPerPage = Number(this.value);
             currentPage = 1;
             refreshGrid();
@@ -543,15 +537,15 @@ DELETE MODAL
                 </div>
             </div>
             <div class="p-8 text-center">
-                <h3 class="text-2xl font-bold text-slate-900 mb-2">Hapus UMKM?</h3>
+                <h3 class="text-2xl font-bold text-slate-900 mb-2">Hapus Timeline?</h3>
                 <p class="text-slate-500 text-sm leading-relaxed">
-                    Apakah Anda yakin ingin menghapus UMKM
+                    Apakah Anda yakin ingin menghapus timeline
                     <strong class="text-slate-900" id="deleteTitle"></strong>?
                     <br>
                     <span class="text-red-500">Tindakan ini tidak dapat dibatalkan!</span>
                 </p>
             </div>
-            <form action="/admin/umkm/delete" method="POST" class="flex gap-3 p-6 pt-0">
+            <form action="/admin/profile/histories/delete" method="POST" class="flex gap-3 p-6 pt-0">
                 <input type="hidden" id="deleteId" name="id" value="">
                 <button type="button" id="deleteCancelBtn"
                     class="flex-1 px-4 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 transition text-sm font-medium">Batal</button>

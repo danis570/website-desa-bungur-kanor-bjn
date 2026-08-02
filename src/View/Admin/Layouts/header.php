@@ -166,8 +166,8 @@
 
                 <!-- Artikel -->
 
-                <a href="../News/berita.php"
-                    class="group flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 hover:text-primary transition">
+                <a href="javascript:void(0)" onclick="return false;" class="group flex items-center gap-3 px-4 py-3 rounded-xl
+          text-slate-400 cursor-not-allowed">
 
                     <iconify-icon icon="solar:document-text-linear" width="20"></iconify-icon>
 
@@ -177,8 +177,10 @@
 
                 <!-- Galeri -->
 
-                <a href="../Photo/foto.php"
-                    class="group flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 hover:text-primary transition">
+                <!-- <a href="../Photo/foto.php"
+                    class="group flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 hover:text-primary transition"> -->
+                <a href="javascript:void(0)" onclick="return false;" class="group flex items-center gap-3 px-4 py-3 rounded-xl
+          text-slate-400 cursor-not-allowed">
 
                     <iconify-icon icon="solar:gallery-linear" width="20"></iconify-icon>
 
@@ -188,8 +190,7 @@
 
                 <!-- UMKM -->
 
-                <a href="/admin/umkm"
-                   class="group flex items-center gap-3 px-4 py-3 rounded-xl
+                <a href="/admin/umkm" class="group flex items-center gap-3 px-4 py-3 rounded-xl
                     <?= $model['current'] === 'umkm'
                         ? 'bg-primary/10 text-primary font-semibold'
                         : 'text-gray-600 hover:bg-gray-100 hover:text-primary' ?>">
@@ -202,8 +203,10 @@
 
                 <!-- Demografi -->
 
-                <a href="../Demographics/demografi.php"
-                    class="group flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 hover:text-primary transition">
+                <a href="/admin/demographic" class="group flex items-center gap-3 px-4 py-3 rounded-xl
+                    <?= $model['current'] === 'demographic'
+                        ? 'bg-primary/10 text-primary font-semibold'
+                        : 'text-gray-600 hover:bg-gray-100 hover:text-primary' ?>">
 
                     <iconify-icon icon="solar:users-group-rounded-linear" width="20"></iconify-icon>
 
@@ -213,26 +216,21 @@
 
 
                 <!-- ===================================================== -->
-
                 <p class="px-4 mt-8 mb-4 text-xs font-semibold uppercase tracking-wider text-slate-400">
-
                     Profil Desa
-
                 </p>
 
-                <!-- Dropdown -->
+                <!-- Dropdown Profil Desa -->
+                <details class="group" <?= in_array($model['current'], ['officials', 'histories', 'visions']) ? 'open' : '' ?>>
 
-                <details class="group">
-
-                    <summary
-                        class="flex items-center justify-between px-4 py-3 rounded-xl cursor-pointer hover:bg-slate-50 list-none">
+                    <summary class="flex items-center justify-between px-4 py-3 rounded-xl cursor-pointer hover:bg-slate-50 list-none
+                            <?= in_array($model['current'], ['officials', 'histories', 'visions'])
+                                ? 'bg-primary/10 text-primary font-semibold'
+                                : 'text-gray-600 hover:text-primary' ?>">
 
                         <div class="flex items-center gap-3">
-
                             <iconify-icon icon="solar:buildings-2-linear" width="20"></iconify-icon>
-
                             <span>Profil Desa</span>
-
                         </div>
 
                         <iconify-icon class="transition group-open:rotate-180"
@@ -240,45 +238,53 @@
 
                     </summary>
 
-                    <div class="mt-2 ml-8 flex flex-col">
-
-                        <a href="../Profile/sejarah.php" class="py-2 text-slate-500 hover:text-primary">
-                            Sejarah Desa
-                        </a>
-
-                        <a href="../Profile/visi-misi.php" class="py-2 text-slate-500 hover:text-primary">
-                            Visi & Misi
-                        </a>
-
-                        <a href="../Profile/aparatur.php" class="py-2 text-slate-500 hover:text-primary">
+                    <div class="mt-2 ml-8 flex flex-col gap-1">
+                        <!-- Aparatur Desa -->
+                        <a href="/admin/profile/officials" class="py-2 px-3 rounded-lg transition flex items-center gap-2
+                            <?= $model['current'] === 'officials'
+                                ? 'bg-primary/5 text-primary font-medium'
+                                : 'text-slate-500 hover:text-primary hover:bg-slate-50' ?>">
+                            <iconify-icon icon="solar:users-group-rounded-linear" width="16"></iconify-icon>
                             Aparatur Desa
                         </a>
 
+                        <!-- Sejarah Desa -->
+                        <a href="/admin/profile/histories" class="py-2 px-3 rounded-lg transition flex items-center gap-2
+                            <?= $model['current'] === 'histories'
+                                ? 'bg-primary/5 text-primary font-medium'
+                                : 'text-slate-500 hover:text-primary hover:bg-slate-50' ?>">
+                            <iconify-icon icon="solar:book-bookmark-linear" width="16"></iconify-icon>
+                            Sejarah Desa
+                        </a>
+
+                        <!-- Visi & Misi -->
+                        <a href="/admin/profile/visions-missions" class="py-2 px-3 rounded-lg transition flex items-center gap-2
+                            <?= $model['current'] === 'visions'
+                                ? 'bg-primary/5 text-primary font-medium'
+                                : 'text-slate-500 hover:text-primary hover:bg-slate-50' ?>">
+                            <iconify-icon icon="solar:target-linear" width="16"></iconify-icon>
+                            Visi & Misi
+                        </a>
                     </div>
 
                 </details>
 
                 <!-- ===================================================== -->
-
                 <p class="px-4 mt-8 mb-4 text-xs font-semibold uppercase tracking-wider text-slate-400">
-
-                    Landing page
-
+                    Landing Page
                 </p>
 
-                <!-- Dropdown -->
+                <!-- Dropdown Landing Page -->
+                <details class="group" <?= in_array($model['current'], ['landing-banners', 'landing-greetings']) ? 'open' : '' ?>>
 
-                <details class="group">
-
-                    <summary
-                        class="flex items-center justify-between px-4 py-3 rounded-xl cursor-pointer hover:bg-slate-50 list-none">
+                    <summary class="flex items-center justify-between px-4 py-3 rounded-xl cursor-pointer hover:bg-slate-50 list-none
+        <?= in_array($model['current'], ['landing-banners', 'landing-greetings'])
+            ? 'bg-primary/10 text-primary font-semibold'
+            : 'text-gray-600 hover:text-primary' ?>">
 
                         <div class="flex items-center gap-3">
-
                             <iconify-icon icon="solar:window-frame-linear" width="20"></iconify-icon>
-
                             <span>Landing Page</span>
-
                         </div>
 
                         <iconify-icon class="transition group-open:rotate-180"
@@ -286,16 +292,25 @@
 
                     </summary>
 
-                    <div class="mt-2 ml-8 flex flex-col">
+                    <div class="mt-2 ml-8 flex flex-col gap-1">
 
-                        <a href="../LandingPage/hero-banner.php" class="py-2 text-slate-500 hover:text-primary">
-                            Hero banner
+                        <!-- Hero Banner -->
+                        <a href="/admin/landing/banners" class="py-2 px-3 rounded-lg transition flex items-center gap-2
+           <?= $model['current'] === 'landing-banners'
+               ? 'bg-primary/5 text-primary font-medium'
+               : 'text-slate-500 hover:text-primary hover:bg-slate-50' ?>">
+                            <iconify-icon icon="solar:gallery-wide-linear" width="16"></iconify-icon>
+                            Hero Banner
                         </a>
 
-                        <a href="../LandingPage/sambutan.php" class="py-2 text-slate-500 hover:text-primary">
-                            Sambutan Kepala Desa
+                        <!-- Sambutan Kepala Desa -->
+                        <a href="/admin/landing/greetings" class="py-2 px-3 rounded-lg transition flex items-center gap-2
+           <?= $model['current'] === 'landing-greetings'
+               ? 'bg-primary/5 text-primary font-medium'
+               : 'text-slate-500 hover:text-primary hover:bg-slate-50' ?>">
+                            <iconify-icon icon="solar:user-speak-rounded-linear" width="16"></iconify-icon>
+                            Sambutan
                         </a>
-
                     </div>
 
                 </details>
@@ -414,7 +429,7 @@
                             <p class="text-xs text-slate-400"><?= $model['user']->position ?></p>
                         </div>
                         <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-indigo-400 p-[2px]">
-                           <img src="/uploads/avatar/<?= htmlspecialchars(!empty($model['user']->avatar) ? $model['user']->avatar : 'default.png') ?>"
+                            <img src="/uploads/avatar/<?= htmlspecialchars(!empty($model['user']->avatar) ? $model['user']->avatar : 'default.png') ?>"
                                 alt="<?= htmlspecialchars($model['user']->name) ?>"
                                 class="w-full h-full object-cover border-white border-2 rounded-full">
                         </div>

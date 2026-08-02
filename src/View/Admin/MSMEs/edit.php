@@ -19,7 +19,8 @@ HEADER
 FLASH MESSAGES
 ========================================================== -->
 <?php if (isset($_SESSION['success'])): ?>
-    <div class="mb-6 px-6 py-4 bg-green-50 border-l-4 border-green-500 text-green-700 rounded-lg flex items-center justify-between">
+    <div
+        class="mb-6 px-6 py-4 bg-green-50 border-l-4 border-green-500 text-green-700 rounded-lg flex items-center justify-between">
         <div class="flex items-center gap-3">
             <iconify-icon icon="solar:check-circle-linear" class="text-2xl text-green-500"></iconify-icon>
             <span><?= htmlspecialchars($_SESSION['success']) ?></span>
@@ -32,7 +33,8 @@ FLASH MESSAGES
 <?php endif; ?>
 
 <?php if (isset($_SESSION['error'])): ?>
-    <div class="mb-6 px-6 py-4 bg-red-50 border-l-4 border-red-500 text-red-700 rounded-lg flex items-center justify-between">
+    <div
+        class="mb-6 px-6 py-4 bg-red-50 border-l-4 border-red-500 text-red-700 rounded-lg flex items-center justify-between">
         <div class="flex items-center gap-3">
             <iconify-icon icon="solar:danger-circle-linear" class="text-2xl text-red-500"></iconify-icon>
             <span><?= htmlspecialchars($_SESSION['error']) ?></span>
@@ -54,7 +56,8 @@ FORM
 
             <!-- Nama UMKM -->
             <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Nama UMKM <span class="text-red-500">*</span></label>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Nama UMKM <span
+                        class="text-red-500">*</span></label>
                 <input type="text" name="name"
                     value="<?= htmlspecialchars($model['old']['name'] ?? $umkm->name ?? '') ?>"
                     class="w-full rounded-xl border border-slate-200 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-slate-900/10 <?= isset($model['error']) && strpos($model['error'], 'Nama UMKM') !== false ? 'border-red-500' : '' ?>"
@@ -66,7 +69,8 @@ FORM
 
             <!-- Pemilik -->
             <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Pemilik <span class="text-red-500">*</span></label>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Pemilik <span
+                        class="text-red-500">*</span></label>
                 <input type="text" name="owner"
                     value="<?= htmlspecialchars($model['old']['owner'] ?? $umkm->owner ?? '') ?>"
                     class="w-full rounded-xl border border-slate-200 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-slate-900/10 <?= isset($model['error']) && strpos($model['error'], 'pemilik') !== false ? 'border-red-500' : '' ?>"
@@ -78,7 +82,8 @@ FORM
 
             <!-- Kategori -->
             <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Kategori <span class="text-red-500">*</span></label>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Kategori <span
+                        class="text-red-500">*</span></label>
                 <select name="category_id"
                     class="w-full rounded-xl border border-slate-200 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-slate-900/10">
                     <option value="">Pilih Kategori</option>
@@ -95,7 +100,8 @@ FORM
 
             <!-- Alamat -->
             <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Alamat <span class="text-red-500">*</span></label>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Alamat <span
+                        class="text-red-500">*</span></label>
                 <input type="text" name="address"
                     value="<?= htmlspecialchars($model['old']['address'] ?? $umkm->address ?? '') ?>"
                     class="w-full rounded-xl border border-slate-200 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-slate-900/10"
@@ -127,35 +133,36 @@ FORM
                             <div class="menu-item bg-slate-50 rounded-xl p-4 border border-slate-200">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                                     <div>
-                                        <label class="block text-xs font-medium text-slate-500 mb-1">Nama Menu <span class="text-red-500">*</span></label>
-                                        <input type="text" name="menu_name[]" 
-                                            value="<?= htmlspecialchars($menu->name) ?>"
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">Nama Menu <span
+                                                class="text-red-500">*</span></label>
+                                        <input type="text" name="menu_name[]" value="<?= htmlspecialchars($menu->name) ?>"
                                             class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/10"
                                             placeholder="Nama menu..." required>
                                     </div>
                                     <div>
-                                        <label class="block text-xs font-medium text-slate-500 mb-1">Harga <span class="text-red-500">*</span></label>
-                                        <input type="text" name="menu_price[]" 
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">Harga <span
+                                                class="text-red-500">*</span></label>
+                                        <input type="text" name="menu_price[]"
                                             value="Rp <?= number_format($menu->price, 0, ',', '.') ?>"
                                             class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/10 price-input"
-                                            required 
-                                            oninput="formatRupiah(this)">
+                                            required oninput="formatRupiah(this)">
                                     </div>
                                 </div>
                                 <div class="mt-3">
                                     <label class="block text-xs font-medium text-slate-500 mb-1">Foto Menu</label>
                                     <?php if ($menu->image): ?>
                                         <div class="mb-2">
-                                            <img src="/uploads/umkm/<?= htmlspecialchars($menu->image) ?>" 
-                                                 class="w-20 h-20 object-cover rounded-lg border border-slate-200" 
-                                                 alt="<?= htmlspecialchars($menu->name) ?>">
-                                            <input type="hidden" name="menu_existing_image[]" value="<?= htmlspecialchars($menu->image) ?>">
+                                            <img src="/uploads/umkm/<?= htmlspecialchars($menu->image) ?>"
+                                                class="w-20 h-20 object-cover rounded-lg border border-slate-200"
+                                                alt="<?= htmlspecialchars($menu->name) ?>">
+                                            <input type="hidden" name="menu_existing_image[]"
+                                                value="<?= htmlspecialchars($menu->image) ?>">
                                         </div>
                                     <?php endif; ?>
                                     <input type="file" name="menu_image[]" accept="image/*"
                                         class="w-full rounded-lg border border-slate-200 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/10 file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200">
                                 </div>
-                                <button type="button" onclick="removeMenu(this)" 
+                                <button type="button" onclick="removeMenu(this)"
                                     class="mt-3 text-xs text-red-500 hover:text-red-700 transition flex items-center gap-1">
                                     <iconify-icon icon="solar:trash-bin-trash-linear" width="14"></iconify-icon>
                                     Hapus Menu
@@ -167,17 +174,18 @@ FORM
                         <div class="menu-item bg-slate-50 rounded-xl p-4 border border-slate-200">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 <div>
-                                    <label class="block text-xs font-medium text-slate-500 mb-1">Nama Menu <span class="text-red-500">*</span></label>
-                                    <input type="text" name="menu_name[]" 
+                                    <label class="block text-xs font-medium text-slate-500 mb-1">Nama Menu <span
+                                            class="text-red-500">*</span></label>
+                                    <input type="text" name="menu_name[]"
                                         class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/10"
                                         placeholder="Nama menu..." required>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-medium text-slate-500 mb-1">Harga <span class="text-red-500">*</span></label>
-                                    <input type="text" name="menu_price[]" 
+                                    <label class="block text-xs font-medium text-slate-500 mb-1">Harga <span
+                                            class="text-red-500">*</span></label>
+                                    <input type="text" name="menu_price[]"
                                         class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/10 price-input"
-                                        placeholder="Rp 10.000" required 
-                                        oninput="formatRupiah(this)">
+                                        placeholder="Rp 10.000" required oninput="formatRupiah(this)">
                                 </div>
                             </div>
                             <div class="mt-3">
@@ -185,7 +193,7 @@ FORM
                                 <input type="file" name="menu_image[]" accept="image/*"
                                     class="w-full rounded-lg border border-slate-200 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/10 file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200">
                             </div>
-                            <button type="button" onclick="removeMenu(this)" 
+                            <button type="button" onclick="removeMenu(this)"
                                 class="mt-3 text-xs text-red-500 hover:text-red-700 transition flex items-center gap-1">
                                 <iconify-icon icon="solar:trash-bin-trash-linear" width="14"></iconify-icon>
                                 Hapus Menu
@@ -194,7 +202,7 @@ FORM
                     <?php endif; ?>
                 </div>
 
-                <button type="button" onclick="addMenu()" 
+                <button type="button" onclick="addMenu()"
                     class="mt-3 px-4 py-2 rounded-lg border border-dashed border-slate-300 text-slate-500 hover:border-slate-900 hover:text-slate-900 transition text-sm flex items-center gap-2">
                     <iconify-icon icon="solar:add-circle-linear" width="18"></iconify-icon>
                     Tambah Menu Lainnya
@@ -274,7 +282,6 @@ FORM
             </a>
             <button type="submit"
                 class="flex-1 px-4 py-2.5 rounded-xl bg-slate-900 text-white hover:bg-black transition">
-                <iconify-icon icon="solar:check-circle-linear" width="18" class="inline mr-2"></iconify-icon>
                 Update UMKM
             </button>
         </div>
@@ -299,7 +306,7 @@ JAVASCRIPT - UNTUK MENU DINAMIS
     }
 
     // Format existing price inputs on load
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.price-input').forEach(input => {
             if (input.value && !input.value.startsWith('Rp')) {
                 const num = parseFloat(input.value);
@@ -315,7 +322,7 @@ JAVASCRIPT - UNTUK MENU DINAMIS
     // ==========================================================
     function addMenu() {
         const container = document.getElementById('menuContainer');
-        
+
         const div = document.createElement('div');
         div.className = 'menu-item bg-slate-50 rounded-xl p-4 border border-slate-200';
         div.innerHTML = `
@@ -346,7 +353,7 @@ JAVASCRIPT - UNTUK MENU DINAMIS
             </button>
         `;
         container.appendChild(div);
-        
+
         // Scroll ke menu baru
         div.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
@@ -366,7 +373,7 @@ JAVASCRIPT - UNTUK MENU DINAMIS
                 <iconify-icon icon="solar:danger-circle-linear" width="16"></iconify-icon>
                 Minimal harus ada 1 menu/produk
             `;
-            
+
             const parent = btn.closest('.menu-item');
             const existingError = parent.querySelector('.text-red-500');
             if (!existingError) {
