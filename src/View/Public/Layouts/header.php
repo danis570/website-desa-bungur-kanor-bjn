@@ -142,6 +142,39 @@
 
         }
 
+
+        /* ==========================================================
+       SEARCH MODAL
+    ========================================================== */
+        #searchModal {
+            transition: all 0.3s ease;
+        }
+
+        #searchModal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #searchModal .modal-content {
+            transform: scale(0.95);
+            transition: all 0.3s ease;
+        }
+
+        #searchModal.show .modal-content {
+            transform: scale(1);
+        }
+
+        .search-result-item {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .search-result-item:hover {
+            background: #f8fafc;
+            border-color: #16a34a;
+        }
+
+
         /* ==========================================================
            MOBILE MENU
         ========================================================== */
@@ -262,9 +295,7 @@
 
                     <button id="openSearch"
                         class="w-11 h-11 rounded-full bg-white shadow flex justify-center items-center hover:bg-primary hover:text-white transition">
-
                         <i data-lucide="search" class="w-5"></i>
-
                     </button>
 
                 </div>
@@ -306,6 +337,20 @@
             </div>
 
         </div>
+
+        <!-- ==========================
+SEARCH BAR - BUKA MODAL
+=========================== -->
+        <div class="px-6 py-4 border-b border-gray-100">
+            <button id="openSearchFromMobile"
+                class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl border border-gray-200 hover:border-primary hover:bg-gray-50 transition group">
+                <iconify-icon icon="solar:magnifer-linear" width="18"
+                    class="text-gray-400 group-hover:text-primary"></iconify-icon>
+                <span class="text-sm text-gray-400 group-hover:text-gray-700">Cari di website...</span>
+                <span class="ml-auto text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded">Ctrl+K</span>
+            </button>
+        </div>
+
 
         <nav class="p-6 space-y-5">
 

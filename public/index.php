@@ -18,6 +18,7 @@ use Kkn27Unirow\WebsiteDesaBungur\Controller\Admin\VillageProfileController;
 use Kkn27Unirow\WebsiteDesaBungur\Controller\Public\NewsController;
 use Kkn27Unirow\WebsiteDesaBungur\Controller\Public\PhotoController;
 use Kkn27Unirow\WebsiteDesaBungur\Controller\Public\ProfileController;
+use Kkn27Unirow\WebsiteDesaBungur\Controller\Public\SearchController;
 use Kkn27Unirow\WebsiteDesaBungur\Controller\User\NewsController as UserNewsController;
 use Kkn27Unirow\WebsiteDesaBungur\Controller\User\PhotoController as UserPhotoController;
 use Kkn27Unirow\WebsiteDesaBungur\Controller\User\UserController as UsersController;
@@ -165,6 +166,11 @@ Router::add('GET', '/photo', PhotoController::class, 'photo', []);
 // ==========================================================
 Router::add('GET', '/umkm', PublicUmkmController::class, 'index');
 Router::add('GET', '/umkm/detail/([a-zA-Z0-9\-]+)', PublicUmkmController::class, 'detail');
+// ==========================================================
+// PUBLIC ROUTES - SEARCH
+// ==========================================================
 
+Router::add('GET', '/search', SearchController::class, 'results');
+Router::add('GET', '/search/api', SearchController::class, 'search');
 
 Router::run();
