@@ -189,21 +189,23 @@ class ArticleRepository
 
     public function findPublished(): array
     {
-        $statement = $this->pdo->prepare("
-            SELECT
-                a.*,
-                u.name AS author_name,
-                c.name AS category_name
-            FROM articles a
-            JOIN users u
-                ON u.id = a.user_id
-            JOIN article_categories c
-                ON c.id = a.category_id
-            WHERE
-                a.deleted_at IS NULL
-                AND a.status = 'published'
-            ORDER BY a.published_at DESC
-        ");
+       $statement = $this->pdo->prepare("
+    SELECT
+        a.*,
+        u.name AS author_name,
+        u.position AS author_position,
+        u.avatar AS author_avatar,
+        c.name AS category_name
+    FROM articles a
+    JOIN users u
+        ON u.id = a.user_id
+    JOIN article_categories c
+        ON c.id = a.category_id
+    WHERE
+        a.deleted_at IS NULL
+        AND a.status = 'published'
+    ORDER BY a.published_at DESC
+");
 
         try {
 

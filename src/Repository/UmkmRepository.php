@@ -20,25 +20,31 @@ class UmkmRepository
             INSERT INTO umkms (
                 category_id,
                 name,
+                slug,
                 owner,
                 owner_photo,
+                owner_photo_alt,
                 featured_image,
+                featured_image_alt,
                 description,
                 address,
                 business_hours,
                 whatsapp,
                 maps_embed_url
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
 
         try {
             $statement->execute([
                 $umkm->categoryId,
                 $umkm->name,
+                $umkm->slug,
                 $umkm->owner,
                 $umkm->ownerPhoto ?? null,
+                $umkm->ownerPhotoAlt ?? null,
                 $umkm->featuredImage ?? null,
+                $umkm->featuredImageAlt ?? null,
                 $umkm->description ?? null,
                 $umkm->address ?? null,
                 $umkm->businessHours ?? null,
@@ -57,30 +63,36 @@ class UmkmRepository
     public function update(Umkm $umkm): Umkm
     {
         $statement = $this->pdo->prepare("
-        UPDATE umkms
-        SET
-            category_id = ?,
-            name = ?,
-            owner = ?,
-            owner_photo = ?,
-            featured_image = ?,
-            description = ?,
-            address = ?,
-            business_hours = ?,
-            whatsapp = ?,
-            maps_embed_url = ?,
-            updated_at = CURRENT_TIMESTAMP
-        WHERE id = ?
-        AND deleted_at IS NULL
-    ");
+            UPDATE umkms
+            SET
+                category_id = ?,
+                name = ?,
+                slug = ?,
+                owner = ?,
+                owner_photo = ?,
+                owner_photo_alt = ?,
+                featured_image = ?,
+                featured_image_alt = ?,
+                description = ?,
+                address = ?,
+                business_hours = ?,
+                whatsapp = ?,
+                maps_embed_url = ?,
+                updated_at = CURRENT_TIMESTAMP
+            WHERE id = ?
+            AND deleted_at IS NULL
+        ");
 
         try {
             $statement->execute([
                 $umkm->categoryId,
                 $umkm->name,
+                $umkm->slug,
                 $umkm->owner,
                 $umkm->ownerPhoto ?? null,
+                $umkm->ownerPhotoAlt ?? null,
                 $umkm->featuredImage ?? null,
+                $umkm->featuredImageAlt ?? null,
                 $umkm->description ?? null,
                 $umkm->address ?? null,
                 $umkm->businessHours ?? null,
@@ -116,6 +128,33 @@ class UmkmRepository
 
         try {
             $statement->execute([$id]);
+            $row = $statement->fetch(PDO::FETCH_ASSOC);
+
+            if (!$row) {
+                return null;
+            }
+
+            return $this->mapToUmkm($row);
+        } finally {
+            $statement->closeCursor();
+        }
+    }
+
+    public function findBySlug(string $slug): ?Umkm
+    {
+        $statement = $this->pdo->prepare("
+            SELECT 
+                u.*,
+                c.name AS category_name
+            FROM umkms u
+            LEFT JOIN umkm_categories c ON c.id = u.category_id
+            WHERE u.slug = ?
+            AND u.deleted_at IS NULL
+            LIMIT 1
+        ");
+
+        try {
+            $statement->execute([$slug]);
             $row = $statement->fetch(PDO::FETCH_ASSOC);
 
             if (!$row) {
@@ -208,9 +247,12 @@ class UmkmRepository
         $umkm->id = (int) $row['id'];
         $umkm->categoryId = (int) $row['category_id'];
         $umkm->name = $row['name'];
+        $umkm->slug = $row['slug'] ?? '';
         $umkm->owner = $row['owner'];
         $umkm->ownerPhoto = $row['owner_photo'] ?? null;
+        $umkm->ownerPhotoAlt = $row['owner_photo_alt'] ?? null;
         $umkm->featuredImage = $row['featured_image'] ?? null;
+        $umkm->featuredImageAlt = $row['featured_image_alt'] ?? null;
         $umkm->description = $row['description'] ?? null;
         $umkm->address = $row['address'] ?? null;
         $umkm->businessHours = $row['business_hours'] ?? null;

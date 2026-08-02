@@ -1,4 +1,3 @@
-
 <!-- ==========================================================
 HEADING
 ========================================================== -->
@@ -25,13 +24,13 @@ GRID
         <?php foreach ($model['umkms'] as $umkm): ?>
             <article>
 
-                <a href="/umkm/detail/<?= $umkm->id ?>" class="group block" data-aos="fade-up">
+                <a href="/umkm/detail/<?= htmlspecialchars($umkm->slug) ?>" class="group block" data-aos="fade-up">
 
                     <div class="relative overflow-hidden rounded-3xl shadow-lg">
 
                         <img src="/uploads/umkm/<?= htmlspecialchars($umkm->featuredImage ?? 'default-umkm.jpg') ?>"
                             class="w-full h-72 object-cover transition duration-700 group-hover:scale-110"
-                            alt="<?= htmlspecialchars($umkm->name) ?>"
+                            alt="<?= htmlspecialchars($umkm->featuredImageAlt ?? $umkm->name) ?>"
                             onerror="this.src='https://picsum.photos/seed/umkm<?= $umkm->id ?>/800/500'">
 
                         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>

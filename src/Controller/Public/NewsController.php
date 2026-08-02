@@ -62,43 +62,81 @@ class NewsController
     }
 
     /**
- * Display articles archive by month/year
- */
-public function archive(): void
-{
-    $month = isset($_GET['month']) ? (int) $_GET['month'] : null;
-    $year = isset($_GET['year']) ? (int) $_GET['year'] : null;
+     * Display articles archive by month/year
+     */
+    public function archive(): void
+    {
+        $month = isset($_GET['month']) ? (int) $_GET['month'] : null;
+        $year = isset($_GET['year']) ? (int) $_GET['year'] : null;
 
-    $articles = $this->articleRepository->findPublished();
+        $articles = $this->articleRepository->findPublished();
 
-    // Filter by month/year if provided
-    if ($month && $year) {
-        $articles = array_filter($articles, function($article) use ($month, $year) {
-            $date = strtotime($article->publishedAt ?? $article->createdAt);
-            return (int) date('m', $date) === $month && (int) date('Y', $date) === $year;
+        // Filter by month/year if provided
+        if ($month && $year) {
+            $articles = array_filter($articles, function ($article) use ($month, $year) {
+                $date = strtotime($article->publishedAt ?? $article->createdAt);
+                return (int) date('m', $date) === $month && (int) date('Y', $date) === $year;
+            });
+        }
+
+        // Get archives for sidebar
+        $archives = $this->getArticleArchives();
+
+        // Get month/year name for title
+        $archiveTitle = 'Semua Arsip';
+        if ($month && $year) {
+            $monthName = date('F', mktime(0, 0, 0, $month, 1, $year));
+            $archiveTitle = $monthName . ' ' . $year;
+        }
+
+        View::renderPublic('News/village-news-archive', [
+            'title' => 'Arsip Artikel',
+            'current' => 'village-news',
+            'articles' => $articles,
+            'archives' => $archives,
+            'selectedMonth' => $month,
+            'selectedYear' => $year,
+            'archiveTitle' => $archiveTitle
+        ]);
+    }
+
+    /**
+     * Display articles by author
+     */
+    public function author(string $authorName): void
+    {
+         $authorName = urldecode($authorName);
+        $articles = $this->articleRepository->findPublished();
+
+        // Filter by author name (case insensitive)
+        $authorArticles = array_filter($articles, function ($article) use ($authorName) {
+            return strtolower($article->authorName ?? '') === strtolower($authorName);
         });
+        $authorArticles = array_values($authorArticles);
+
+        // Get archives for sidebar
+        $archives = $this->getArticleArchives();
+
+        // Get author info (ambil dari artikel pertama)
+        $authorInfo = null;
+        if (!empty($authorArticles)) {
+            $first = $authorArticles[0];
+            $authorInfo = (object) [
+                'name' => $first->authorName,
+                'position' => $first->authorPosition,
+                'avatar' => $first->authorAvatar,
+            ];
+        }
+
+        View::renderPublic('News/village-news-author', [
+            'title' => 'Artikel oleh ' . $authorName,
+            'current' => 'village-news',
+            'articles' => $authorArticles,
+            'archives' => $archives,
+            'authorName' => $authorName,
+            'authorInfo' => $authorInfo,
+        ]);
     }
-
-    // Get archives for sidebar
-    $archives = $this->getArticleArchives();
-
-    // Get month/year name for title
-    $archiveTitle = 'Semua Arsip';
-    if ($month && $year) {
-        $monthName = date('F', mktime(0, 0, 0, $month, 1, $year));
-        $archiveTitle = $monthName . ' ' . $year;
-    }
-
-    View::renderPublic('News/village-news-archive', [
-        'title' => 'Arsip Artikel',
-        'current' => 'village-news',
-        'articles' => $articles,
-        'archives' => $archives,
-        'selectedMonth' => $month,
-        'selectedYear' => $year,
-        'archiveTitle' => $archiveTitle
-    ]);
-}
 
     /**
      * Get article archives grouped by month/year

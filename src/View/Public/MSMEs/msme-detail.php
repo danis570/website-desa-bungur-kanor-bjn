@@ -49,11 +49,13 @@ DETAIL UMKM
 
             <?php if (!empty($model['umkm']->ownerPhoto)): ?>
                 <img src="/uploads/umkm/<?= htmlspecialchars($model['umkm']->ownerPhoto) ?>"
-                    class="w-20 h-20 rounded-full object-cover shadow" alt="<?= htmlspecialchars($model['umkm']->owner) ?>"
+                    class="w-20 h-20 rounded-full object-cover shadow"
+                    alt="<?= htmlspecialchars($model['umkm']->ownerPhotoAlt ?? $model['umkm']->owner) ?>"
                     onerror="this.src='https://ui-avatars.com/api/?name=<?= urlencode($model['umkm']->owner) ?>&size=80&background=15803d&color=fff'">
             <?php else: ?>
                 <img src="https://ui-avatars.com/api/?name=<?= urlencode($model['umkm']->owner) ?>&size=80&background=15803d&color=fff"
-                    class="w-20 h-20 rounded-full object-cover shadow" alt="<?= htmlspecialchars($model['umkm']->owner) ?>">
+                    class="w-20 h-20 rounded-full object-cover shadow"
+                    alt="<?= htmlspecialchars($model['umkm']->ownerPhotoAlt ?? $model['umkm']->owner) ?>">
             <?php endif; ?>
 
             <div>
@@ -76,11 +78,11 @@ DETAIL UMKM
         <figure>
             <img src="/uploads/umkm/<?= htmlspecialchars($model['umkm']->featuredImage ?? 'default-umkm.jpg') ?>"
                 class="w-full h-[420px] lg:h-[550px] object-cover rounded-3xl shadow-lg"
-                alt="<?= htmlspecialchars($model['umkm']->name) ?>"
+                alt="<?= htmlspecialchars($model['umkm']->featuredImageAlt ?? $model['umkm']->name) ?>"
                 onerror="this.src='https://picsum.photos/seed/umkm<?= $model['umkm']->id ?>/1200/500'">
 
             <figcaption class="text-center text-sm text-gray-500 mt-3">
-                Produk UMKM Desa Bungur
+                <?= htmlspecialchars($model['umkm']->featuredImageAlt ?: 'Produk UMKM Desa Bungur') ?>
             </figcaption>
         </figure>
 
@@ -144,7 +146,7 @@ DETAIL UMKM
                     <!-- DESKRIPSI -->
                     <?php if (!empty($model['umkm']->description)): ?>
                         <div>
-                           
+
                             <p class="text-sm leading-relaxed"><?= htmlspecialchars($model['umkm']->description) ?></p>
                         </div>
                     <?php endif; ?>

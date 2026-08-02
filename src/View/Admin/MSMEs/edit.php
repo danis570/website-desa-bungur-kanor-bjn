@@ -19,8 +19,7 @@ HEADER
 FLASH MESSAGES
 ========================================================== -->
 <?php if (isset($_SESSION['success'])): ?>
-    <div
-        class="mb-6 px-6 py-4 bg-green-50 border-l-4 border-green-500 text-green-700 rounded-lg flex items-center justify-between">
+    <div class="mb-6 px-6 py-4 bg-green-50 border-l-4 border-green-500 text-green-700 rounded-lg flex items-center justify-between">
         <div class="flex items-center gap-3">
             <iconify-icon icon="solar:check-circle-linear" class="text-2xl text-green-500"></iconify-icon>
             <span><?= htmlspecialchars($_SESSION['success']) ?></span>
@@ -33,8 +32,7 @@ FLASH MESSAGES
 <?php endif; ?>
 
 <?php if (isset($_SESSION['error'])): ?>
-    <div
-        class="mb-6 px-6 py-4 bg-red-50 border-l-4 border-red-500 text-red-700 rounded-lg flex items-center justify-between">
+    <div class="mb-6 px-6 py-4 bg-red-50 border-l-4 border-red-500 text-red-700 rounded-lg flex items-center justify-between">
         <div class="flex items-center gap-3">
             <iconify-icon icon="solar:danger-circle-linear" class="text-2xl text-red-500"></iconify-icon>
             <span><?= htmlspecialchars($_SESSION['error']) ?></span>
@@ -56,8 +54,7 @@ FORM
 
             <!-- Nama UMKM -->
             <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Nama UMKM <span
-                        class="text-red-500">*</span></label>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Nama UMKM <span class="text-red-500">*</span></label>
                 <input type="text" name="name"
                     value="<?= htmlspecialchars($model['old']['name'] ?? $umkm->name ?? '') ?>"
                     class="w-full rounded-xl border border-slate-200 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-slate-900/10 <?= isset($model['error']) && strpos($model['error'], 'Nama UMKM') !== false ? 'border-red-500' : '' ?>"
@@ -69,8 +66,7 @@ FORM
 
             <!-- Pemilik -->
             <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Pemilik <span
-                        class="text-red-500">*</span></label>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Pemilik <span class="text-red-500">*</span></label>
                 <input type="text" name="owner"
                     value="<?= htmlspecialchars($model['old']['owner'] ?? $umkm->owner ?? '') ?>"
                     class="w-full rounded-xl border border-slate-200 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-slate-900/10 <?= isset($model['error']) && strpos($model['error'], 'pemilik') !== false ? 'border-red-500' : '' ?>"
@@ -82,8 +78,7 @@ FORM
 
             <!-- Kategori -->
             <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Kategori <span
-                        class="text-red-500">*</span></label>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Kategori <span class="text-red-500">*</span></label>
                 <select name="category_id"
                     class="w-full rounded-xl border border-slate-200 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-slate-900/10">
                     <option value="">Pilih Kategori</option>
@@ -100,8 +95,7 @@ FORM
 
             <!-- Alamat -->
             <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Alamat <span
-                        class="text-red-500">*</span></label>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Alamat <span class="text-red-500">*</span></label>
                 <input type="text" name="address"
                     value="<?= htmlspecialchars($model['old']['address'] ?? $umkm->address ?? '') ?>"
                     class="w-full rounded-xl border border-slate-200 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-slate-900/10"
@@ -133,15 +127,13 @@ FORM
                             <div class="menu-item bg-slate-50 rounded-xl p-4 border border-slate-200">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                                     <div>
-                                        <label class="block text-xs font-medium text-slate-500 mb-1">Nama Menu <span
-                                                class="text-red-500">*</span></label>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">Nama Menu <span class="text-red-500">*</span></label>
                                         <input type="text" name="menu_name[]" value="<?= htmlspecialchars($menu->name) ?>"
                                             class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/10"
                                             placeholder="Nama menu..." required>
                                     </div>
                                     <div>
-                                        <label class="block text-xs font-medium text-slate-500 mb-1">Harga <span
-                                                class="text-red-500">*</span></label>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">Harga <span class="text-red-500">*</span></label>
                                         <input type="text" name="menu_price[]"
                                             value="Rp <?= number_format($menu->price, 0, ',', '.') ?>"
                                             class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/10 price-input"
@@ -170,19 +162,16 @@ FORM
                             </div>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <!-- Default 1 menu jika belum ada -->
                         <div class="menu-item bg-slate-50 rounded-xl p-4 border border-slate-200">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 <div>
-                                    <label class="block text-xs font-medium text-slate-500 mb-1">Nama Menu <span
-                                            class="text-red-500">*</span></label>
+                                    <label class="block text-xs font-medium text-slate-500 mb-1">Nama Menu <span class="text-red-500">*</span></label>
                                     <input type="text" name="menu_name[]"
                                         class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/10"
                                         placeholder="Nama menu..." required>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-medium text-slate-500 mb-1">Harga <span
-                                            class="text-red-500">*</span></label>
+                                    <label class="block text-xs font-medium text-slate-500 mb-1">Harga <span class="text-red-500">*</span></label>
                                     <input type="text" name="menu_price[]"
                                         class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/10 price-input"
                                         placeholder="Rp 10.000" required oninput="formatRupiah(this)">
@@ -243,13 +232,17 @@ FORM
 
             <hr class="border-slate-200">
 
-            <!-- Foto -->
+            <!-- ==========================================================
+            FOTO - TAMBAHKAN ALT TEXT DI SINI
+            ========================================================== -->
+            <!-- Foto Utama -->
             <div>
                 <label class="block text-sm font-medium text-slate-700 mb-1">Foto Utama</label>
                 <?php if (!empty($umkm->featuredImage)): ?>
                     <div class="mb-2">
                         <img src="/uploads/umkm/<?= htmlspecialchars($umkm->featuredImage) ?>"
-                            class="w-32 h-32 object-cover rounded-xl border border-slate-200" alt="Featured Image">
+                            class="w-32 h-32 object-cover rounded-xl border border-slate-200" 
+                            alt="<?= htmlspecialchars($umkm->featuredImageAlt ?? $umkm->name) ?>">
                         <p class="text-xs text-slate-400 mt-1">Gambar saat ini</p>
                     </div>
                 <?php endif; ?>
@@ -258,18 +251,40 @@ FORM
                 <p class="text-xs text-slate-400 mt-1">Upload foto utama UMKM (JPG, PNG, WEBP, GIF) - Maksimal 2MB</p>
             </div>
 
+            <!-- Alt Text Foto Utama -->
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Alt Text Foto Utama</label>
+                <input type="text" name="featured_image_alt" 
+                    value="<?= htmlspecialchars($model['old']['featured_image_alt'] ?? $umkm->featuredImageAlt ?? '') ?>"
+                    placeholder="Deskripsi foto utama untuk SEO..."
+                    class="w-full rounded-xl border border-slate-200 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-slate-900/10">
+                <p class="text-xs text-slate-400 mt-1">Opsional - Deskripsi gambar untuk keperluan SEO dan aksesibilitas</p>
+            </div>
+
+            <!-- Foto Pemilik -->
             <div>
                 <label class="block text-sm font-medium text-slate-700 mb-1">Foto Pemilik</label>
                 <?php if (!empty($umkm->ownerPhoto)): ?>
                     <div class="mb-2">
                         <img src="/uploads/umkm/<?= htmlspecialchars($umkm->ownerPhoto) ?>"
-                            class="w-32 h-32 object-cover rounded-xl border border-slate-200" alt="Owner Photo">
+                            class="w-32 h-32 object-cover rounded-xl border border-slate-200" 
+                            alt="<?= htmlspecialchars($umkm->ownerPhotoAlt ?? $umkm->owner) ?>">
                         <p class="text-xs text-slate-400 mt-1">Gambar saat ini</p>
                     </div>
                 <?php endif; ?>
                 <input type="file" name="owner_photo" accept="image/*"
                     class="w-full rounded-xl border border-slate-200 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-slate-900/10 file:mr-4 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200">
                 <p class="text-xs text-slate-400 mt-1">Upload foto pemilik UMKM (JPG, PNG, WEBP, GIF) - Maksimal 2MB</p>
+            </div>
+
+            <!-- Alt Text Foto Pemilik -->
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Alt Text Foto Pemilik</label>
+                <input type="text" name="owner_photo_alt" 
+                    value="<?= htmlspecialchars($model['old']['owner_photo_alt'] ?? $umkm->ownerPhotoAlt ?? '') ?>"
+                    placeholder="Deskripsi foto pemilik untuk SEO..."
+                    class="w-full rounded-xl border border-slate-200 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-slate-900/10">
+                <p class="text-xs text-slate-400 mt-1">Opsional - Deskripsi gambar untuk keperluan SEO dan aksesibilitas</p>
             </div>
 
         </div>

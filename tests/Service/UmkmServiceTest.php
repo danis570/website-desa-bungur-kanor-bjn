@@ -29,12 +29,12 @@ class UmkmServiceTest extends TestCase
 
         $this->umkmRepository = new UmkmRepository($this->pdo);
         $this->categoryRepository = new UmkmCategoryRepository($this->pdo);
-        $this->menuRepository = new UmkmMenuRepository($this->pdo); // <-- TAMBAHKAN INI
+        $this->menuRepository = new UmkmMenuRepository($this->pdo);
         
         $this->umkmService = new UmkmService(
             $this->umkmRepository,
             $this->categoryRepository,
-            $this->menuRepository // <-- TAMBAHKAN INI
+            $this->menuRepository
         );
 
         $this->cleanupDatabase();
@@ -86,11 +86,16 @@ class UmkmServiceTest extends TestCase
         $umkm = new Umkm();
         $umkm->categoryId = $category->id;
         $umkm->name = $name;
+        $umkm->slug = strtolower(str_replace(' ', '-', $name));
         $umkm->owner = $owner;
         $umkm->description = 'Deskripsi UMKM';
         $umkm->address = 'Jl. Raya Desa Bungur No. 1';
         $umkm->businessHours = '08:00 - 20:00';
         $umkm->whatsapp = '081234567890';
+        $umkm->featuredImage = 'umkm_123.jpg';
+        $umkm->featuredImageAlt = 'Featured alt text';
+        $umkm->ownerPhoto = 'owner_123.jpg';
+        $umkm->ownerPhotoAlt = 'Owner alt text';
 
         return $this->umkmRepository->save($umkm);
     }
@@ -109,7 +114,9 @@ class UmkmServiceTest extends TestCase
         $request->whatsapp = '081234567890';
         $request->mapsEmbedUrl = 'https://maps.google.com/embed';
         $request->featuredImage = 'umkm_123.jpg';
+        $request->featuredImageAlt = 'Featured alt text';
         $request->ownerPhoto = 'owner_123.jpg';
+        $request->ownerPhotoAlt = 'Owner alt text';
         
         // Tambahkan menu
         $request->menus = [
@@ -130,10 +137,13 @@ class UmkmServiceTest extends TestCase
         $this->assertNotNull($umkm->id);
         $this->assertIsInt($umkm->id);
         $this->assertEquals('Warung Makan Baru', $umkm->name);
+        $this->assertEquals('warung-makan-baru', $umkm->slug);
         $this->assertEquals('Budi Santoso', $umkm->owner);
         $this->assertEquals($category->id, $umkm->categoryId);
         $this->assertEquals('umkm_123.jpg', $umkm->featuredImage);
+        $this->assertEquals('Featured alt text', $umkm->featuredImageAlt);
         $this->assertEquals('owner_123.jpg', $umkm->ownerPhoto);
+        $this->assertEquals('Owner alt text', $umkm->ownerPhotoAlt);
         
         // Cek menu
         $this->assertCount(2, $umkm->menus);
@@ -143,6 +153,7 @@ class UmkmServiceTest extends TestCase
         $foundUmkm = $this->umkmRepository->findById($umkm->id);
         $this->assertNotNull($foundUmkm);
         $this->assertEquals('Warung Makan Baru', $foundUmkm->name);
+        $this->assertEquals('warung-makan-baru', $foundUmkm->slug);
     }
 
     public function testCreateWithEmptyName(): void
@@ -217,7 +228,9 @@ class UmkmServiceTest extends TestCase
         $request->whatsapp = '081298765432';
         $request->mapsEmbedUrl = 'https://maps.google.com/embed/update';
         $request->featuredImage = 'umkm_update.jpg';
+        $request->featuredImageAlt = 'Updated featured alt';
         $request->ownerPhoto = 'owner_update.jpg';
+        $request->ownerPhotoAlt = 'Updated owner alt';
         
         // Tambahkan menu
         $request->menus = [
@@ -232,9 +245,12 @@ class UmkmServiceTest extends TestCase
 
         $this->assertEquals($umkm->id, $updatedUmkm->id);
         $this->assertEquals('Warung Makan Update', $updatedUmkm->name);
+        $this->assertEquals('warung-makan-update', $updatedUmkm->slug);
         $this->assertEquals('Budi Santoso Update', $updatedUmkm->owner);
         $this->assertEquals('umkm_update.jpg', $updatedUmkm->featuredImage);
+        $this->assertEquals('Updated featured alt', $updatedUmkm->featuredImageAlt);
         $this->assertEquals('owner_update.jpg', $updatedUmkm->ownerPhoto);
+        $this->assertEquals('Updated owner alt', $updatedUmkm->ownerPhotoAlt);
         
         // Cek menu
         $this->assertCount(1, $updatedUmkm->menus);
@@ -243,6 +259,7 @@ class UmkmServiceTest extends TestCase
         $foundUmkm = $this->umkmRepository->findById($umkm->id);
         $this->assertNotNull($foundUmkm);
         $this->assertEquals('Warung Makan Update', $foundUmkm->name);
+        $this->assertEquals('warung-makan-update', $foundUmkm->slug);
     }
 
     public function testUpdateWithInvalidId(): void
@@ -304,6 +321,7 @@ class UmkmServiceTest extends TestCase
         $this->assertEquals('Warung Makan', $foundUmkm->name);
         $this->assertEquals('Budi Santoso', $foundUmkm->owner);
         $this->assertNotEmpty($foundUmkm->categoryName);
+        $this->assertNotEmpty($foundUmkm->slug);
     }
 
     public function testFindByIdNotFound(): void
@@ -327,6 +345,7 @@ class UmkmServiceTest extends TestCase
 
         foreach ($umkms as $umkm) {
             $this->assertNotEmpty($umkm->categoryName);
+            $this->assertNotEmpty($umkm->slug);
         }
     }
 

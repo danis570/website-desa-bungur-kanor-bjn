@@ -157,12 +157,14 @@ Router::add('GET', '/demografi', PublicDemographicController::class, 'index');
 Router::add('GET', '/kabar', NewsController::class, 'index');
 Router::add('GET', '/kabar/arsip', NewsController::class, 'archive');
 Router::add('GET', '/kabar/detail/([a-zA-Z0-9\-]+)', NewsController::class, 'detail');
+Router::add('GET', '/kabar/author/(.+)', NewsController::class, 'author');
 // Photo
 Router::add('GET', '/photo', PhotoController::class, 'photo', []);
 // ==========================================================
 // PUBLIC ROUTES - UMKM
 // ==========================================================
 Router::add('GET', '/umkm', PublicUmkmController::class, 'index');
-Router::add('GET', '/umkm/detail/([0-9]+)', PublicUmkmController::class, 'detail');
+Router::add('GET', '/umkm/detail/([a-zA-Z0-9\-]+)', PublicUmkmController::class, 'detail');
+
 
 Router::run();

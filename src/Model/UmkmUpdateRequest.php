@@ -9,7 +9,9 @@ class UmkmUpdateRequest
     public string $name;
     public string $owner;
     public ?string $ownerPhoto = null;
+    public ?string $ownerPhotoAlt = null;
     public ?string $featuredImage = null;
+    public ?string $featuredImageAlt = null;
     public ?string $description = null;
     public ?string $address = null;
     public ?string $businessHours = null;

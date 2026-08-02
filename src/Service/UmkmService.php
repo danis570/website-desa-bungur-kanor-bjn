@@ -37,12 +37,19 @@ class UmkmService
             throw new ValidationException('Kategori tidak ditemukan');
         }
 
+        // Generate slug
+        $slug = $this->generateSlug($request->name);
+        $this->ensureSlugIsUnique($slug);
+
         $umkm = new Umkm();
         $umkm->categoryId = $request->categoryId;
         $umkm->name = $request->name;
+        $umkm->slug = $slug; // <-- SET SLUG
         $umkm->owner = $request->owner;
         $umkm->ownerPhoto = $request->ownerPhoto ?? null;
+        $umkm->ownerPhotoAlt = $request->ownerPhotoAlt ?? null;
         $umkm->featuredImage = $request->featuredImage ?? null;
+        $umkm->featuredImageAlt = $request->featuredImageAlt ?? null;
         $umkm->description = $request->description ?? null;
         $umkm->address = $request->address ?? null;
         $umkm->businessHours = $request->businessHours ?? null;
@@ -85,13 +92,23 @@ class UmkmService
             throw new ValidationException('Kategori tidak ditemukan');
         }
 
+        // Generate slug if name changed
+        $slug = $existingUmkm->slug;
+        if ($existingUmkm->name !== $request->name) {
+            $slug = $this->generateSlug($request->name);
+            $this->ensureSlugIsUnique($slug, $request->id);
+        }
+
         $umkm = new Umkm();
         $umkm->id = $request->id;
         $umkm->categoryId = $request->categoryId;
         $umkm->name = $request->name;
+        $umkm->slug = $slug; // <-- SET SLUG
         $umkm->owner = $request->owner;
         $umkm->ownerPhoto = $request->ownerPhoto ?? $existingUmkm->ownerPhoto;
+        $umkm->ownerPhotoAlt = $request->ownerPhotoAlt ?? $existingUmkm->ownerPhotoAlt;
         $umkm->featuredImage = $request->featuredImage ?? $existingUmkm->featuredImage;
+        $umkm->featuredImageAlt = $request->featuredImageAlt ?? $existingUmkm->featuredImageAlt;
         $umkm->description = $request->description ?? null;
         $umkm->address = $request->address ?? null;
         $umkm->businessHours = $request->businessHours ?? null;
@@ -165,6 +182,34 @@ class UmkmService
         
         // Then soft delete UMKM
         $this->umkmRepository->softDelete($id);
+    }
+
+    private function generateSlug(string $name): string
+    {
+        $slug = trim($name);
+        $slug = strtolower($slug);
+        $slug = preg_replace('/[^a-z0-9-]/', '-', $slug);
+        $slug = preg_replace('/-+/', '-', $slug);
+        $slug = trim($slug, '-');
+
+        // Jika slug kosong, gunakan 'umkm'
+        if (empty($slug)) {
+            $slug = 'umkm';
+        }
+
+        return $slug;
+    }
+
+    private function ensureSlugIsUnique(string $slug, ?int $excludeId = null): void
+    {
+        // Cek apakah slug sudah digunakan
+        $existing = $this->umkmRepository->findBySlug($slug);
+        
+        if ($existing !== null && ($excludeId === null || $existing->id !== $excludeId)) {
+            // Tambahkan angka random
+            $newSlug = $slug . '-' . uniqid();
+            $this->ensureSlugIsUnique($newSlug, $excludeId);
+        }
     }
 
     private function validateCreateRequest(UmkmCreateRequest $request): void

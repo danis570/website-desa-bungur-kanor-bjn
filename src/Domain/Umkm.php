@@ -7,9 +7,12 @@ class Umkm
     public ?int $id = null;
     public int $categoryId;
     public string $name;
+    public string $slug;
     public string $owner;
     public ?string $ownerPhoto = null;
+    public ?string $ownerPhotoAlt = null;
     public ?string $featuredImage = null;
+    public ?string $featuredImageAlt = null;
     public ?string $description = null;
     public ?string $address = null;
     public ?string $businessHours = null;
@@ -19,6 +22,13 @@ class Umkm
     public ?string $createdAt = null;
     public ?string $updatedAt = null;
     public ?string $deletedAt = null;
-    
     public array $menus = [];
+
+    public function __construct()
+    {
+        $this->slug = '';
+        $this->owner = '';
+        $this->categoryId = 0;
+        $this->name = '';
+    }
 }

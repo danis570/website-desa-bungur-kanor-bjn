@@ -112,6 +112,8 @@ class UmkmController
         $request->businessHours = trim($_POST['business_hours'] ?? '');
         $request->whatsapp = trim($_POST['whatsapp'] ?? '');
         $request->mapsEmbedUrl = trim($_POST['maps_embed_url'] ?? '');
+        $request->featuredImageAlt = trim($_POST['featured_image_alt'] ?? ''); // <-- TAMBAHKAN
+        $request->ownerPhotoAlt = trim($_POST['owner_photo_alt'] ?? ''); // <-- TAMBAHKAN
 
         // Handle menus
         $menus = [];
@@ -120,10 +122,8 @@ class UmkmController
                 $name = trim($name);
                 if (!empty($name) && isset($_POST['menu_price'][$index]) && !empty(trim($_POST['menu_price'][$index]))) {
                     $price = trim($_POST['menu_price'][$index]);
-                    // Bersihkan format harga (Rp 10.000 -> 10000)
                     $price = preg_replace('/[^0-9]/', '', $price);
                     
-                    // Handle menu image upload jika ada
                     $menuImage = null;
                     if (isset($_FILES['menu_image']) && isset($_FILES['menu_image']['tmp_name'][$index]) && $_FILES['menu_image']['error'][$index] === UPLOAD_ERR_OK) {
                         $menuImage = $this->uploadMenuImage([
@@ -237,6 +237,8 @@ class UmkmController
         $request->businessHours = trim($_POST['business_hours'] ?? '');
         $request->whatsapp = trim($_POST['whatsapp'] ?? '');
         $request->mapsEmbedUrl = trim($_POST['maps_embed_url'] ?? '');
+        $request->featuredImageAlt = trim($_POST['featured_image_alt'] ?? ''); // <-- TAMBAHKAN
+        $request->ownerPhotoAlt = trim($_POST['owner_photo_alt'] ?? ''); // <-- TAMBAHKAN
 
         // Handle menus
         $menus = [];
@@ -247,7 +249,6 @@ class UmkmController
                     $price = trim($_POST['menu_price'][$index]);
                     $price = preg_replace('/[^0-9]/', '', $price);
                     
-                    // Handle menu image upload jika ada
                     $menuImage = null;
                     if (isset($_FILES['menu_image']) && isset($_FILES['menu_image']['tmp_name'][$index]) && $_FILES['menu_image']['error'][$index] === UPLOAD_ERR_OK) {
                         $menuImage = $this->uploadMenuImage([
@@ -258,7 +259,6 @@ class UmkmController
                             'error' => $_FILES['menu_image']['error'][$index]
                         ]);
                     } else {
-                        // Jika tidak upload baru, cek apakah ada image lama
                         $menuImage = $_POST['menu_existing_image'][$index] ?? null;
                     }
                     
@@ -346,7 +346,6 @@ class UmkmController
                 if ($umkm->ownerPhoto) {
                     $this->deleteImage($umkm->ownerPhoto, 'owner');
                 }
-                // Hapus menu images
                 foreach ($umkm->menus as $menu) {
                     if ($menu->image) {
                         $this->deleteImage($menu->image, 'menu');
@@ -373,7 +372,11 @@ class UmkmController
         }
 
         $allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
-        if (!in_array($file['type'], $allowedTypes)) {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mimeType = finfo_file($finfo, $file['tmp_name']);
+        finfo_close($finfo);
+
+        if (!in_array($mimeType, $allowedTypes)) {
             return '';
         }
 
@@ -410,7 +413,11 @@ class UmkmController
         }
 
         $allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
-        if (!in_array($file['type'], $allowedTypes)) {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mimeType = finfo_file($finfo, $file['tmp_name']);
+        finfo_close($finfo);
+
+        if (!in_array($mimeType, $allowedTypes)) {
             return null;
         }
 

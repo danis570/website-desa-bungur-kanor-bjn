@@ -40,11 +40,11 @@ class UmkmController
     }
 
     /**
-     * Display UMKM detail
+     * Display UMKM detail by slug
      */
-    public function detail(int $id): void
+    public function detail(string $slug): void
     {
-        $umkm = $this->umkmRepository->findById($id);
+        $umkm = $this->umkmRepository->findBySlug($slug);
 
         if ($umkm === null) {
             View::redirect('/umkm');
@@ -56,8 +56,8 @@ class UmkmController
 
         // Get other UMKM for related
         $allUmkms = $this->umkmRepository->findAll();
-        $relatedUmkms = array_filter($allUmkms, function($u) use ($id) {
-            return $u->id !== $id;
+        $relatedUmkms = array_filter($allUmkms, function($u) use ($umkm) {
+            return $u->id !== $umkm->id;
         });
         $relatedUmkms = array_slice(array_values($relatedUmkms), 0, 4);
 

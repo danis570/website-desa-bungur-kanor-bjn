@@ -63,7 +63,7 @@ ARTICLE DETAIL
                 </div>
 
                 <div>
-                    <a href="#" rel="author"
+                    <a href="/kabar/author/<?= urlencode($model['article']->authorName ?? '') ?>" rel="author"
                         class="text-xl font-bold text-gray-900 hover:text-primary transition-colors">
                         <?= htmlspecialchars($model['article']->authorName ?? 'Administrator') ?>
                     </a>
